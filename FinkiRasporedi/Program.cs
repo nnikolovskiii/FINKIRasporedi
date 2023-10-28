@@ -17,7 +17,22 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAnyOrigin", builder =>
+    {
+        builder
+            .AllowAnyOrigin() // You can replace this with specific origins if needed
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
+
 var app = builder.Build();
+app.UseCors("AllowAnyOrigin");
+
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
