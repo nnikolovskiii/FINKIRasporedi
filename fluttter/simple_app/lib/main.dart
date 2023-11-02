@@ -10,14 +10,30 @@ void main() {
   runApp(MyApp());
 }
 
+Color myCustomColor2 = Color(0xFF42587F);
+
+ThemeData darkTheme = ThemeData(
+  textTheme: const TextTheme(
+    displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+    bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
+  ),
+  appBarTheme: const AppBarTheme(
+    color: Color(0xFF1A237E),
+    iconTheme: IconThemeData(color: Colors.white),
+  ),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: myCustomColor2,
+    brightness: Brightness.light,
+  ),
+);
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        // Your theme configuration here...
-      ),
+      theme: darkTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system,
       home: CardList(), // Use a SplashScreen widget
     );
   }

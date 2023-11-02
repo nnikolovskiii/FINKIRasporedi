@@ -18,93 +18,30 @@ class _CardListState extends State<CardList> {
     super.initState();
     // Populate the initial card list
     for (int i = 0; i < 2; i++) {
-      cards.add(buildCard("Raspored $i ", "Sub title", "Notes"));
+      cards.add(buildCard("Notes za raspored $i ", "Sub title", "Notes"));
     }
   }
 
-  // Widget buildCard(String title, String subTitle, String cardText) {
-  //   return Container(
-  //     height: 200, // Set the desired height
-  //     width: 300,  // Set the desired width
-  //     child: Padding(
-  //       padding: const EdgeInsets.all(15.0), // Adjust the padding as needed
-  //       child: Card(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(4),
-  //         ),
-  //         clipBehavior: Clip.antiAliasWithSaveLayer,
-  //         color: Colors.grey,
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: <Widget>[
-  //             Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: <Widget>[
-  //                 Image.asset(
-  //                   'images/bg.jpg',
-  //                   height: 100,
-  //                   width: 100,
-  //                   fit: BoxFit.cover,
-  //                 ),
-  //                 Container(width: 20),
-  //                 Expanded(
-  //                   child: Column(
-  //                     crossAxisAlignment: CrossAxisAlignment.start,
-  //                     children: <Widget>[
-  //                       Container(height: 5),
-  //                       Text(
-  //                         title,
-  //                         style: const TextStyle(
-  //                           fontSize: 18,
-  //                           fontWeight: FontWeight.bold,
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       Container(height: 5),
-  //                       Text(
-  //                         title,
-  //                         style: const TextStyle(
-  //                           fontSize: 18,
-  //                           fontWeight: FontWeight.bold,
-  //                           color: Colors.blue,
-  //                         ),
-  //                       ),
-  //                       Container(height: 10),
-  //                       // Text(
-  //                       //   cardText,
-  //                       //   maxLines: 2,
-  //                       //   style: MyTextSample.subhead(context)!.copyWith(
-  //                       //     color: Colors.grey[700],
-  //                       //   ),
-  //                       // ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Color myCustomColor = Color(0xFFB9CDD7);
+  Color myCustomColor2 = Color(0xFF1C3144);
 
   Widget buildCard(String title, String subTitle, String cardText) {
     return Padding(
       padding: const EdgeInsets.all(8.0), // Add padding around the entire card
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(10),
+
         ),
         clipBehavior: Clip.antiAliasWithSaveLayer,
-        color: Colors.grey, // Set the background color to gray
+        color: myCustomColor, // Set the background color to gray
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Image.asset(
-              'images/bg.jpg',
-              height: 100,
-              width: 100,
+              'lib/images/3.jpg',
+              height: 150,
+              width: double.infinity,
               fit: BoxFit.cover,
             ),
             Container(
@@ -113,10 +50,11 @@ class _CardListState extends State<CardList> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "Cards Title 2",
+                    "Raspored",
                     style: TextStyle(
                       fontSize: 24,
-                      color: Colors.grey[800],
+                      color: myCustomColor2,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   Container(height: 10),
@@ -124,8 +62,7 @@ class _CardListState extends State<CardList> {
                     title,
                     style: const TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      color: Colors.black,
                     ),
                   ),
                 ],

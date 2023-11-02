@@ -67,6 +67,11 @@ flutter:
 
   assets:
     - lib/images/bg.jpg
+    - lib/images/background.jpg
+    - lib/images/calendar.jpg
+    - lib/images/1.jpg
+    - lib/images/2.jpg
+    - lib/images/3.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
