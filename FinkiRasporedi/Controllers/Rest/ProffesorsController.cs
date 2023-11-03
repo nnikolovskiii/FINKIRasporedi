@@ -1,66 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using FinkiRasporedi.Data;
+using FinkiRasporedi.Models.Base;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using FinkiRasporedi.Data;
-using FinkiRasporedi.Models.Base;
 
 namespace FinkiRasporedi.Controllers.Rest
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProffesorsController : ControllerBase
+    public class ProfessorsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ProffesorsController(ApplicationDbContext context)
+        public ProfessorsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Proffesors
+        // GET: api/Professors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Proffesor>>> GetProffesors()
+        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessors()
         {
-          if (_context.Proffesors == null)
-          {
-              return NotFound();
-          }
-            return await _context.Proffesors.ToListAsync();
+            if (_context.Professors == null)
+            {
+                return NotFound();
+            }
+            return await _context.Professors.ToListAsync();
         }
 
-        // GET: api/Proffesors/5
+        // GET: api/Professors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Proffesor>> GetProffesor(string id)
+        public async Task<ActionResult<Professor>> GetProfessor(string id)
         {
-          if (_context.Proffesors == null)
-          {
-              return NotFound();
-          }
-            var proffesor = await _context.Proffesors.FindAsync(id);
+            if (_context.Professors == null)
+            {
+                return NotFound();
+            }
+            var Professor = await _context.Professors.FindAsync(id);
 
-            if (proffesor == null)
+            if (Professor == null)
             {
                 return NotFound();
             }
 
-            return proffesor;
+            return Professor;
         }
 
-        // PUT: api/Proffesors/5
+        // PUT: api/Professors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProffesor(string id, Proffesor proffesor)
+        public async Task<IActionResult> PutProfessor(string id, Professor Professor)
         {
-            if (id != proffesor.Id)
+            if (id != Professor.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(proffesor).State = EntityState.Modified;
+            _context.Entry(Professor).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +63,7 @@ namespace FinkiRasporedi.Controllers.Rest
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProffesorExists(id))
+                if (!ProfessorExists(id))
                 {
                     return NotFound();
                 }
@@ -81,23 +76,23 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
-        // POST: api/Proffesors
+        // POST: api/Professors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Proffesor>> PostProffesor(Proffesor proffesor)
+        public async Task<ActionResult<Professor>> PostProfessor(Professor Professor)
         {
-          if (_context.Proffesors == null)
-          {
-              return Problem("Entity set 'ApplicationDbContext.Proffesors'  is null.");
-          }
-            _context.Proffesors.Add(proffesor);
+            if (_context.Professors == null)
+            {
+                return Problem("Entity set 'ApplicationDbContext.Professors'  is null.");
+            }
+            _context.Professors.Add(Professor);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (ProffesorExists(proffesor.Id))
+                if (ProfessorExists(Professor.Id))
                 {
                     return Conflict();
                 }
@@ -107,32 +102,32 @@ namespace FinkiRasporedi.Controllers.Rest
                 }
             }
 
-            return CreatedAtAction("GetProffesor", new { id = proffesor.Id }, proffesor);
+            return CreatedAtAction("GetProfessor", new { id = Professor.Id }, Professor);
         }
 
-        // DELETE: api/Proffesors/5
+        // DELETE: api/Professors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProffesor(string id)
+        public async Task<IActionResult> DeleteProfessor(string id)
         {
-            if (_context.Proffesors == null)
+            if (_context.Professors == null)
             {
                 return NotFound();
             }
-            var proffesor = await _context.Proffesors.FindAsync(id);
-            if (proffesor == null)
+            var Professor = await _context.Professors.FindAsync(id);
+            if (Professor == null)
             {
                 return NotFound();
             }
 
-            _context.Proffesors.Remove(proffesor);
+            _context.Professors.Remove(Professor);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ProffesorExists(string id)
+        private bool ProfessorExists(string id)
         {
-            return (_context.Proffesors?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Professors?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

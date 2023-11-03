@@ -11,7 +11,7 @@ namespace FinkiRasporedi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Proffesors",
+                name: "Professors",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
@@ -20,11 +20,11 @@ namespace FinkiRasporedi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProffesorTitle = table.Column<int>(type: "int", nullable: false)
+                    ProfessorTitle = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Proffesors", x => x.Id);
+                    table.PrimaryKey("PK_Professors", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -121,7 +121,7 @@ namespace FinkiRasporedi.Migrations
                 name: "Courses");
 
             migrationBuilder.DropTable(
-                name: "Proffesors");
+                name: "Professors");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

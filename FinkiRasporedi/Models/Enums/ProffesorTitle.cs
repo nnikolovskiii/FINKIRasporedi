@@ -1,6 +1,6 @@
 ﻿namespace FinkiRasporedi.Models.Enums
 {
-    public enum ProffesorTitle
+    public enum ProfessorTitle
     {
         TUTOR, TEACHING_ASSISTANT,
         ASSISTANT_PROFESSOR, ASSOCIATE_PROFESSOR, PROFESSOR, RETIRED,

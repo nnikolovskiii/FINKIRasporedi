@@ -38,7 +38,7 @@ namespace FinkiRasporedi.Migrations
                     b.ToTable("Courses");
                 });
 
-            modelBuilder.Entity("FinkiRasporedi.Models.Base.Proffesor", b =>
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.Professor", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -51,12 +51,12 @@ namespace FinkiRasporedi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ProffesorTitle")
+                    b.Property<int>("ProfessorTitle")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Proffesors");
+                    b.ToTable("Professors");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Room", b =>
