@@ -1,5 +1,6 @@
-﻿using FinkiRasporedi.Data;
+﻿/*using FinkiRasporedi.Data;
 using FinkiRasporedi.Models.Base;
+using FinkiRasporedi.Service.Impl;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,40 +10,27 @@ namespace FinkiRasporedi.Controllers.Rest
     [ApiController]
     public class ProfessorsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private ProfessorService _professorService;
 
-        public ProfessorsController(ApplicationDbContext context)
+        public ProfessorsController(ProfessorService professorService)
         {
-            _context = context;
+            _professorService = professorService;
         }
 
         // GET: api/Professors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessors()
+        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessors(int page = 1, int pageSize = 10)
         {
-            if (_context.Professors == null)
-            {
-                return NotFound();
-            }
-            return await _context.Professors.ToListAsync();
+            var professors = await _professorService.GetProfessorsByPageAsync(page, pageSize);
+            return Ok(professors);
         }
+
 
         // GET: api/Professors/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Professor>> GetProfessor(string id)
         {
-            if (_context.Professors == null)
-            {
-                return NotFound();
-            }
-            var Professor = await _context.Professors.FindAsync(id);
-
-            if (Professor == null)
-            {
-                return NotFound();
-            }
-
-            return Professor;
+            return await _professorService.GetProfessorAsync(id);
         }
 
         // PUT: api/Professors/5
@@ -50,27 +38,11 @@ namespace FinkiRasporedi.Controllers.Rest
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfessor(string id, Professor Professor)
         {
-            if (id != Professor.Id)
-            {
-                return BadRequest();
-            }
+            var updatedProfessor = await _professorService.UpdateProfessorAsync(id, Professor);
 
-            _context.Entry(Professor).State = EntityState.Modified;
-
-            try
+            if (updatedProfessor == null)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfessorExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -131,3 +103,4 @@ namespace FinkiRasporedi.Controllers.Rest
         }
     }
 }
+*/

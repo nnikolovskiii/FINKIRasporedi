@@ -23,6 +23,8 @@ namespace FinkiRasporedi.Data
 
         public DbSet<Lecture> Lectures { get; set; }
 
+        public DbSet<Lecture> CustomLectures { get; set; }
+
         public DbSet<Schedule> Schedule { get; set; }
 
         public DbSet<Student> Students { get; set; }
@@ -57,6 +59,11 @@ namespace FinkiRasporedi.Data
             modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Room)
                .WithMany();
+            modelBuilder.Entity<CustomLecture>()
+                .HasOne(s => s.Lecture);
+
         }
+
+        public DbSet<FinkiRasporedi.Models.Base.CustomLecture> CustomLecture { get; set; } = default!;
     }
 }
