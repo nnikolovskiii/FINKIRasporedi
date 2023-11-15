@@ -1,5 +1,4 @@
-﻿using FinkiRasporedi.Models.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace FinkiRasporedi.Models.Base
 {
@@ -8,7 +7,14 @@ namespace FinkiRasporedi.Models.Base
         [Key]
         public String Id { get; set; }
         public String Name { get; set; }
-        public String Abbreviation { get; set; }
-        public SemesterType SemesterType { get; set; }
+        public String? Abbreviation { get; set; }
+        public int Semester { get; set; }
+
+        public int WeeklyLecturesClasses { get; set; }
+
+        public int WeeklyAuditoriumClasses { get; set; }
+
+        public int WeeklyLabClasses { get; set; }
+
     }
 }
