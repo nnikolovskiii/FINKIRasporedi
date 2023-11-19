@@ -3,6 +3,7 @@ using System;
 using FinkiRasporedi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231119154815_studyProgramSubject")]
+    partial class studyProgramSubject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,31 +240,6 @@ namespace FinkiRasporedi.Migrations
                     b.HasIndex("SubjectId");
 
                     b.ToTable("StudyProgramSubjects");
-                });
-
-            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubjectProfessor", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<float>("Order")
-                        .HasColumnType("float");
-
-                    b.Property<string>("ProfessorId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.Property<string>("StudyProgramSubjectId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProfessorId");
-
-                    b.HasIndex("StudyProgramSubjectId");
-
-                    b.ToTable("StudyProgramSubjectProfessors");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Subject", b =>
@@ -631,25 +609,6 @@ namespace FinkiRasporedi.Migrations
                     b.Navigation("StudyProgram");
 
                     b.Navigation("Subject");
-                });
-
-            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubjectProfessor", b =>
-                {
-                    b.HasOne("FinkiRasporedi.Models.Base.Professor", "Professor")
-                        .WithMany()
-                        .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FinkiRasporedi.Models.Base.StudyProgramSubject", "StudyProgramSubject")
-                        .WithMany()
-                        .HasForeignKey("StudyProgramSubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Professor");
-
-                    b.Navigation("StudyProgramSubject");
                 });
 
             modelBuilder.Entity("LectureSchedule", b =>
