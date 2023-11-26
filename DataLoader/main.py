@@ -1,6 +1,9 @@
 import mysql.connector
 
 from data import *
+import pandas as pd
+from unidecode import unidecode
+from datetime import datetime
 
 
 def read_file(filename):
@@ -27,94 +30,131 @@ if __name__ == '__main__':
 
     cursor = connection.cursor()
 
+
+
+    file_path = r'C:\Users\User\Desktop\FinkiRasporedi\DataLoader\output_file.csv'
+
+
+    df = pd.read_csv(file_path)
+
+
+    print(df)
+
+    p_l = df['professor'].unique().tolist()
+
+    print(len(p_l))
+
+    #unicode can be done better
+
     professors_list = [
         {
-            'username': username,
-            'email': email,
-            'name': name,
-            'title': title
+            'username': unidecode(name.lower().replace(' ', '.')),
+            'name': name
         }
-        for username, email, name, title in professors
+        for name in p_l
     ]
 
-    insert_query = "INSERT INTO professors (Id, Email, Name, ProfessorTitle) VALUES (%s, %s, %s, %s)"
 
-    # for professor in professors_list:
-    #     cursor.execute(insert_query, (professor['username'], professor['email'],
-    #                                   professor['name'],professor_enums.index(professor['title'])))
+    insert_query = "INSERT INTO professors (Id, Name) VALUES (%s, %s)"
+
+    for professor in professors_list:
+        cursor.execute(insert_query, (professor['username'], professor['name']))
+
+    r_l = df['rooms'].unique().tolist()
+    print(r_l)
+
+    rooms_list = [
+        {
+            'name': str(name)
+        }
+        for name in r_l
+    ]
+
+    insert_query = "INSERT INTO rooms (Name) VALUES (%s)"
+
+    print(rooms_list)
+
+    for room in rooms_list:
+        cursor.execute(insert_query, (room['name'],))
+
+    d = {}
+    for index, row in df.iterrows():
+        a = int(row["groups"][:1])
+        if a >=3:
+            a=3
+        d[row["subject"]] = a
+
+    print(d)
+
+
 
     subject_list = [
         {
-            'id': subject[0],
-            'name': subject[1],
-            'semester': int(subject[2]),
-            'weekly_auditorium_classes': int(subject[3]),
-            'weekly_lab_classes': int(subject[4]),
-            'weekly_lectures_classes': int(subject[5])
+            'id': unidecode(subject.lower().replace(' ', '.')),
+            'name': subject,
+            'level': d[subject]
         }
-        for subject in subjects
+        for subject in d
     ]
 
-    insert_query2 = "INSERT INTO subjects (Id, Name, Semester, WeeklyAuditoriumClasses, WeeklyLabClasses, WeeklyLecturesClasses) VALUES (%s, %s, %s, %s,%s,%s)"
+    insert_query2 = "INSERT INTO subjects (Id, Name, Level) VALUES (%s, %s, %s)"
 
-    # for subject in subject_list:
-    #     cursor.execute(insert_query2, (subject['id'], subject['name'],
-    #                                    subject['semester'], subject['weekly_auditorium_classes'],
-    #                                    subject['weekly_lab_classes'], subject['weekly_lectures_classes']))
+    for subject in subject_list:
+        cursor.execute(insert_query2, (subject['id'], subject['name'],
+                                       subject['level']))
 
-    study_program_list = [
+    # 0 is summer, 1 is winter
+    semesters = [("W23", "2023", 1), ("S24","2024", 0)]
+
+    semesters = [
         {
-            'code': program[0],
-            'name': program[1]
+            'code': c,
+            'year': y,
+            'sem_type': s
         }
-        for program in study_programs
+        for c,y,s in semesters
     ]
 
-    insert_query3 = "INSERT INTO studyprograms (Code, Name) VALUES (%s, %s)"
 
-    # for program in study_program_list:
-    #     cursor.execute(insert_query3, (program['code'], program['name']))
+    insert_query2 = "INSERT INTO semesters (Code, Year, SemesterType) VALUES (%s, %s, %s)"
 
+    for s in semesters:
+        cursor.execute(insert_query2, (s['code'], s['year'],
+                                       s['sem_type']))
 
-    list = [
+    print(subject_list)
+
+    course_list = [
         {
-            'id': sps[0],
-            'subjectId': sps[1],
-            'studyProgramCode': sps[2],
-            'mandatory': bool(sps[3]),
-            'semester': int(sps[4]),
-            'order': float(sps[5])
+            'id': "W23"+subject["id"],
+            'sem_code': "W23",
+            'sub_id': subject["id"]
         }
-        for sps in study_program_subject
+        for subject in subject_list
     ]
 
-    insert_query4 = ("INSERT INTO studyprogramsubjects (`Id`, `SubjectId`, `StudyProgramCode`, `Mandatory`, `Semester`, `Order`) VALUES (%s, %s, %s, %s, %s, %s)")
+    insert_query2 = "INSERT INTO courses (Id, SemesterCode, SubjectId) VALUES (%s, %s, %s)"
 
-    # for sps in list:
-    #     cursor.execute(insert_query4, (sps['id'], sps['subjectId'],
-    #                                    sps['studyProgramCode'], sps['mandatory'],
-    #                                    sps['semester'], sps['order']))
-
+    for c in course_list:
+        cursor.execute(insert_query2, (c['id'], c['sem_code'],
+                                       c['sub_id']))
 
 
-    list1 = [
-        {
-            'id': sp[0],
-            's': sp[1],
-            'prof': sp[2],
-            'order': float(sp[3])
-        }
-        for sp in subject_prof
-    ]
+    d={"Понеделник":0,"Вторник":1,"Среда":2,"Четврток":3,"Петок":4 }
+    li = []
+    for index, row in df.iterrows():
+        prof_id = unidecode(row["professor"].lower().replace(' ', '.'))
+        time_from = datetime.strptime(row["time_from"][:-3], "%H:%M")
+        time_to = datetime.strptime(row["time_to"][:-3], "%H:%M")
+        day = d[row["day"]]
+        room_name = row["rooms"]
+        course_id = "W23"+unidecode(row["subject"].lower().replace(' ', '.'))
+        li.append((index,prof_id,time_from,time_to,day,room_name,course_id))
 
-    insert_query5 = ("INSERT INTO studyprogramsubjectprofessors (`Id`, `StudyProgramSubjectId`, `ProfessorId`, `Order`) VALUES (%s, %s, %s, %s)")
+    insert_query2 = "INSERT INTO lecture ( Day, TimeFrom, TimeTo,ProfessorId,CourseId, RoomName) VALUES ( %s, %s,%s,%s,%s,%s)"
 
-    for sps in list1:
-        cursor.execute(insert_query5, (sps['id'], sps['s'],
-                                       sps['prof'], sps['order']))
-
-
-
+    for c in li:
+        cursor.execute(insert_query2, (c[4], c[2], c[3], c[1], c[6], c[5]))
 
     connection.commit()
     cursor.close()
