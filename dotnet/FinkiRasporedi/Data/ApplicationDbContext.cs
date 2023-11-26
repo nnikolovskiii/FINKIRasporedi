@@ -29,11 +29,6 @@ namespace FinkiRasporedi.Data
 
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<StudyProgram> StudyPrograms { get; set; }
-
-        public DbSet<StudyProgramSubject> StudyProgramSubjects { get; set; }
-        public DbSet<StudyProgramSubjectProfessor> StudyProgramSubjectProfessors { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -47,8 +42,6 @@ namespace FinkiRasporedi.Data
                 .HasKey(s => s.Code);
             modelBuilder.Entity<Subject>()
                 .HasKey(s => s.Id);
-            modelBuilder.Entity<StudyProgram>()
-                .HasKey(s => s.Code);
             modelBuilder.Entity<Schedule>()
                 .HasMany(s => s.Lectures)
                 .WithMany()
@@ -68,22 +61,9 @@ namespace FinkiRasporedi.Data
                .WithMany();
             modelBuilder.Entity<CustomLecture>()
                 .HasOne(s => s.Lecture);
-            modelBuilder.Entity<StudyProgramSubject>()
-                .HasKey(sps => sps.Id);
-            modelBuilder.Entity<StudyProgramSubject>()
-                .HasOne(sps => sps.Subject)
-                .WithMany();
-            modelBuilder.Entity<StudyProgramSubject>()
-                .HasOne(sps => sps.StudyProgram)
-                .WithMany();
-            modelBuilder.Entity<StudyProgramSubjectProfessor>()
-               .HasKey(sps => sps.Id);
-            modelBuilder.Entity<StudyProgramSubjectProfessor>()
-                .HasOne(sps => sps.Professor)
-                .WithMany();
-            modelBuilder.Entity<StudyProgramSubjectProfessor>()
-                .HasOne(sps => sps.StudyProgramSubject)
-                .WithMany();
+            modelBuilder.Entity<Course>()
+                .HasOne(s => s.Subject);
+
         }
 
         public DbSet<FinkiRasporedi.Models.Base.CustomLecture> CustomLecture { get; set; } = default!;

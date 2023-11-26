@@ -7,7 +7,6 @@ namespace FinkiRasporedi.Models.Base
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; set; }
         public Day Day { get; set; }
         public TimeSpan TimeFrom { get; set; }
         public TimeSpan TimeTo { get; set; }

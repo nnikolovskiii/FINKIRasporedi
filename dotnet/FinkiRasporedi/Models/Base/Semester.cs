@@ -10,6 +10,5 @@ namespace FinkiRasporedi.Models.Base
         public String? Year { get; set; }
 
         public SemesterType? SemesterType { get; set; }
-        public Subject Subject { get; set; }
     }
 }

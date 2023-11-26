@@ -9,6 +9,7 @@ namespace FinkiRasporedi.Models.Base
 
         public Semester Semester { get; set; }
 
+        public Subject Subject { get; set; }
 
     }
 }

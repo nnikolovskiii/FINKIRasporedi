@@ -7,14 +7,10 @@ namespace FinkiRasporedi.Models.Base
         [Key]
         public String Id { get; set; }
         public String Name { get; set; }
+        public int Level { get; set; }
         public String? Abbreviation { get; set; }
-        public int Semester { get; set; }
 
-        public int WeeklyLecturesClasses { get; set; }
 
-        public int WeeklyAuditoriumClasses { get; set; }
-
-        public int WeeklyLabClasses { get; set; }
 
     }
 }

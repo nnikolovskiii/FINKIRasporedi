@@ -3,6 +3,7 @@ using System;
 using FinkiRasporedi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231126010213_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,6 +102,10 @@ namespace FinkiRasporedi.Migrations
                     b.Property<int>("Day")
                         .HasColumnType("int");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ProfessorId")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -130,13 +137,14 @@ namespace FinkiRasporedi.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ProfessorTitle")
+                    b.Property<int>("ProfessorTitle")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -189,6 +197,76 @@ namespace FinkiRasporedi.Migrations
                     b.ToTable("Semesters");
                 });
 
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgram", b =>
+                {
+                    b.Property<string>("Code")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Code");
+
+                    b.ToTable("StudyPrograms");
+                });
+
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubject", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<bool>("Mandatory")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<float>("Order")
+                        .HasColumnType("float");
+
+                    b.Property<short>("Semester")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("StudyProgramCode")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudyProgramCode");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("StudyProgramSubjects");
+                });
+
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubjectProfessor", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<float>("Order")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProfessorId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("StudyProgramSubjectId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfessorId");
+
+                    b.HasIndex("StudyProgramSubjectId");
+
+                    b.ToTable("StudyProgramSubjectProfessors");
+                });
+
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Subject", b =>
                 {
                     b.Property<string>("Id")
@@ -197,12 +275,21 @@ namespace FinkiRasporedi.Migrations
                     b.Property<string>("Abbreviation")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("longtext");
+
+                    b.Property<int>("Semester")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeeklyAuditoriumClasses")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeeklyLabClasses")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeeklyLecturesClasses")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -525,6 +612,44 @@ namespace FinkiRasporedi.Migrations
                     b.Navigation("Professor");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubject", b =>
+                {
+                    b.HasOne("FinkiRasporedi.Models.Base.StudyProgram", "StudyProgram")
+                        .WithMany()
+                        .HasForeignKey("StudyProgramCode")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinkiRasporedi.Models.Base.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudyProgram");
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("FinkiRasporedi.Models.Base.StudyProgramSubjectProfessor", b =>
+                {
+                    b.HasOne("FinkiRasporedi.Models.Base.Professor", "Professor")
+                        .WithMany()
+                        .HasForeignKey("ProfessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FinkiRasporedi.Models.Base.StudyProgramSubject", "StudyProgramSubject")
+                        .WithMany()
+                        .HasForeignKey("StudyProgramSubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("StudyProgramSubject");
                 });
 
             modelBuilder.Entity("LectureSchedule", b =>
