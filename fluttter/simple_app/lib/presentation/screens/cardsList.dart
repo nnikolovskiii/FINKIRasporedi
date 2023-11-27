@@ -17,7 +17,6 @@ class _CardListState extends State<CardList> {
   @override
   void initState() {
     super.initState();
-    // Populate the initial card list
     for (int i = 0; i < 3; i++) {
       cards.add(buildCard("Notes za raspored $i ", "Sub title"));
     }
@@ -30,59 +29,62 @@ class _CardListState extends State<CardList> {
     return Dismissible(
       key: UniqueKey(),
       confirmDismiss: (DismissDirection direction) async {
-        return await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              elevation: 0,
-              backgroundColor: Colors.transparent,
-              child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                title: Text('Delete'),
-                content: Container(
-                  width: 300,
-                  child: Text('Are you sure to delete?'),
-                ),
-                contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-                actions: [
-                  TextButton(
-                    child: const Text(
-                      "Yes",
-                      style: TextStyle(color: Colors.red),
+        if (direction == DismissDirection.startToEnd) {
+          return await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return Dialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.transparent,
+                  child: AlertDialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
-                    onPressed: () => Navigator.pop(context, true),
+                    title: Text('Delete'),
+                    content: Container(
+                      width: 300,
+                      child: Text('Are you sure to delete?'),
+                    ),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+                    actions: [
+                      TextButton(
+                        child: const Text(
+                          "Yes",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () => Navigator.pop(context, true),
+                      ),
+                      TextButton(
+                        child: Text("No"),
+                        onPressed: () => Navigator.pop(context, false),
+                      ),
+                    ],
                   ),
-                  TextButton(
-                    child: Text("No"),
-                    onPressed: () => Navigator.pop(context, false),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
+                );
+          });
+        } else if (direction == DismissDirection.endToStart) {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NewScreen()),
+          );
+        }
+        return false;
       },
-      onDismissed: (DismissDirection direction) {
-        setState(() {
-          cards.removeWhere((item) => item.key == UniqueKey());
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Raspored deleted')),
-        );
-      },
+      onDismissed: (_) {},
       background: Container(
-        height: 200,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('lib/images/deletes.png'),
-            fit: BoxFit.fitWidth,
-          ),
-        ),
+        color: Colors.red,
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20.0),
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      secondaryBackground: Container(
+        color: Colors.green,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.only(left: 20.0),
+        child: Icon(Icons.edit, color: Colors.white),
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 11.0, 8.0, 15.0),
@@ -133,19 +135,6 @@ class _CardListState extends State<CardList> {
     );
   }
 
-  void navigateToNewScreen() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => NewScreen()),
-    );
-
-    if (result != null) {
-      setState(() {
-        cards.add(buildCard(result, result));
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -161,46 +150,142 @@ class _CardListState extends State<CardList> {
         children: cards,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: navigateToNewScreen,
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NewScreen()),
+          );
+
+          if (result != null) {
+            setState(() {
+              cards.add(buildCard(result, result));
+            });
+          }
+        },
         child: Icon(Icons.add),
       ),
     );
   }
 }
 
-class NewScreen extends StatelessWidget {
-  final TextEditingController _textEditingController = TextEditingController();
+class NewScreen extends StatefulWidget {
+  @override
+  _NewScreenState createState() => _NewScreenState();
+}
+
+class _NewScreenState extends State<NewScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameEditingController = TextEditingController();
+  final TextEditingController _notesEditingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
-        title: Text('New Screen'),
+        title: Text('Креирај распоред'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              controller: _textEditingController,
-              decoration: InputDecoration(
-                labelText: 'Enter your text',
-                border: OutlineInputBorder(),
+        padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _nameEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Внеси име на распоред *',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ве молиме внесете име на распоред';
+                  }
+                  return null;
+                },
               ),
-            ),
-            SizedBox(height: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                String enteredText = _textEditingController.text;
-                Navigator.pop(context, enteredText); // Pass entered text back
-              },
-              child: Text('Submit'),
-            ),
-          ],
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _notesEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Венси забелешки за распоредот',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 30.0),
+              Text("Избери тема"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ThemeButton(imagePath: 'lib/images/5.jpg', onTap: () {
+                    setState(() {
+                     // selectedTheme = 'lib/images/5.jpg';
+                    });
+                  }),
+                  ThemeButton(imagePath: 'lib/images/1.jpg', onTap: () {
+                    setState(() {
+                     // selectedTheme = 'lib/images/1.jpg';
+                    });
+                  }),
+                  ThemeButton(imagePath: 'lib/images/7.jpg', onTap: () {
+                    setState(() {
+                     // selectedTheme = 'lib/images/7.jpg';
+                    });
+                  }),
+                  ThemeButton(imagePath: 'lib/images/3.jpg', onTap: () {
+                    setState(() {
+                     // selectedTheme = 'lib/images/3.jpg';
+                    });
+                  }),
+                ],
+
+              ),
+              SizedBox(height: 20.0),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    String name = _nameEditingController.text;
+                    String notes = _notesEditingController.text;
+                    String result = '$name - $notes';
+                    Navigator.pop(context, result);
+                  }
+                },
+                child: Text('Продолжи'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
+
+class ThemeButton extends StatelessWidget {
+  final String imagePath;
+  final VoidCallback onTap;
+
+  const ThemeButton({required this.imagePath, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.all(8.0),
+        width: 70,
+        height: 70,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          image: DecorationImage(
+            image: AssetImage(imagePath),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
