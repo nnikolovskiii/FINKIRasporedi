@@ -1,8 +1,10 @@
+import 'package:simple_app/domain/models/enums/professor_title.dart';
+
 class Professor {
   final String id;
   final String name;
   final String email;
-  final int professorTitle;
+  final ProfessorTitle professorTitle;
 
   Professor({
     required this.id,
