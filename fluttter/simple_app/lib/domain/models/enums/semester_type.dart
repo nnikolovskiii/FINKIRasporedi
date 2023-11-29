@@ -1,0 +1,1 @@
+enum SemesterType { SUMMER, WINTER }
