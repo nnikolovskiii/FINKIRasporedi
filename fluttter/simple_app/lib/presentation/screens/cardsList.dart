@@ -4,7 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:simple_app/presentation/widgets/themeButtonWidget.dart';
 import 'package:image_picker/image_picker.dart';
+import 'addSubjectsScreen.dart';
+
 
 
 void main() {
@@ -156,8 +159,6 @@ class NewScreen extends StatefulWidget {
   _NewScreenState createState() => _NewScreenState();
 }
 
-
-
 class _NewScreenState extends State<NewScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameEditingController = TextEditingController();
@@ -172,35 +173,14 @@ class _NewScreenState extends State<NewScreen> {
         title: Text('Креирај распоред'),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
+        padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              TextFormField(
-                controller: _nameEditingController,
-                decoration: InputDecoration(
-                  labelText: 'Внеси име на распоред *',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Ве молиме внесете име на распоред';
-                  }
-                  return null;
-                },
-              ),
               SizedBox(height: 20.0),
-              TextFormField(
-                controller: _notesEditingController,
-                decoration: InputDecoration(
-                  labelText: 'Венси забелешки за распоредот',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 30.0),
               Text("Избери тема"),
               Row(
 
@@ -244,6 +224,7 @@ class _NewScreenState extends State<NewScreen> {
                     pickImage(ImageSource.gallery);
                   }
               ),
+              SizedBox(height: 8.0),
               GFButton(
                   color: Colors.blue,
                   shape: GFButtonShape.pills,
@@ -257,6 +238,29 @@ class _NewScreenState extends State<NewScreen> {
                     pickImage(ImageSource.camera);
                   }
               ),
+              SizedBox(height: 30.0),
+              TextFormField(
+                controller: _nameEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Внеси име на распоред *',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Ве молиме внесете име на распоред';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                controller: _notesEditingController,
+                decoration: InputDecoration(
+                  labelText: 'Венси забелешки за распоредот',
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              SizedBox(height: 30.0),
               ElevatedButton(
 
                 onPressed: () {
@@ -269,6 +273,16 @@ class _NewScreenState extends State<NewScreen> {
                 },
                 child: Text('Продолжи'),
               ),
+              SizedBox(height: 8.0),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SearchBarApp()),
+                  );
+                },
+                child: Text("Предмети"),
+              )
             ],
           ),
         ),
@@ -289,34 +303,3 @@ class _NewScreenState extends State<NewScreen> {
     }
   }
 }
-
-
-
-class ThemeButton extends StatelessWidget {
-  final String imagePath;
-  final VoidCallback onTap;
-
-  const ThemeButton({required this.imagePath, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    final double buttonSize = MediaQuery.of(context).size.width * 0.15;
-
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        margin: EdgeInsets.all(8.0),
-        width: buttonSize,
-        height: buttonSize,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          image: DecorationImage(
-            image: AssetImage(imagePath),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
