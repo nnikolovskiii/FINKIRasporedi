@@ -1,5 +1,8 @@
-using FinkiRasporedi.Data;
-using Microsoft.AspNetCore.Identity;
+using FinkiRasporedi.Models.Identity;
+using FinkiRasporedi.Repository;
+using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Repository.Impl;
+using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,13 +12,24 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+    options.UseLazyLoadingProxies();
     options.EnableSensitiveDataLogging();
 });
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<Student>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped(typeof(IProfessorRepository), typeof(ProfessorRepository));
+builder.Services.AddScoped(typeof(ISubjectRepository), typeof(SubjectRepository));
+builder.Services.AddScoped(typeof(ICourseRepository), typeof(CourseRepository));
+builder.Services.AddScoped(typeof(ISemesterRepository), typeof(SemesterRepository));
+builder.Services.AddScoped(typeof(IScheduleRepository), typeof(ScheduleRepository));
+builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
+builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
+builder.Services.AddScoped(typeof(ICustomLectureRepository), typeof(CustomLectureRepository));
+
 
 builder.Services.AddCors(options =>
 {
