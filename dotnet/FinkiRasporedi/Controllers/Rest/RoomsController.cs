@@ -12,55 +12,55 @@ namespace FinkiRasporedi.Controllers.Rest
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class RoomsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CoursesController(ApplicationDbContext context)
+        public RoomsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Courses
+        // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
-          if (_context.Courses == null)
+          if (_context.Rooms == null)
           {
               return NotFound();
           }
-            return await _context.Courses.ToListAsync();
+            return await _context.Rooms.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        // GET: api/Rooms/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(string id)
+        public async Task<ActionResult<Room>> GetRoom(string id)
         {
-          if (_context.Courses == null)
+          if (_context.Rooms == null)
           {
               return NotFound();
           }
-            var course = await _context.Courses.FindAsync(id);
+            var room = await _context.Rooms.FindAsync(id);
 
-            if (course == null)
+            if (room == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return room;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/Rooms/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(string id, Course course)
+        public async Task<IActionResult> PutRoom(string id, Room room)
         {
-            if (id != course.Id)
+            if (id != room.Name)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            _context.Entry(room).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace FinkiRasporedi.Controllers.Rest
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!RoomExists(id))
                 {
                     return NotFound();
                 }
@@ -81,23 +81,23 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/Rooms
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Room>> PostRoom(Room room)
         {
-          if (_context.Courses == null)
+          if (_context.Rooms == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Courses'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Rooms'  is null.");
           }
-            _context.Courses.Add(course);
+            _context.Rooms.Add(room);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (CourseExists(course.Id))
+                if (RoomExists(room.Name))
                 {
                     return Conflict();
                 }
@@ -107,32 +107,32 @@ namespace FinkiRasporedi.Controllers.Rest
                 }
             }
 
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction("GetRoom", new { id = room.Name }, room);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(string id)
+        public async Task<IActionResult> DeleteRoom(string id)
         {
-            if (_context.Courses == null)
+            if (_context.Rooms == null)
             {
                 return NotFound();
             }
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var room = await _context.Rooms.FindAsync(id);
+            if (room == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
+            _context.Rooms.Remove(room);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CourseExists(string id)
+        private bool RoomExists(string id)
         {
-            return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Rooms?.Any(e => e.Name == id)).GetValueOrDefault();
         }
     }
 }

@@ -1,7 +1,12 @@
-﻿using FinkiRasporedi.Data;
-using FinkiRasporedi.Models.Base;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using FinkiRasporedi.Data;
+using FinkiRasporedi.Models.Base;
 
 namespace FinkiRasporedi.Controllers.Rest
 {
@@ -20,45 +25,21 @@ namespace FinkiRasporedi.Controllers.Rest
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedule()
         {
-            if (_context.Schedule == null)
-            {
-                return NotFound();
-            }
+          if (_context.Schedule == null)
+          {
+              return NotFound();
+          }
             return await _context.Schedule.ToListAsync();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Schedule>> AddLectureToSchedule(int scheduleId, [FromBody] int lectureId)
-        {
-            var schedule = await _context.Schedule.FindAsync(scheduleId);
-
-            if (schedule == null)
-            {
-                return NotFound("Schedule not found");
-            }
-
-            var lecture = await _context.Lectures.FindAsync(lectureId);
-
-            if (lecture == null)
-            {
-                return NotFound("Lecture not found");
-            }
-
-            schedule.Lectures.Add(lecture);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetSchedule", new { id = schedule.Id }, schedule);
         }
 
         // GET: api/Schedules/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Schedule>> GetSchedule(int id)
         {
-            if (_context.Schedule == null)
-            {
-                return NotFound();
-            }
+          if (_context.Schedule == null)
+          {
+              return NotFound();
+          }
             var schedule = await _context.Schedule.FindAsync(id);
 
             if (schedule == null)
@@ -105,10 +86,10 @@ namespace FinkiRasporedi.Controllers.Rest
         [HttpPost]
         public async Task<ActionResult<Schedule>> PostSchedule(Schedule schedule)
         {
-            if (_context.Schedule == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Schedule'  is null.");
-            }
+          if (_context.Schedule == null)
+          {
+              return Problem("Entity set 'ApplicationDbContext.Schedule'  is null.");
+          }
             _context.Schedule.Add(schedule);
             await _context.SaveChangesAsync();
 

@@ -12,55 +12,55 @@ namespace FinkiRasporedi.Controllers.Rest
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CoursesController : ControllerBase
+    public class ProfessorsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public CoursesController(ApplicationDbContext context)
+        public ProfessorsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Courses
+        // GET: api/Professors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessors()
         {
-          if (_context.Courses == null)
+          if (_context.Professors == null)
           {
               return NotFound();
           }
-            return await _context.Courses.ToListAsync();
+            return await _context.Professors.ToListAsync();
         }
 
-        // GET: api/Courses/5
+        // GET: api/Professors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Course>> GetCourse(string id)
+        public async Task<ActionResult<Professor>> GetProfessor(string id)
         {
-          if (_context.Courses == null)
+          if (_context.Professors == null)
           {
               return NotFound();
           }
-            var course = await _context.Courses.FindAsync(id);
+            var professor = await _context.Professors.FindAsync(id);
 
-            if (course == null)
+            if (professor == null)
             {
                 return NotFound();
             }
 
-            return course;
+            return professor;
         }
 
-        // PUT: api/Courses/5
+        // PUT: api/Professors/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCourse(string id, Course course)
+        public async Task<IActionResult> PutProfessor(string id, Professor professor)
         {
-            if (id != course.Id)
+            if (id != professor.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(course).State = EntityState.Modified;
+            _context.Entry(professor).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace FinkiRasporedi.Controllers.Rest
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!CourseExists(id))
+                if (!ProfessorExists(id))
                 {
                     return NotFound();
                 }
@@ -81,23 +81,23 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
-        // POST: api/Courses
+        // POST: api/Professors
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Course>> PostCourse(Course course)
+        public async Task<ActionResult<Professor>> PostProfessor(Professor professor)
         {
-          if (_context.Courses == null)
+          if (_context.Professors == null)
           {
-              return Problem("Entity set 'ApplicationDbContext.Courses'  is null.");
+              return Problem("Entity set 'ApplicationDbContext.Professors'  is null.");
           }
-            _context.Courses.Add(course);
+            _context.Professors.Add(professor);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (CourseExists(course.Id))
+                if (ProfessorExists(professor.Id))
                 {
                     return Conflict();
                 }
@@ -107,32 +107,32 @@ namespace FinkiRasporedi.Controllers.Rest
                 }
             }
 
-            return CreatedAtAction("GetCourse", new { id = course.Id }, course);
+            return CreatedAtAction("GetProfessor", new { id = professor.Id }, professor);
         }
 
-        // DELETE: api/Courses/5
+        // DELETE: api/Professors/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCourse(string id)
+        public async Task<IActionResult> DeleteProfessor(string id)
         {
-            if (_context.Courses == null)
+            if (_context.Professors == null)
             {
                 return NotFound();
             }
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
+            var professor = await _context.Professors.FindAsync(id);
+            if (professor == null)
             {
                 return NotFound();
             }
 
-            _context.Courses.Remove(course);
+            _context.Professors.Remove(professor);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool CourseExists(string id)
+        private bool ProfessorExists(string id)
         {
-            return (_context.Courses?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Professors?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
