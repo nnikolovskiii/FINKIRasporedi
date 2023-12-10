@@ -32,7 +32,7 @@ if __name__ == '__main__':
 
 
 
-    file_path = r'C:\Users\User\Desktop\FinkiRasporedi\DataLoader\output_file.csv'
+    file_path = r'D:\school\mis\FinkiRasporedi\DataLoader\output_file.csv'
 
 
     df = pd.read_csv(file_path)
