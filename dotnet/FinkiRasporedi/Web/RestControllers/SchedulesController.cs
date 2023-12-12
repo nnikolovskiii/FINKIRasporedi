@@ -57,5 +57,13 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
+        [HttpPost("addLecture/{id}")]
+        public async Task<ActionResult<Schedule>> AddLecture(int id, [FromBody] int lectureId)
+        {
+
+            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
+            return Ok(updatedSchedule);
+        }
+
     }
 }

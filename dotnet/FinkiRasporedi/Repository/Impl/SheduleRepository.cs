@@ -10,11 +10,13 @@ namespace FinkiRasporedi.Repository
     {
         private readonly DbSet<Schedule> _schedules;
         private readonly ApplicationDbContext _context;
+        private readonly ILectureRepository _lectureRepository;
 
-        public ScheduleRepository(ApplicationDbContext context)
+        public ScheduleRepository(ApplicationDbContext context, ILectureRepository lectureRepository)
         {
             _schedules = context.Set<Schedule>();
             _context = context;
+            _lectureRepository = lectureRepository;
         }
 
         public async Task<Schedule> AddAsync(Schedule entity)
@@ -39,7 +41,15 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
-
+        public async Task<Schedule> AddLectureAsync(int id, int lectureId)
+        {
+            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Schedule schedule = await this.GetByIdAsync(id);
+            schedule.Lectures.Add(lecture);
+            _context.Entry(schedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return schedule;
+        }
 
         public async Task<Schedule> DeleteAsync(int id)
         {
