@@ -122,5 +122,14 @@ namespace FinkiRasporedi.Repository
             return (_lectures?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
+
+        public async Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId, int page, int pageSize)
+        {
+            return await _lectures
+                .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
     }
 }
