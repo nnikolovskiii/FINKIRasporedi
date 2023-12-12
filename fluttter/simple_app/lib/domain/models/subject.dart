@@ -15,7 +15,7 @@ class Subject {
     return Subject(
       id: json['id'],
       name: json['name'],
-      abbreviation: json['abbreviation'],
+      abbreviation: json['abbreviation'] ?? "",
       level: json['level'],
     );
   }
@@ -25,7 +25,7 @@ class Subject {
       'id': id,
       'name': name,
       'abbreviation': abbreviation,
-      'level': level,
+      'level': level ,
     };
   }
 }

@@ -31,6 +31,8 @@ namespace FinkiRasporedi.Repository.Data
 
         public DbSet<CustomLecture> CustomLectures { get; set; } = default!;
 
+        public DbSet<CourseProfessor> CourseProfessors { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -65,7 +67,15 @@ namespace FinkiRasporedi.Repository.Data
                 .HasOne(s => s.Lecture);
             modelBuilder.Entity<Course>()
                 .HasOne(s => s.Subject);
+            modelBuilder.Entity<CourseProfessor>()
+               .HasOne(cp => cp.Course)
+               .WithMany();
+            modelBuilder.Entity<CourseProfessor>()
+               .HasOne(cp => cp.Professor)
+               .WithMany();
 
+            modelBuilder.Entity<CourseProfessor>()
+               .HasKey("CourseId", "ProfessorId");
         }
     }
 }

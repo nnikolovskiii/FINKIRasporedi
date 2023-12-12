@@ -57,5 +57,12 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
+        [HttpGet("AllProfessors/{id}")]
+        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessorsByCourse(string id, int page = 1, int size = 5)
+        {
+            var professors = await _courseRepository.GetProfessorsForCourseAsync(id, page, size);
+            return Ok(professors);
+        }
+
     }
 }
