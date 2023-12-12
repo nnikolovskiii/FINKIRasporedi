@@ -121,5 +121,6 @@ namespace FinkiRasporedi.Repository
         {
             return (_lectures?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
     }
 }
