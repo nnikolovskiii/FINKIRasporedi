@@ -3,8 +3,8 @@ import 'enums/professor_title.dart';
 class Professor {
   final String id;
   final String name;
-  final String email;
-  final ProfessorTitle professorTitle;
+  final String? email;
+  final ProfessorTitle? professorTitle;
 
   Professor({
     required this.id,
@@ -15,10 +15,12 @@ class Professor {
 
   factory Professor.fromJson(Map<String, dynamic> json) {
     return Professor(
-      id: json['id'],
-      name: json['name'],
-      email: json['email'],
-      professorTitle: ProfessorTitle.values[json['professorTitle']],
+        id: json['id'],
+        name: json['name'],
+        email: json['email'],
+        professorTitle: json['professorTitle'] != null
+            ? ProfessorTitle.values[json['professorTitle']]
+            : null,
     );
   }
 
@@ -27,7 +29,9 @@ class Professor {
       'id': id,
       'name': name,
       'email': email,
-      'professorTitle': ProfessorTitle.values.indexOf(professorTitle),
+      'professorTitle': professorTitle != null
+          ? ProfessorTitle.values.indexOf(professorTitle!)
+          : null,
     };
   }
 }
