@@ -1,6 +1,5 @@
 import mysql.connector
 
-from data import *
 import pandas as pd
 from unidecode import unidecode
 from datetime import datetime
