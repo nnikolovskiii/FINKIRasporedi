@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart'; // Import your Course model
+import 'package:simple_app/service/lecture_service.dart';
+import 'package:simple_app/service/schedule_service.dart';
 
 import 'service/professor_service.dart'; // Import your API service
 
 void main() {
   runApp(MyApp());
-  ProfessorService professor_service = ProfessorService();
-  professor_service.getProfessorsByCourseId(courseId: "W23veb.programiranje");
+  LectureService service = LectureService();
+  service.getLecturesByCourseIdAndProfessorId(courseId: "W23veb.programiranje", professorId: "ana.todorovska");
+  ScheduleService scheduleService = ScheduleService();
+  scheduleService.addLecture(1, 407);
 }
 
 class MyApp extends StatelessWidget {

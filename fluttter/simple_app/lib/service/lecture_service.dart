@@ -20,9 +20,14 @@ class LectureService {
     }
   }
 
-  Future<List<Lecture>> getLecturesByCourseIdAndProfessorId({int page = 1, int size = 5}) async {
+  Future<List<Lecture>> getLecturesByCourseIdAndProfessorId({
+    required String courseId,
+    required String professorId,
+    int page = 1,
+    int size = 5
+  }) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/Lectures?page=$page&size=$size'),
+      Uri.parse('$baseUrl/Lectures?courseId=$courseId&professorId=$professorId&page=$page&size=$size'),
     );
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
