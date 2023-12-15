@@ -15,12 +15,7 @@ class CourseService {
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonData = jsonDecode(response.body);
-      final List<Course> courses = [];
-
-      for (var json in jsonData) {
-        Course course = Course.fromJson(json);
-        courses.add(course);
-      }      return courses;
+      return jsonData.map((json) => Course.fromJson(json)).toList();
     } else {
       throw Exception('Failed to fetch data');
     }
