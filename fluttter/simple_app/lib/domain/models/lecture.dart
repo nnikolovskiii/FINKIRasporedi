@@ -1,47 +1,47 @@
+import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/domain/models/professor.dart';
+import 'package:simple_app/domain/models/room.dart';
 
 class Lecture {
   int id;
   int day;
   String timeFrom;
   String timeTo;
-  Professor professorId;
-  String courseId;
-  String roomName;
+  Professor professor;
+  Course course;
+  Room room;
 
   Lecture({
     required this.id,
     required this.day,
     required this.timeFrom,
     required this.timeTo,
-    required this.professorId,
-    required this.courseId,
-    required this.roomName,
+    required this.professor,
+    required this.course,
+    required this.room,
   });
 
-  // Factory method to create a Lecture instance from JSON
   factory Lecture.fromJson(Map<String, dynamic> json) {
     return Lecture(
       id: json['id'],
       day: json['day'],
       timeFrom: json['timeFrom'],
       timeTo: json['timeTo'],
-      professorId: json['professorId'],
-      courseId: json['courseId'],
-      roomName: json['roomName'],
+      professor: Professor.fromJson(json['professor']),
+      course: Course.fromJson(json['course']),
+      room: Room.fromJson(json['room']),
     );
   }
 
-  // Method to convert Lecture instance to JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'day': day,
       'timeFrom': timeFrom,
       'timeTo': timeTo,
-      'professorId': professorId,
-      'courseId': courseId,
-      'roomName': roomName,
+      'professorId': professor.toJson(),
+      'courseId': course.toJson(),
+      'roomName': room.toJson(),
     };
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import 'package:simple_app/presentation/screens/cardsList.dart';
 import 'package:simple_app/presentation/screens/addSubjectsScreen.dart';
@@ -37,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home: SearchBarApp(), // Use a SplashScreen widget
+      home: CardList(), // Use a SplashScreen widget
     );
   }
 }

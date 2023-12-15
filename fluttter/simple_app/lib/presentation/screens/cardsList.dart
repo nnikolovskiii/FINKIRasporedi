@@ -23,7 +23,8 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   List<Widget> cards = [];
-  String selectedTheme = "lib/images/3.jpg";
+  String selectedTheme = "resources"
+      "/images/3.jpg";
 
   @override
   void initState() {
@@ -35,7 +36,7 @@ class _CardListState extends State<CardList> {
 
   Color myCustomColor2 = Color(0xFFFFFFFF);
   Color myCustomColor = Color(0xFF1A237E);
-  // String selectedTheme ="lib/images/4.jpg" ;
+  // String selectedTheme ="resources/images/4.jpg" ;
 
   Widget buildCard(String title, String subTitle, String selectedTheme) {
     return Dismissible(
@@ -163,7 +164,7 @@ class _NewScreenState extends State<NewScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameEditingController = TextEditingController();
   final TextEditingController _notesEditingController = TextEditingController();
-  String selectedTheme ="lib/images/3.jpg" ;
+  String selectedTheme ="resources/images/3.jpg" ;
 
   @override
   Widget build(BuildContext context) {
@@ -186,25 +187,25 @@ class _NewScreenState extends State<NewScreen> {
 
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  ThemeButton(imagePath: 'lib/images/9.jpg', onTap: () {
+                  ThemeButton(imagePath: 'resources/images/9.jpg', onTap: () {
                     setState(() {
-                      selectedTheme = 'lib/images/9.jpg';
+                      selectedTheme = 'resources/images/9.jpg';
                     });
                   }),
 
-                  ThemeButton(imagePath: 'lib/images/5.jpg', onTap: () {
+                  ThemeButton(imagePath: 'resources/images/5.jpg', onTap: () {
                     setState(() {
-                      selectedTheme = 'lib/images/5.jpg';
+                      selectedTheme = 'resources/images/5.jpg';
                     });
                   }),
-                  ThemeButton(imagePath: 'lib/images/7.jpg', onTap: () {
+                  ThemeButton(imagePath: 'resources/images/7.jpg', onTap: () {
                     setState(() {
-                      selectedTheme = 'lib/images/7.jpg';
+                      selectedTheme = 'resources/images/7.jpg';
                     });
                   }),
-                  ThemeButton(imagePath: 'lib/images/3.jpg', onTap: () {
+                  ThemeButton(imagePath: 'resources/images/3.jpg', onTap: () {
                     setState(() {
-                      selectedTheme = 'lib/images/3.jpg';
+                      selectedTheme = 'resources/images/3.jpg';
                     });
                   }),
                 ],
