@@ -36,6 +36,7 @@ namespace FinkiRasporedi.Repository
                 Lecture = lecture,
             };
             _context.CustomLectures?.Add(customLecture);
+            _context.Lectures.Remove(lecture);
             try
             {
                 await _context.SaveChangesAsync();
