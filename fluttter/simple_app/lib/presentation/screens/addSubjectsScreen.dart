@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/service/course_service.dart';
+import 'package:simple_app/domain/models/course.dart';
 
 Color myCustomColor2 = Color(0xFF42587F);
 
@@ -24,13 +26,7 @@ class Subject {
   Subject({this.name});
 }
 
-List<Subject> subjects = [
-  Subject(name: "Mobilni informaciski sistemi"),
-  Subject(name: "Menadzment informaciski sitemi"),
-  Subject(name: "Marketing"),
-  Subject(name: "Diskretna 1"),
-  Subject(name: "Diskrenta 2"),
-];
+List<Subject> subjects = [];
 
 void main() => runApp(const SearchBarApp());
 
@@ -44,11 +40,31 @@ class SearchBarApp extends StatefulWidget {
 class _SearchBarAppState extends State<SearchBarApp> {
   bool isDark = false;
   List<Subject> filteredSubjects = [];
+  List<Course> courses = []; // Add a list to store courses
+  CourseService _courseService = CourseService(); // Initialize CourseService
 
   @override
   void initState() {
-    filteredSubjects = subjects; // Initialize filteredSubjects with the initial list
     super.initState();
+    fetchCourses(); // Fetch courses when the app starts
+  }
+
+  void fetchCourses() async {
+    try {
+      List<Course> fetchedCourses = await _courseService.getCoursesWithPagination();
+      setState(() {
+        courses = fetchedCourses;
+        filteredSubjects = courses.map((course) => Subject(name: course.subject.name)).toList();
+
+        // Debugging: Print the fetched courses and subjects
+        print('Fetched Courses: $courses');
+        print('Filtered Subjects: $filteredSubjects');
+      });
+    } catch (e) {
+      // Print error message
+      print('Error fetching courses: $e');
+      // Handle error scenarios here
+    }
   }
 
   @override
@@ -79,11 +95,11 @@ class _SearchBarAppState extends State<SearchBarApp> {
                     onChanged: (String value) {
                       setState(() {
                         if (value.isEmpty) {
-                          filteredSubjects = subjects;
+                          filteredSubjects = courses.map((course) => Subject(name: course.subject.name)).toList();
                         } else {
-                          filteredSubjects = subjects
-                              .where((subject) =>
-                          subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
+                          filteredSubjects = courses
+                              .where((course) => course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
+                              .map((course) => Subject(name: course.subject.name))
                               .toList();
                         }
                       });
@@ -119,7 +135,6 @@ class _SearchBarAppState extends State<SearchBarApp> {
                 ),
               ),
             ],
-
           ),
         ),
       ),

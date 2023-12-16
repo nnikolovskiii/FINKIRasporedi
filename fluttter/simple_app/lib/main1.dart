@@ -8,10 +8,8 @@ import 'service/professor_service.dart'; // Import your API service
 
 void main() {
   runApp(MyApp());
-  LectureService service = LectureService();
-  service.getLecturesByCourseIdAndProfessorId(courseId: "W23veb.programiranje", professorId: "ana.todorovska");
   ScheduleService scheduleService = ScheduleService();
-  scheduleService.addLecture(1, 407);
+  scheduleService.getSchedulesWithPagination();
 }
 
 class MyApp extends StatelessWidget {
@@ -25,7 +23,7 @@ class MyApp extends StatelessWidget {
           title: Text('Courses and Subjects'),
         ),
         body: FutureBuilder<List<Course>>(
-          future: apiService.getCoursesWithPagination(page: 1, size: 10),
+
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
