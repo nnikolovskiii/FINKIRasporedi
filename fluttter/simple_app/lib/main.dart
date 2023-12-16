@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home: CardList(), // Use a SplashScreen widget
+      home: SearchBarApp(), // Use a SplashScreen widget
     );
   }
 }
