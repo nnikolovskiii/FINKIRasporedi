@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import 'package:simple_app/presentation/screens/cardsList.dart';
 import 'package:simple_app/presentation/screens/addSubjectsScreen.dart';
+import 'package:simple_app/presentation/screens/courseList.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home: SearchBarApp(), // Use a SplashScreen widget
+      home: CourseListScreen(), // Use a SplashScreen widget
     );
   }
 }

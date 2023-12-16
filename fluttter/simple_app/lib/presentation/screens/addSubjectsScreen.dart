@@ -51,7 +51,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
 
   void fetchCourses() async {
     try {
-      List<Course> fetchedCourses = await _courseService.getCoursesWithPagination();
+      List<Course> fetchedCourses = await _courseService.getCourses();
       setState(() {
         courses = fetchedCourses;
         filteredSubjects = courses.map((course) => Subject(name: course.subject.name)).toList();
@@ -117,6 +117,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
                       title: Text(item),
                       onTap: () {
                         // Add functionality on selecting a suggestion if needed
+
                       },
                     );
                   });
