@@ -23,6 +23,14 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(customLectures);
         }
 
+        // GET: api/CustomLectures
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CustomLecture>>> GetCustomLectures()
+        {
+            var customLectures = await _customLectureRepository.GetAllAsync();
+            return Ok(customLectures);
+        }
+
         // GET: api/CustomLectures/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomLecture>> GetCustomLecture(int id)

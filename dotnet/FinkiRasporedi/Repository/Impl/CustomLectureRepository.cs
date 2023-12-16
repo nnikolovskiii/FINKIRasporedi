@@ -49,6 +49,11 @@ namespace FinkiRasporedi.Repository
             return customLecture;
         }
 
+        public async Task<IEnumerable<CustomLecture>> GetAllAsync()
+        {
+            return await _customLectures.ToListAsync();
+        }
+
         public async Task<CustomLecture> GetByIdAsync(int id)
         {
             var customLecture = await _customLectures.FindAsync(id);

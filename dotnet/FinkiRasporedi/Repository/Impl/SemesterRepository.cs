@@ -49,6 +49,11 @@ namespace FinkiRasporedi.Repository
             return Semester;
         }
 
+        public async Task<IEnumerable<Semester>> GetAllAsync()
+        {
+            return await _semesters.ToListAsync();
+        }
+
         public async Task<Semester> GetByIdAsync(string id)
         {
             var semester = await _semesters.FindAsync(id);
