@@ -23,9 +23,9 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(semesters);
         }
 
-        // GET: api/Semesters
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters()
+        // GET: api/Semesters/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Semester>>> GetAllSemesters()
         {
             var semesters = await _semesterRepository.GetAllAsync();
             return Ok(semesters);

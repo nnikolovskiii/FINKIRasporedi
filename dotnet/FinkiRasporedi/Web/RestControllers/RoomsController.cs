@@ -24,9 +24,9 @@ namespace FinkiRasporedi.Controllers.Rest
         }
 
 
-        // GET: api/Rooms
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
+        // GET: api/Rooms/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Room>>> GetAllRooms()
         {
             var rooms = await _roomRepository.GetAllAsync();
             return Ok(rooms);

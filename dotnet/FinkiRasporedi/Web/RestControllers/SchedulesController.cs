@@ -23,9 +23,9 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(schedules);
         }
 
-        // GET: api/Schedules
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
+        // GET: api/Schedules/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
         {
             var schedules = await _scheduleRepository.GetAllAsync();
             return Ok(schedules);

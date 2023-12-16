@@ -23,9 +23,9 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(courses);
         }
 
-        // GET: api/Courses
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Course>>> GetCourses()
+        // GET: api/Courses/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Course>>> GetAllCourses()
         {
             var courses = await _courseRepository.GetAllAsync();
             return Ok(courses);
