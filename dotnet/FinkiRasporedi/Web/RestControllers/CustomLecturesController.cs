@@ -23,6 +23,14 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(customLectures);
         }
 
+        // GET: api/CustomLectures
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CustomLecture>>> GetCustomLectures()
+        {
+            var customLectures = await _customLectureRepository.GetAllAsync();
+            return Ok(customLectures);
+        }
+
         // GET: api/CustomLectures/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CustomLecture>> GetCustomLecture(int id)
@@ -43,10 +51,20 @@ namespace FinkiRasporedi.Controllers.Rest
         // POST: api/CustomLectures
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        public async Task<ActionResult<CustomLecture>> PostCustomLecture(int scheduleId, int lectureId)
+        {
+            var customLecture = await _customLectureRepository.AddAsync(scheduleId, lectureId);
+            return Ok(customLecture);
+        }
+
+
+        // POST: api/CustomLectures
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
         public async Task<ActionResult<CustomLecture>> PostCustomLecture(CustomLecture customLecture)
         {
-            var updatedCustomLecture = await _customLectureRepository.AddAsync(customLecture);
-            return Ok(updatedCustomLecture);
+            var entity = await _customLectureRepository.AddAsync(customLecture);
+            return Ok(entity);
         }
 
         // DELETE: api/CustomLectures/5

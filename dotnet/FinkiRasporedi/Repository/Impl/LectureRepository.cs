@@ -131,5 +131,10 @@ namespace FinkiRasporedi.Repository
                 .Take(pageSize)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Lecture>> GetAllAsync()
+        {
+            return await _lectures.ToListAsync();
+        }
     }
 }
