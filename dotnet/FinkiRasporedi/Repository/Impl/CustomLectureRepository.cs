@@ -35,8 +35,9 @@ namespace FinkiRasporedi.Repository
                 Room = lecture.Room,
                 Lecture = lecture,
             };
-            _context.CustomLectures?.Add(customLecture);
+            _customLectures.Add(customLecture);
             _context.Lectures.Remove(lecture);
+            await DeleteAsync(lectureId);
             try
             {
                 await _context.SaveChangesAsync();
@@ -58,7 +59,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<CustomLecture> AddAsync(CustomLecture customLecture)
         {
-            _context.CustomLectures?.Add(customLecture);
+            _customLectures.Add(customLecture);
             try
             {
                 await _context.SaveChangesAsync();
