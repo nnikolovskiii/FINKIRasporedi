@@ -64,6 +64,15 @@ namespace FinkiRasporedi.Repository.Data
                .HasOne(s => s.Room)
                .WithMany();
             modelBuilder.Entity<CustomLecture>()
+          .HasOne(s => s.Professor)
+          .WithMany();
+            modelBuilder.Entity<CustomLecture>()
+               .HasOne(s => s.Course)
+               .WithMany();
+            modelBuilder.Entity<CustomLecture>()
+               .HasOne(s => s.Room)
+               .WithMany();
+            modelBuilder.Entity<CustomLecture>()
                 .HasOne(s => s.Lecture);
             modelBuilder.Entity<Course>()
                 .HasOne(s => s.Subject);

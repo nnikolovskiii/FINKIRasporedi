@@ -9,26 +9,42 @@ namespace FinkiRasporedi.Repository
     public class CustomLectureRepository : ICustomLectureRepository
     {
         private readonly DbSet<CustomLecture> _customLectures;
+        private readonly IScheduleRepository _scheduleRepository;
         private readonly ApplicationDbContext _context;
 
-        public CustomLectureRepository(ApplicationDbContext context)
+        public CustomLectureRepository(ApplicationDbContext context, IScheduleRepository scheduleRepository)
         {
             _customLectures = context.Set<CustomLecture>();
+            _scheduleRepository = scheduleRepository;
             _context = context;
         }
 
-        public async Task<CustomLecture> AddAsync(CustomLecture entity)
+        public async Task<CustomLecture> AddAsync(int scheduleId, int lectureId)
         {
-            _context.CustomLectures?.Add(entity);
+            var schedule = _scheduleRepository.GetByIdAsync(scheduleId);
+            var lectures = schedule.Result.Lectures;
+            var lecture = lectures.OfType<Lecture>().FirstOrDefault(l => l.Id == lectureId);
+
+            var customLecture = new CustomLecture
+            {
+                Day = lecture.Day,
+                TimeFrom = lecture.TimeFrom,
+                TimeTo = lecture.TimeTo,
+                Professor = lecture.Professor,
+                Course = lecture.Course,
+                Room = lecture.Room,
+                Lecture = lecture,
+            };
+            _context.CustomLectures?.Add(customLecture);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (CustomLectureExists(entity.Id))
+                if (CustomLectureExists(customLecture.Id))
                 {
-                    throw new CustomLectureAlreadyExistsException(entity.Id);
+                    throw new CustomLectureAlreadyExistsException(customLecture.Id);
                 }
                 else
                 {
@@ -36,10 +52,30 @@ namespace FinkiRasporedi.Repository
                 }
             }
 
-            return entity;
+            return customLecture;
         }
 
+        public async Task<CustomLecture> AddAsync(CustomLecture customLecture)
+        {
+            _context.CustomLectures?.Add(customLecture);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (CustomLectureExists(customLecture.Id))
+                {
+                    throw new CustomLectureAlreadyExistsException(customLecture.Id);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
+            return customLecture;
+        }
 
         public async Task<CustomLecture> DeleteAsync(int id)
         {
