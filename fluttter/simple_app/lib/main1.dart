@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart'; // Import your Course model
+import 'package:simple_app/service/lecture_service.dart';
+import 'package:simple_app/service/schedule_service.dart';
 
 import 'service/professor_service.dart'; // Import your API service
 
 void main() {
   runApp(MyApp());
-  ProfessorService professor_service = ProfessorService();
-  professor_service.getProfessorsByCourseId(courseId: "W23veb.programiranje");
+  ScheduleService scheduleService = ScheduleService();
+  scheduleService.getSchedulesWithPagination();
 }
 
 class MyApp extends StatelessWidget {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
           title: Text('Courses and Subjects'),
         ),
         body: FutureBuilder<List<Course>>(
-          future: apiService.getCoursesWithPagination(page: 1, size: 10),
+
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return CircularProgressIndicator();
