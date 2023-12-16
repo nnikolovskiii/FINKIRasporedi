@@ -49,6 +49,11 @@ namespace FinkiRasporedi.Repository
             return room;
         }
 
+        public async Task<IEnumerable<Room>> GetAllAsync()
+        {
+            return await _rooms.ToListAsync();
+        }
+
         public async Task<Room> GetByIdAsync(string id)
         {
             var room = await _rooms.FindAsync(id);

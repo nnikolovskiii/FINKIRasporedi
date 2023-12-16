@@ -8,5 +8,6 @@
         Task<TEntity> AddAsync(TEntity entity);
         Task<TEntity> UpdateAsync(TId id, TEntity entity);
         Task<TEntity> DeleteAsync(TId id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
     }
 }

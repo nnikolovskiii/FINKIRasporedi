@@ -48,6 +48,11 @@ namespace FinkiRasporedi.Repository.Impl
             return subject;
         }
 
+        public async Task<IEnumerable<Subject>> GetAllAsync()
+        {
+            return await _subjects.ToListAsync();
+        }
+
         public async Task<Subject> GetByIdAsync(string id)
         {
             var subject = await _subjects.FindAsync(id);
