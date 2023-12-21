@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
-
+import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import '../../domain/models/subject.dart';
 
 
@@ -139,12 +139,19 @@ class _SearchBarAppState extends State<SearchBarApp> {
                     return ListTile(
                       title: Text(itemName),
                       onTap: () {
-                        String name =
-                        filteredCourses[index].subject.name as String;
+                        String name = filteredCourses[index].subject.name as String;
+                        String courseId = filteredCourses[index].id as String;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('You clicked: $name'),
+                            content: Text('You clicked: $courseId'),
                             duration: Duration(seconds: 2),
+                          ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfessorListScreen(courseId: courseId), // Pass courseId as argument
                           ),
                         );
                       },
