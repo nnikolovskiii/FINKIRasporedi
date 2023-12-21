@@ -41,7 +41,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
   List<Course> courses = []; // Add a list to store courses
   List<Course> filteredCourses = []; // Add a list to store courses
   CourseService _courseService = CourseService(); // Initialize CourseService
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -52,14 +52,17 @@ class _SearchBarAppState extends State<SearchBarApp> {
     try {
       List<Course> fetchedCourses = await _courseService.getCourses();
       setState(() {
+
         courses = fetchedCourses;
         filteredCourses =fetchedCourses;
         // Debugging: Print the fetched courses and subjects
         print('Fetched Courses: $courses');
+        isLoading = false;
       });
     } catch (e) {
       // Print error message
       print('Error fetching courses: $e');
+      isLoading = false;
       // Handle error scenarios here
     }
   }
@@ -103,7 +106,9 @@ class _SearchBarAppState extends State<SearchBarApp> {
                       });
                     },
                     leading: const Icon(Icons.search),
+
                   );
+
                 },
                 suggestionsBuilder: (
                     BuildContext context,
@@ -127,7 +132,14 @@ class _SearchBarAppState extends State<SearchBarApp> {
                 },
               ),
               // Display the filtered list
-              Expanded(
+              if (isLoading)
+                const Center(  child: Padding(
+                  padding: EdgeInsets.all(80.0), // Adjust the margin as needed
+                  child: CircularProgressIndicator(),
+                ),
+                )
+              else
+                 Expanded(
                 child: ListView.separated(
                   itemCount: filteredCourses.length,
                   separatorBuilder: (BuildContext context, int index) =>
