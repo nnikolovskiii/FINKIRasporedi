@@ -3,6 +3,7 @@ import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import '../../domain/models/subject.dart';
+import '../widgets/searchBar_widget.dart';
 
 
 Color myCustomColor2 = Color(0xFF42587F);
@@ -86,30 +87,25 @@ class _SearchBarAppState extends State<SearchBarApp> {
               // Search bar and suggestions
               SearchAnchor(
                 builder: (BuildContext context, SearchController controller) {
-                  return SearchBar(
-                    controller: controller,
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.symmetric(horizontal: 16.0),
-                    ),
-                    onTap: () {},
-                    onChanged: (String value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          filteredCourses = courses;
-                          print(filteredCourses.length);
-                        } else {
-                          filteredCourses = courses
-                              .where((course) => course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
-                              .toList();
-                          print(filteredCourses.length);
-                        }
-                      });
-                    },
-                    leading: const Icon(Icons.search),
-
+                  return SearchBarWidget(
+                  controller: controller,
+                  onChanged: (String value) {
+                  setState(() {
+                  if (value.isEmpty) {
+                  filteredCourses = courses;
+                  print(filteredCourses.length);
+                  } else {
+                  filteredCourses = courses
+                      .where((course) =>
+                  course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
+                      .toList();
+                  print(filteredCourses.length);
+                  }
+                  });
+                  }, hintText: 'Пребарај предмет..',
                   );
+                  },
 
-                },
                 suggestionsBuilder: (
                     BuildContext context,
                     SearchController controller,
@@ -151,7 +147,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
                     return ListTile(
                       title: Text(itemName),
                       onTap: () {
-                        String name = filteredCourses[index].subject.name as String;
+                        String courseName = filteredCourses[index].subject.name as String;
                         String courseId = filteredCourses[index].id as String;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
@@ -163,7 +159,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProfessorListScreen(courseId: courseId), // Pass courseId as argument
+                            builder: (context) => ProfessorListScreen(courseId: courseId, courseName : courseName), // Pass courseId as argument
                           ),
                         );
                       },

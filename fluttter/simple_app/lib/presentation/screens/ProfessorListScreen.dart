@@ -1,45 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/domain/models/professor.dart';
 import 'package:simple_app/service/professor_service.dart';
+import 'package:simple_app/service/course_service.dart';
+
+import '../widgets/searchBar_widget.dart';
 
 class ProfessorListScreen extends StatefulWidget {
   final String courseId;
+  final String courseName;
 
-  ProfessorListScreen({required this.courseId});
+  ProfessorListScreen({required this.courseId, required this.courseName});
 
   @override
   _ProfessorListScreenState createState() =>
-      _ProfessorListScreenState(courseId);
+      _ProfessorListScreenState(courseId,courseName);
 }
 
 class _ProfessorListScreenState extends State<ProfessorListScreen> {
   final String courseId;
+  final String courseName;
   List<Professor> professors = [];
   List<Professor> filteredProfessors = [];
   ProfessorService professorService = ProfessorService();
+  CourseService courseService = CourseService();
+  TextEditingController _searchController = TextEditingController(); // Add this line
 
-  _ProfessorListScreenState(this.courseId);
+  _ProfessorListScreenState(this.courseId, this.courseName);
 
   @override
   void initState() {
     super.initState();
-    fetchProfessors(); // Fetch professors when the screen initializes
+    fetchProfessors();
   }
 
   Future<void> fetchProfessors() async {
     try {
-      List<Professor> fetchedProfessors = await professorService
-          .getProfessorsByCourseId(courseId: courseId);
+      List<Professor> fetchedProfessors =
+      await professorService.getProfessorsByCourseId(courseId: courseId);
       setState(() {
         professors = fetchedProfessors;
-        filteredProfessors = fetchedProfessors; // Initialize filtered list
-        // Debugging: Print the fetched professors
+        filteredProfessors = fetchedProfessors;
         print('Fetched Professors: $professors');
       });
     } catch (e) {
-      // Print error message
       print('Error fetching professors: $e');
-      // Handle error scenarios here
     }
   }
 
@@ -60,38 +64,31 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Professors for Course: $courseId'),
+        title: Text('$courseName'),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
-                filterProfessors(value);
-              },
-              decoration: InputDecoration(
-                labelText: 'Пребарај професор..',
-                hintText: 'Search by name...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0), // Adjust padding as needed
+        child: Column(
+          children: [
+            SearchBarWidget(
+              controller: _searchController,
+              onChanged: filterProfessors,
+              hintText: "Пребарај професор..",
+            ),
+            const SizedBox(height: 8), // Add some space between search bar and list
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredProfessors.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(filteredProfessors[index].name),
+                    // Add other professor details or actions if needed
+                  );
+                },
               ),
             ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: filteredProfessors.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(filteredProfessors[index].name),
-                  // Add other professor details or actions if needed
-                );
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
