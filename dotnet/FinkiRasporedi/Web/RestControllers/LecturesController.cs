@@ -22,7 +22,7 @@ namespace FinkiRasporedi.Controllers.Rest
             IEnumerable<Lecture> lectures;
             if (courseId != null && professorId != null)
             {
-                lectures = await _lectureRepository.GetLecturesByCourseAndProfessor(courseId, professorId, page, size);
+                lectures = await _lectureRepository.GetLecturesByCourseAndProfessor(courseId, professorId);
 
             }
             else
@@ -32,6 +32,8 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(lectures);
         }
 
+<<<<<<< HEAD
+=======
         // GET: api/Lectures/All
         [HttpGet("All")]
         public async Task<ActionResult<IEnumerable<Lecture>>> GetAllLectures()
@@ -39,6 +41,7 @@ namespace FinkiRasporedi.Controllers.Rest
             var lectures = await _lectureRepository.GetAllAsync();
             return Ok(lectures);
         }
+>>>>>>> origin/master
 
         // GET: api/Lectures/5
         [HttpGet("{id}")]

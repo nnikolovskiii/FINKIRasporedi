@@ -43,7 +43,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Schedule> AddLectureAsync(int id, int lectureId)
         {
-            LectureDetails lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
             Schedule schedule = await GetByIdAsync(id);
             schedule.Lectures.Add(lecture);
             _context.Entry(schedule).State = EntityState.Modified;

@@ -123,12 +123,10 @@ namespace FinkiRasporedi.Repository
         }
 
 
-        public async Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId, int page, int pageSize)
+        public async Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId)
         {
             return await _lectures
-                .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+                .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId && lecture.Type == 0)
                 .ToListAsync();
         }
 
