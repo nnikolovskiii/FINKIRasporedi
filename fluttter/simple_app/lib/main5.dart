@@ -10,17 +10,45 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Vertical Containers'),
+          title: Text('Flexbox Example'),
         ),
         body: Center(
-          child: Container(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
 
-            padding: EdgeInsets.all(5.0),
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              7,
+                  (index) =>  Container(
+
+                padding: EdgeInsets.all(5.0),
             color: Colors.grey[200],
             child: Flex(
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Container(
+                  height: 50,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Day',
+                      style: TextStyle(
+                        // You can customize the text style here
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
+                ),
                 Container(
                   decoration: const BoxDecoration(
                     border: Border(
@@ -106,7 +134,11 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
+            ),
+          ),
         ),
+        ),
+      ),
       ),
     );
   }
