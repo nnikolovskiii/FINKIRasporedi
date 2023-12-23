@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/domain/models/professor.dart';
 import 'package:simple_app/service/professor_service.dart';
+import 'package:simple_app/service/course_service.dart';
+
+import '../widgets/searchBar_widget.dart';
 
 class ProfessorListScreen extends StatefulWidget {
   final String courseId;
+  final String courseName;
 
-  ProfessorListScreen({required this.courseId});
+  ProfessorListScreen({required this.courseId, required this.courseName});
 
   @override
-  _ProfessorListScreenState createState() => _ProfessorListScreenState(courseId);
+  _ProfessorListScreenState createState() =>
+      _ProfessorListScreenState(courseId,courseName);
 }
 
 class _ProfessorListScreenState extends State<ProfessorListScreen> {
   final String courseId;
+  final String courseName;
   List<Professor> professors = [];
+  List<Professor> filteredProfessors = [];
   ProfessorService professorService = ProfessorService();
+  CourseService courseService = CourseService();
+  TextEditingController _searchController = TextEditingController(); // Add this line
 
-  _ProfessorListScreenState(this.courseId);
+  _ProfessorListScreenState(this.courseId, this.courseName);
 
   @override
   void initState() {
     super.initState();
-    fetchProfessors(); // Fetch professors when the screen initializes
+    fetchProfessors();
   }
 
   Future<void> fetchProfessors() async {
@@ -30,30 +39,56 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
       await professorService.getProfessorsByCourseId(courseId: courseId);
       setState(() {
         professors = fetchedProfessors;
-        // Debugging: Print the fetched professors
+        filteredProfessors = fetchedProfessors;
         print('Fetched Professors: $professors');
       });
     } catch (e) {
-      // Print error message
       print('Error fetching professors: $e');
-      // Handle error scenarios here
     }
+  }
+
+  void filterProfessors(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredProfessors = professors;
+      } else {
+        filteredProfessors = professors
+            .where((professor) =>
+            professor.name.toLowerCase().startsWith(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Professors for Course: $courseId'),
+        title: Text('$courseName'),
       ),
-      body: ListView.builder(
-        itemCount: professors.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(professors[index].name), // Access professor's name
-            // Add other professor details or actions if needed
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(8.0), // Adjust padding as needed
+        child: Column(
+          children: [
+            SearchBarWidget(
+              controller: _searchController,
+              onChanged: filterProfessors,
+              hintText: "Пребарај професор..",
+            ),
+            const SizedBox(height: 8), // Add some space between search bar and list
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredProfessors.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(filteredProfessors[index].name),
+                    // Add other professor details or actions if needed
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
