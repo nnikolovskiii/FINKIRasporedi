@@ -17,17 +17,17 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // GET: api/Schedules
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int page = 1, int size = 5)
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int page, int size)
         {
-            var schedules = await _scheduleRepository.GetPageAsync(page, size);
-            return Ok(schedules);
-        }
-
-        // GET: api/Schedules/All
-        [HttpGet("All")]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetAllSchedules()
-        {
-            var schedules = await _scheduleRepository.GetAllAsync();
+            IEnumerable<Schedule> schedules;
+            if (page == 0 && size == 0)
+            {
+                schedules = await _scheduleRepository.GetAllAsync();
+            }
+            else
+            {
+                schedules = await _scheduleRepository.GetPageAsync(page, size);
+            }
             return Ok(schedules);
         }
 
