@@ -4,6 +4,6 @@ namespace FinkiRasporedi.Repository.Interface
 {
     public interface ILectureRepository : IRepository<Lecture, int>
     {
-        public Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId, int page, int pageSize);
+        public Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId);
     }
 }

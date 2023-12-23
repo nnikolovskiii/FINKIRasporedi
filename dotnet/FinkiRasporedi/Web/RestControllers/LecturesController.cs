@@ -22,7 +22,7 @@ namespace FinkiRasporedi.Controllers.Rest
             IEnumerable<Lecture> lectures;
             if (courseId != null && professorId != null)
             {
-                lectures = await _lectureRepository.GetLecturesByCourseAndProfessor(courseId, professorId, page, size);
+                lectures = await _lectureRepository.GetLecturesByCourseAndProfessor(courseId, professorId);
 
             }
             else
@@ -31,6 +31,7 @@ namespace FinkiRasporedi.Controllers.Rest
             }
             return Ok(lectures);
         }
+
 
         // GET: api/Lectures/5
         [HttpGet("{id}")]

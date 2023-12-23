@@ -29,8 +29,6 @@ namespace FinkiRasporedi.Repository.Data
 
         public DbSet<Student> Students { get; set; }
 
-        public DbSet<CustomLecture> CustomLectures { get; set; } = default!;
-
         public DbSet<CourseProfessor> CourseProfessors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -54,25 +52,20 @@ namespace FinkiRasporedi.Repository.Data
                .HasMany(s => s.Schedules)
                .WithMany()
                .UsingEntity(j => j.ToTable("StudentSchedules"));
-            modelBuilder.Entity<LectureDetails>()
+            modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Professor)
                .WithMany();
-            modelBuilder.Entity<LectureDetails>()
+            modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Course)
                .WithMany();
-            modelBuilder.Entity<LectureDetails>()
+            modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Room)
                .WithMany();
             modelBuilder.Entity<Lecture>()
-                .HasBaseType<LectureDetails>();
-            modelBuilder.Entity<Lecture>()
                 .ToTable("Lecture");
-            modelBuilder.Entity<CustomLecture>()
-                .HasBaseType<LectureDetails>();
-            modelBuilder.Entity<CustomLecture>()
-                .HasOne(s => s.Lecture);
-            modelBuilder.Entity<CustomLecture>()
-               .ToTable("CustomLecture");
+            modelBuilder.Entity<Lecture>()
+                .HasOne(s => s.OriginalLecture);
+
             modelBuilder.Entity<Course>()
                 .HasOne(s => s.Subject);
             modelBuilder.Entity<CourseProfessor>()
