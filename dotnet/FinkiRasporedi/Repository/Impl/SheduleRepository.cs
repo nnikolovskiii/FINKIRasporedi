@@ -51,6 +51,38 @@ namespace FinkiRasporedi.Repository
             return schedule;
         }
 
+
+        public async Task<Schedule> RemoveLectureAsync(int id, int lectureId)
+        {
+            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Schedule schedule = await GetByIdAsync(id);
+            schedule.Lectures.Remove(lecture);
+            _context.Entry(schedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return schedule;
+        }
+
+
+        public async Task<Schedule> AddCustomLectureAsync(int id, int lectureId, string name)
+        {
+            Lecture oldLecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Schedule schedule = await GetByIdAsync(id);
+            var customLecture = await _lectureRepository.AddCustomAsync(oldLecture, name);
+            schedule.Lectures.Add(customLecture);
+            _context.Entry(schedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return schedule;
+        }
+        public async Task<Schedule> RemoveCustomLectureAsync(int id, int lectureId, string name)
+        {
+            Lecture customLecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Schedule schedule = await GetByIdAsync(id);
+            schedule.Lectures.Remove(customLecture);
+            await _lectureRepository.DeleteAsync(lectureId);
+            _context.Entry(schedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return schedule;
+        }
         public async Task<Schedule> DeleteAsync(int id)
         {
             var schedule = await GetByIdAsync(id);

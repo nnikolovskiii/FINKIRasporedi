@@ -65,13 +65,36 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
+        // POST: api/Schedules/addLecture/5
         [HttpPost("addLecture/{id}")]
-        public async Task<ActionResult<Schedule>> AddLecture(int id, [FromBody] int lectureId)
+        public async Task<ActionResult<Schedule>> AddLecture(int id, [FromBody] int lectureId, string name)
         {
-
-            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
+            Schedule updatedSchedule;
+            if (name != null)
+            {
+                updatedSchedule = await _scheduleRepository.AddCustomLectureAsync(id, lectureId, name);
+            }
+            else
+            {
+                updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
+            }
             return Ok(updatedSchedule);
         }
 
+        // DELETE: api/Schedules/removeLecture/5
+        [HttpDelete("removeLecture/{id}")]
+        public async Task<ActionResult<Schedule>> RemoveLectureAsync(int id, [FromBody] int lectureId, string name)
+        {
+            Schedule updatedSchedule;
+            if (name != null)
+            {
+                updatedSchedule = await _scheduleRepository.RemoveCustomLectureAsync(id, lectureId, name);
+            }
+            else
+            {
+                updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
+            }
+            return Ok(updatedSchedule);
+        }
     }
 }

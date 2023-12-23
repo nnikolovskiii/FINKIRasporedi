@@ -39,7 +39,29 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
+        public async Task<Lecture> AddCustomAsync(Lecture entity, string name)
+        {
+            entity.OriginalLecture = entity;
+            entity.Name = name;
+            _context.Lectures?.Add(entity);
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                if (LectureExists(entity.Id))
+                {
+                    throw new LectureAlreadyExistsException(entity.Id);
+                }
+                else
+                {
+                    throw;
+                }
+            }
 
+            return entity;
+        }
 
         public async Task<Lecture> DeleteAsync(int id)
         {
