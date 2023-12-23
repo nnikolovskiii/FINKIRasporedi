@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/service/course_service.dart';
+import 'package:simple_app/domain/models/course.dart';
+import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
+import '../../domain/models/subject.dart';
+import '../widgets/searchBar_widget.dart';
+
 
 Color myCustomColor2 = Color(0xFF42587F);
 
@@ -18,284 +24,153 @@ ThemeData theme = ThemeData(
   ),
 );
 
+
+
+List<Subject> subjects = [];
+
 void main() => runApp(const SearchBarApp());
 
-class Subject {
-  final String name;
-  Subject({required this.name});
-}
-
-List<Subject> subjects = [
-  Subject(name: "Mobilni informaciski sistemi"),
-  Subject(name: "Menadzment informaciski sitemi"),
-  Subject(name: "Marketing"),
-  Subject(name: "Diskretna 1"),
-  Subject(name: "Diskrenta 2"),
-];
-
-class SearchBarApp extends StatelessWidget {
+class SearchBarApp extends StatefulWidget {
   const SearchBarApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: theme,
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomeScreen(),
-      },
-    );
-  }
+  State<SearchBarApp> createState() => _SearchBarAppState();
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Избери предмети'),
-      ),
-      body: SubjectSelectionScreen(subjects: subjects),
-    );
-  }
-}
-
-class SubjectSelectionScreen extends StatefulWidget {
-  final List<Subject> subjects;
-
-  const SubjectSelectionScreen({Key? key, required this.subjects}) : super(key: key);
-
-  @override
-  _SubjectSelectionScreenState createState() => _SubjectSelectionScreenState();
-}
-
-class _SubjectSelectionScreenState extends State<SubjectSelectionScreen> {
-  int _currentStep = 1;
-  late List<Subject> selectedSubjects;
-  late List<String> professors;
-
+class _SearchBarAppState extends State<SearchBarApp> {
+  bool isDark = false;
+  List<Course> courses = []; // Add a list to store courses
+  List<Course> filteredCourses = []; // Add a list to store courses
+  CourseService _courseService = CourseService(); // Initialize CourseService
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
-    selectedSubjects = [];
-    professors = [];
+    fetchCourses(); // Fetch courses when the app starts
   }
 
-  void updateProgress() {
-    setState(() {
-      _currentStep++;
-    });
-  }
+  void fetchCourses() async {
+    try {
+      List<Course> fetchedCourses = await _courseService.getCourses();
+      setState(() {
 
-  void selectSubject(Subject subject) {
-    setState(() {
-      selectedSubjects.add(subject);
-      updateProgress();
-      professors = _getProfessorsForSubject(subject);
-    });
-  }
-
-  List<String> _getProfessorsForSubject(Subject subject) {
-    // Replace this with logic to fetch professors based on the selected subject
-    return ["Professor 1", "Professor 2", "Professor 3"];
+        courses = fetchedCourses;
+        filteredCourses =fetchedCourses;
+        // Debugging: Print the fetched courses and subjects
+        print('Fetched Courses: $courses');
+        isLoading = false;
+      });
+    } catch (e) {
+      // Print error message
+      print('Error fetching courses: $e');
+      isLoading = false;
+      // Handle error scenarios here
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        SizedBox(
-          height: 40, // Adjust the height of the progress indicator as needed
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    final ThemeData themeData = ThemeData(
+      brightness: isDark ? Brightness.dark : Brightness.light,
+    );
+
+    return MaterialApp(
+      theme: theme,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Избери предмети'),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
             children: [
-              _buildProgressStep(1),
-              _buildProgressStep(2),
-              _buildProgressStep(3),
+              // Search bar and suggestions
+              SearchAnchor(
+                builder: (BuildContext context, SearchController controller) {
+                  return SearchBarWidget(
+                  controller: controller,
+                  onChanged: (String value) {
+                  setState(() {
+                  if (value.isEmpty) {
+                  filteredCourses = courses;
+                  print(filteredCourses.length);
+                  } else {
+                  filteredCourses = courses
+                      .where((course) =>
+                  course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
+                      .toList();
+                  print(filteredCourses.length);
+                  }
+                  });
+                  }, hintText: 'Пребарај предмет..',
+                  );
+                  },
+
+                suggestionsBuilder: (
+                    BuildContext context,
+                    SearchController controller,
+                    ) {
+                  return List<Widget>.generate(filteredCourses.length, (int index) {
+                    final String itemName = filteredCourses[index].subject.name ?? '';
+                    return ListTile(
+                      title: Text(itemName),
+
+                    );
+                  });
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.filter_list),
+                onPressed: () {
+                  // Implement the filter functionality here
+                  // This onPressed function will be triggered when the filter icon is pressed
+                  // You can add your filter logic or open a filter dialog/pop-up
+                },
+              ),
+              // Display the filtered list
+              if (isLoading)
+                const Center(  child: Padding(
+                  padding: EdgeInsets.all(80.0), // Adjust the margin as needed
+                  child: CircularProgressIndicator(),
+                ),
+                )
+              else
+                 Expanded(
+                child: ListView.separated(
+                  itemCount: filteredCourses.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(), // Add Divider between items
+                  itemBuilder: (BuildContext context, int index) {
+                    final String itemName =
+                        filteredCourses[index].subject.name ?? '';
+
+                    return ListTile(
+                      title: Text(itemName),
+                      onTap: () {
+                        String courseName = filteredCourses[index].subject.name as String;
+                        String courseId = filteredCourses[index].id as String;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('You clicked: $courseId'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfessorListScreen(courseId: courseId, courseName : courseName), // Pass courseId as argument
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
-        Expanded(
-          child: _currentStep == 1
-              ? SubjectListView(
-            subjects: widget.subjects,
-            onSubjectSelected: selectSubject,
-          )
-              : ProfessorListView(professors: professors),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgressStep(int stepNumber) {
-    Color color = stepNumber <= _currentStep ? Colors.green : Colors.grey;
-    return Container(
-      width: 20, // Adjust the width of each step as needed
-      height: 20, // Adjust the height of each step as needed
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: color,
       ),
     );
   }
 }
-
-class SubjectListView extends StatelessWidget {
-  final List<Subject> subjects;
-  final Function(Subject) onSubjectSelected;
-
-  const SubjectListView({Key? key, required this.subjects, required this.onSubjectSelected})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: subjects.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(subjects[index].name),
-          onTap: () {
-            onSubjectSelected(subjects[index]);
-          },
-        );
-      },
-    );
-  }
-}
-
-class ProfessorListView extends StatelessWidget {
-  final List<String> professors;
-
-  const ProfessorListView({Key? key, required this.professors}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: professors.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(professors[index]),
-          // Add onTap functionality for selecting a professor if needed
-        );
-      },
-    );
-  }
-}
-
-
-//
-// import 'package:flutter/material.dart';
-// import '';
-//
-// Color myCustomColor2 = Color(0xFF42587F);
-//
-// ThemeData theme = ThemeData(
-//   textTheme: const TextTheme(
-//     displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-//     bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
-//   ),
-//   appBarTheme: const AppBarTheme(
-//     color: Color(0xFFF9DB6D),
-//     iconTheme: IconThemeData(color: Colors.grey),
-//     titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
-//
-//   ),
-//   colorScheme: ColorScheme.fromSeed(
-//     seedColor: myCustomColor2,
-//     brightness: Brightness.light,
-//   ),
-// );
-//
-// class Subject {
-//   final String? name;
-//   Subject({this.name});
-// }
-//
-// List<Subject> subjects = [
-//   Subject(name: "Mobilni informaciski sistemi"),
-//   Subject(name: "Menadzment informaciski sitemi"),
-//   Subject(name: "Marketing"),
-//   Subject(name: "Diskretna 1"),
-//   Subject(name: "Diskrenta 2"),
-// ];
-//
-// void main() => runApp(const SearchBarApp());
-//
-// class SearchBarApp extends StatefulWidget {
-//   const SearchBarApp({Key? key}) : super(key: key);
-//
-//   @override
-//   State<SearchBarApp> createState() => _SearchBarAppState();
-// }
-//
-// class _SearchBarAppState extends State<SearchBarApp> {
-//   bool isDark = false;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final ThemeData themeData = ThemeData(
-//       brightness: isDark ? Brightness.dark : Brightness.light,
-//     );
-//
-//     return MaterialApp(
-//       theme: theme,
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: const Text('Избери предмети'),
-//         ),
-//         body: Padding(
-//           padding: const EdgeInsets.all(8.0),
-//           child: Container(
-//             child: Row(
-//               children: [
-//                 Expanded(
-//                   child: SearchAnchor(
-//                     builder: (BuildContext context, SearchController controller) {
-//                       return SearchBar(
-//                         controller: controller,
-//                         padding: MaterialStateProperty.all<EdgeInsets>(
-//                           const EdgeInsets.symmetric(horizontal: 16.0),
-//                         ),
-//                         onTap: () {
-//                           controller.openView();
-//                         },
-//                         onChanged: (_) {
-//                           controller.openView();
-//                         },
-//                         leading: const Icon(Icons.search),
-//                       );
-//                     },
-//                     suggestionsBuilder: (
-//                         BuildContext context,
-//                         SearchController controller,
-//                         ) {
-//                       return List<Widget>.generate(5, (int index) {
-//                         final String item = subjects.elementAt(index).name as String;
-//                         return ListTile(
-//                           title: Text(item),
-//                           onTap: () {
-//                             setState(() {
-//                               controller.closeView(item);
-//                             });
-//                           },
-//                         );
-//                       });
-//                     },
-//                   ),
-//                 ),
-//                 IconButton(
-//                   onPressed: () {
-//                     // Add functionality for the filter icon here
-//                     // For example: open a filter dialog or perform a filter action
-//                   },
-//                   icon: Icon(Icons.filter_list),
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );}}

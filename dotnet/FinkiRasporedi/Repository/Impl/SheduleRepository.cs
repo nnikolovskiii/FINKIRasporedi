@@ -59,6 +59,11 @@ namespace FinkiRasporedi.Repository
             return schedule;
         }
 
+        public async Task<IEnumerable<Schedule>> GetAllAsync()
+        {
+            return await _schedules.ToListAsync();
+        }
+
         public async Task<Schedule> GetByIdAsync(int id)
         {
             var schedule = await _schedules.FindAsync(id);

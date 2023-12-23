@@ -129,5 +129,10 @@ namespace FinkiRasporedi.Repository
                 .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId && lecture.Type == 0)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Lecture>> GetAllAsync()
+        {
+            return await _lectures.ToListAsync();
+        }
     }
 }

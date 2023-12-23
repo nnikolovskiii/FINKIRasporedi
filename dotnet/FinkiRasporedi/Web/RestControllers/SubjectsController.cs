@@ -23,6 +23,14 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(subjects);
         }
 
+        // GET: api/Subjects/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Subject>>> GetAllSubjects()
+        {
+            var subjects = await _subjectRepository.GetAllAsync();
+            return Ok(subjects);
+        }
+
         // GET: api/Subjects/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Subject>> GetSubject(string id)

@@ -125,5 +125,9 @@ namespace FinkiRasporedi.Repository
             return query;
         }
 
+        public async Task<IEnumerable<Course>> GetAllAsync()
+        {
+            return await _courses.ToListAsync();
+        }
     }
 }

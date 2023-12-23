@@ -49,6 +49,11 @@ namespace FinkiRasporedi.Repository
             return professor;
         }
 
+        public async Task<IEnumerable<Professor>> GetAllAsync()
+        {
+            return await _professors.ToListAsync();
+        }
+
         public async Task<Professor> GetByIdAsync(string id)
         {
             var professor = await _professors.FindAsync(id);

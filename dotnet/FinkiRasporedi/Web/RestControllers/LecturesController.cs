@@ -32,6 +32,16 @@ namespace FinkiRasporedi.Controllers.Rest
             return Ok(lectures);
         }
 
+<<<<<<< HEAD
+=======
+        // GET: api/Lectures/All
+        [HttpGet("All")]
+        public async Task<ActionResult<IEnumerable<Lecture>>> GetAllLectures()
+        {
+            var lectures = await _lectureRepository.GetAllAsync();
+            return Ok(lectures);
+        }
+>>>>>>> origin/master
 
         // GET: api/Lectures/5
         [HttpGet("{id}")]
