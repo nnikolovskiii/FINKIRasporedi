@@ -19,7 +19,17 @@ namespace FinkiRasporedi.Controllers.Rest
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Course>>> GetCourses(int page = 1, int size = 5)
         {
-            var courses = await _courseRepository.GetPageAsync(page, size);
+            IEnumerable<Course> courses;
+
+            if (page == 0 && size == 0)
+            {
+                courses = await _courseRepository.GetPageAsync(page, size);
+
+            }
+            else
+            {
+                courses = await _courseRepository.GetPageAsync(page, size);
+            }
             return Ok(courses);
         }
 
