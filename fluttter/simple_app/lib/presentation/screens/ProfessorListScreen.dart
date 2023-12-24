@@ -4,6 +4,7 @@ import 'package:simple_app/service/professor_service.dart';
 import 'package:simple_app/service/course_service.dart';
 
 import '../widgets/searchBar_widget.dart';
+import 'LectureSlotsScreen.dart';
 
 class ProfessorListScreen extends StatefulWidget {
   final String courseId;
@@ -77,12 +78,31 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
             ),
             const SizedBox(height: 8), // Add some space between search bar and list
             Expanded(
-              child: ListView.builder(
+              child: ListView.separated(
                 itemCount: filteredProfessors.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    Divider(), // Add Divider between items
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(filteredProfessors[index].name),
-                    // Add other professor details or actions if needed
+                  return GestureDetector(
+                    onTap: () {
+                      final selectedProfessor = filteredProfessors[index];
+                      String professorId = selectedProfessor.id;
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LectureSlotsScreen(
+                            professorId: professorId,
+                            professorName: selectedProfessor.name,
+                            courseId: courseId,
+                            // Pass any other necessary information to LectureSlotsScreen
+                          ),
+                        ),
+                      );
+                    },
+                    child: ListTile(
+                      title: Text(filteredProfessors[index].name),
+                      // Add other professor details or actions if needed
+                    ),
                   );
                 },
               ),
