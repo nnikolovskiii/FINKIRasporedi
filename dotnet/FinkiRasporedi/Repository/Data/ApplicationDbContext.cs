@@ -44,10 +44,10 @@ namespace FinkiRasporedi.Repository.Data
                 .HasKey(s => s.Code);
             modelBuilder.Entity<Subject>()
                 .HasKey(s => s.Id);
-            modelBuilder.Entity<Schedule>()
-                .HasMany(s => s.Lectures)
-                .WithMany()
-                .UsingEntity(j => j.ToTable("ScheduleLectures"));
+            /*       modelBuilder.Entity<Schedule>()
+                       .HasMany(s => s.Lectures)
+                       .WithMany()
+                       .UsingEntity(j => j.ToTable("ScheduleLectures"));*/
             modelBuilder.Entity<Student>()
                .HasMany(s => s.Schedules)
                .WithMany()
@@ -68,6 +68,18 @@ namespace FinkiRasporedi.Repository.Data
 
             modelBuilder.Entity<Course>()
                 .HasOne(s => s.Subject);
+
+
+            modelBuilder.Entity<ScheduleLecture>()
+               .HasOne(cp => cp.Schedule)
+               .WithMany();
+            modelBuilder.Entity<ScheduleLecture>()
+               .HasOne(cp => cp.Lecture)
+               .WithMany();
+            modelBuilder.Entity<ScheduleLecture>()
+               .HasKey("ScheduleId", "LectureId");
+
+
             modelBuilder.Entity<CourseProfessor>()
                .HasOne(cp => cp.Course)
                .WithMany();
