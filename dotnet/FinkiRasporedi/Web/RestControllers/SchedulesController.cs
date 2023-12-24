@@ -67,33 +67,25 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // POST: api/Schedules/addLecture/5
         [HttpPost("addLecture/{id}")]
-        public async Task<ActionResult<Schedule>> AddLecture(int id, [FromBody] int lectureId, string name)
+        public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] int lectureId)
         {
-            Schedule updatedSchedule;
-            if (name != null)
-            {
-                updatedSchedule = await _scheduleRepository.AddCustomLectureAsync(id, lectureId, name);
-            }
-            else
-            {
-                updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
-            }
+            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
+            return Ok(updatedSchedule);
+        }
+
+        // POST: api/Schedules/addDuplicateLecture/5
+        [HttpPost("addDuplicateLecture/{id}")]
+        public async Task<ActionResult<Schedule>> AddDuplicateLecture(int id, [FromBody] int lectureId)
+        {
+            var updatedSchedule = await _scheduleRepository.AddDuplicateLectureAsync(id, lectureId);
             return Ok(updatedSchedule);
         }
 
         // DELETE: api/Schedules/removeLecture/5
         [HttpDelete("removeLecture/{id}")]
-        public async Task<ActionResult<Schedule>> RemoveLectureAsync(int id, [FromBody] int lectureId, string name)
+        public async Task<ActionResult<Schedule>> RemoveLectureAsync(int id, [FromBody] int lectureId)
         {
-            Schedule updatedSchedule;
-            if (name != null)
-            {
-                updatedSchedule = await _scheduleRepository.RemoveCustomLectureAsync(id, lectureId, name);
-            }
-            else
-            {
-                updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
-            }
+            var updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
             return Ok(updatedSchedule);
         }
     }

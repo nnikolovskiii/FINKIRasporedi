@@ -4,6 +4,6 @@ namespace FinkiRasporedi.Repository.Interface
 {
     public interface ICourseRepository : IRepository<Course, string>
     {
-        public Task<List<Professor>> GetProfessorsForCourseAsync(string courseId);
+        Task<List<Professor>> GetProfessorsForCourseAsync(string courseId);
     }
 }
