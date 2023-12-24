@@ -17,18 +17,17 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // GET: api/Rooms
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int page = 1, int size = 5)
+        public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int page, int size)
         {
-            var rooms = await _roomRepository.GetPageAsync(page, size);
-            return Ok(rooms);
-        }
-
-
-        // GET: api/Rooms
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
-        {
-            var rooms = await _roomRepository.GetAllAsync();
+            IEnumerable<Room> rooms;
+            if (page == 0 && size == 0)
+            {
+                rooms = await _roomRepository.GetAllAsync();
+            }
+            else
+            {
+                rooms = await _roomRepository.GetPageAsync(page, size);
+            }
             return Ok(rooms);
         }
 

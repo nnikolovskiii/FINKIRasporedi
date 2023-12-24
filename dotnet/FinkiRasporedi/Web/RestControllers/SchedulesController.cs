@@ -17,17 +17,17 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // GET: api/Schedules
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int page = 1, int size = 5)
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int page, int size)
         {
-            var schedules = await _scheduleRepository.GetPageAsync(page, size);
-            return Ok(schedules);
-        }
-
-        // GET: api/Schedules
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules()
-        {
-            var schedules = await _scheduleRepository.GetAllAsync();
+            IEnumerable<Schedule> schedules;
+            if (page == 0 && size == 0)
+            {
+                schedules = await _scheduleRepository.GetAllAsync();
+            }
+            else
+            {
+                schedules = await _scheduleRepository.GetPageAsync(page, size);
+            }
             return Ok(schedules);
         }
 
@@ -65,13 +65,28 @@ namespace FinkiRasporedi.Controllers.Rest
             return NoContent();
         }
 
+        // POST: api/Schedules/addLecture/5
         [HttpPost("addLecture/{id}")]
-        public async Task<ActionResult<Schedule>> AddLecture(int id, [FromBody] int lectureId)
+        public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] int lectureId)
         {
-
             var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
             return Ok(updatedSchedule);
         }
 
+        // POST: api/Schedules/addDuplicateLecture/5
+        [HttpPost("addDuplicateLecture/{id}")]
+        public async Task<ActionResult<Schedule>> AddDuplicateLecture(int id, [FromBody] int lectureId)
+        {
+            var updatedSchedule = await _scheduleRepository.AddDuplicateLectureAsync(id, lectureId);
+            return Ok(updatedSchedule);
+        }
+
+        // DELETE: api/Schedules/removeLecture/5
+        [HttpDelete("removeLecture/{id}")]
+        public async Task<ActionResult<Schedule>> RemoveLectureAsync(int id, [FromBody] int lectureId)
+        {
+            var updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
+            return Ok(updatedSchedule);
+        }
     }
 }

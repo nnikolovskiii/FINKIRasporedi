@@ -8,6 +8,6 @@ namespace FinkiRasporedi.Models.Base
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual List<LectureDetails> Lectures { get; set; }
+        public virtual List<Lecture> Lectures { get; set; }
     }
 }

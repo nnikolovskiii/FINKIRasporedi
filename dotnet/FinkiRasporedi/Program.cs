@@ -28,7 +28,6 @@ builder.Services.AddScoped(typeof(ISemesterRepository), typeof(SemesterRepositor
 builder.Services.AddScoped(typeof(IScheduleRepository), typeof(ScheduleRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
-builder.Services.AddScoped(typeof(ICustomLectureRepository), typeof(CustomLectureRepository));
 
 
 builder.Services.AddCors(options =>
