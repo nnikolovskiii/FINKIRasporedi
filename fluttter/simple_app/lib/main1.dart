@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/service/lecture_service.dart';
 
 void main() {
+  LectureService lectureService = LectureService();
+  lectureService.getLecturesWithPagination();
   runApp(MyApp());
 }
 
