@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
+import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
+import '../../domain/models/subject.dart';
+import '../widgets/searchBar_widget.dart';
+
 
 Color myCustomColor2 = Color(0xFF42587F);
 
@@ -20,11 +24,7 @@ ThemeData theme = ThemeData(
   ),
 );
 
-class Subject {
-  final String? name;
 
-  Subject({this.name});
-}
 
 List<Subject> subjects = [];
 
@@ -39,10 +39,10 @@ class SearchBarApp extends StatefulWidget {
 
 class _SearchBarAppState extends State<SearchBarApp> {
   bool isDark = false;
-  List<Subject> filteredSubjects = [];
   List<Course> courses = []; // Add a list to store courses
+  List<Course> filteredCourses = []; // Add a list to store courses
   CourseService _courseService = CourseService(); // Initialize CourseService
-
+  bool isLoading = true;
   @override
   void initState() {
     super.initState();
@@ -53,16 +53,17 @@ class _SearchBarAppState extends State<SearchBarApp> {
     try {
       List<Course> fetchedCourses = await _courseService.getCourses();
       setState(() {
-        courses = fetchedCourses;
-        filteredSubjects = courses.map((course) => Subject(name: course.subject.name)).toList();
 
+        courses = fetchedCourses;
+        filteredCourses =fetchedCourses;
         // Debugging: Print the fetched courses and subjects
         print('Fetched Courses: $courses');
-        print('Filtered Subjects: $filteredSubjects');
+        isLoading = false;
       });
     } catch (e) {
       // Print error message
       print('Error fetching courses: $e');
+      isLoading = false;
       // Handle error scenarios here
     }
   }
@@ -86,51 +87,82 @@ class _SearchBarAppState extends State<SearchBarApp> {
               // Search bar and suggestions
               SearchAnchor(
                 builder: (BuildContext context, SearchController controller) {
-                  return SearchBar(
-                    controller: controller,
-                    padding: MaterialStateProperty.all<EdgeInsets>(
-                      const EdgeInsets.symmetric(horizontal: 16.0),
-                    ),
-                    onTap: () {},
-                    onChanged: (String value) {
-                      setState(() {
-                        if (value.isEmpty) {
-                          filteredSubjects = courses.map((course) => Subject(name: course.subject.name)).toList();
-                        } else {
-                          filteredSubjects = courses
-                              .where((course) => course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
-                              .map((course) => Subject(name: course.subject.name))
-                              .toList();
-                        }
-                      });
-                    },
-                    leading: const Icon(Icons.search),
+                  return SearchBarWidget(
+                  controller: controller,
+                  onChanged: (String value) {
+                  setState(() {
+                  if (value.isEmpty) {
+                  filteredCourses = courses;
+                  print(filteredCourses.length);
+                  } else {
+                  filteredCourses = courses
+                      .where((course) =>
+                  course.subject.name?.toLowerCase().startsWith(value.toLowerCase()) ?? false)
+                      .toList();
+                  print(filteredCourses.length);
+                  }
+                  });
+                  }, hintText: 'Пребарај предмет..',
                   );
-                },
+                  },
+
                 suggestionsBuilder: (
                     BuildContext context,
                     SearchController controller,
                     ) {
-                  return List<Widget>.generate(filteredSubjects.length, (int index) {
-                    final String item = filteredSubjects.elementAt(index).name as String;
+                  return List<Widget>.generate(filteredCourses.length, (int index) {
+                    final String itemName = filteredCourses[index].subject.name ?? '';
                     return ListTile(
-                      title: Text(item),
-                      onTap: () {
-                        // Add functionality on selecting a suggestion if needed
+                      title: Text(itemName),
 
-                      },
                     );
                   });
                 },
               ),
+              IconButton(
+                icon: const Icon(Icons.filter_list),
+                onPressed: () {
+                  // Implement the filter functionality here
+                  // This onPressed function will be triggered when the filter icon is pressed
+                  // You can add your filter logic or open a filter dialog/pop-up
+                },
+              ),
               // Display the filtered list
-              Expanded(
-                child: ListView.builder(
-                  itemCount: filteredSubjects.length,
+              if (isLoading)
+                const Center(  child: Padding(
+                  padding: EdgeInsets.all(80.0), // Adjust the margin as needed
+                  child: CircularProgressIndicator(),
+                ),
+                )
+              else
+                 Expanded(
+                child: ListView.separated(
+                  itemCount: filteredCourses.length,
+                  separatorBuilder: (BuildContext context, int index) =>
+                      Divider(), // Add Divider between items
                   itemBuilder: (BuildContext context, int index) {
-                    final String itemName = filteredSubjects[index].name ?? '';
+                    final String itemName =
+                        filteredCourses[index].subject.name ?? '';
+
                     return ListTile(
                       title: Text(itemName),
+                      onTap: () {
+                        String courseName = filteredCourses[index].subject.name as String;
+                        String courseId = filteredCourses[index].id as String;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('You clicked: $courseId'),
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfessorListScreen(courseId: courseId, courseName : courseName), // Pass courseId as argument
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

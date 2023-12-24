@@ -3,6 +3,7 @@ using System;
 using FinkiRasporedi.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231223173342_new_lecture_config")]
+    partial class new_lecture_config
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,6 +60,7 @@ namespace FinkiRasporedi.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<int?>("OriginalLectureId")
@@ -69,9 +73,6 @@ namespace FinkiRasporedi.Migrations
                     b.Property<string>("RoomName")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
-
-                    b.Property<int?>("ScheduleId")
-                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("TimeFrom")
                         .HasColumnType("time(6)");
@@ -91,8 +92,6 @@ namespace FinkiRasporedi.Migrations
                     b.HasIndex("ProfessorId");
 
                     b.HasIndex("RoomName");
-
-                    b.HasIndex("ScheduleId");
 
                     b.ToTable("Lecture", (string)null);
                 });
@@ -177,24 +176,6 @@ namespace FinkiRasporedi.Migrations
                     b.ToTable("CourseProfessors");
                 });
 
-            modelBuilder.Entity("FinkiRasporedi.Models.Domain.ScheduleLecture", b =>
-                {
-                    b.Property<int>("ScheduleId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LectureId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("ScheduleId", "LectureId");
-
-                    b.HasIndex("LectureId");
-
-                    b.ToTable("ScheduleLecture");
-                });
-
             modelBuilder.Entity("FinkiRasporedi.Models.Domain.Subject", b =>
                 {
                     b.Property<string>("Id")
@@ -277,6 +258,21 @@ namespace FinkiRasporedi.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("LectureSchedule", b =>
+                {
+                    b.Property<int>("LecturesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ScheduleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LecturesId", "ScheduleId");
+
+                    b.HasIndex("ScheduleId");
+
+                    b.ToTable("ScheduleLectures", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -467,10 +463,6 @@ namespace FinkiRasporedi.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinkiRasporedi.Models.Base.Schedule", null)
-                        .WithMany("Lectures")
-                        .HasForeignKey("ScheduleId");
-
                     b.Navigation("Course");
 
                     b.Navigation("OriginalLecture");
@@ -499,23 +491,19 @@ namespace FinkiRasporedi.Migrations
                     b.Navigation("Professor");
                 });
 
-            modelBuilder.Entity("FinkiRasporedi.Models.Domain.ScheduleLecture", b =>
+            modelBuilder.Entity("LectureSchedule", b =>
                 {
-                    b.HasOne("FinkiRasporedi.Models.Base.Lecture", "Lecture")
+                    b.HasOne("FinkiRasporedi.Models.Base.Lecture", null)
                         .WithMany()
-                        .HasForeignKey("LectureId")
+                        .HasForeignKey("LecturesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("FinkiRasporedi.Models.Base.Schedule", "Schedule")
+                    b.HasOne("FinkiRasporedi.Models.Base.Schedule", null)
                         .WithMany()
                         .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Lecture");
-
-                    b.Navigation("Schedule");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -582,11 +570,6 @@ namespace FinkiRasporedi.Migrations
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("FinkiRasporedi.Models.Base.Schedule", b =>
-                {
-                    b.Navigation("Lectures");
                 });
 #pragma warning restore 612, 618
         }

@@ -43,9 +43,58 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Schedule> AddLectureAsync(int id, int lectureId)
         {
-            LectureDetails lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
             Schedule schedule = await GetByIdAsync(id);
             schedule.Lectures.Add(lecture);
+            _context.Entry(schedule).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return schedule;
+        }
+
+        public async Task<Schedule?> AddDuplicateLectureAsync(int id, int original_lectureId)
+        {
+            Lecture lecture = await _lectureRepository.GetByIdAsync(original_lectureId);
+            if (lecture.Type == 0)
+            {
+
+
+                Schedule schedule = await GetByIdAsync(id);
+                Lecture duplicateLecture = new()
+                {
+                    Name = lecture.Name,
+                    OriginalLecture = lecture,
+                    Day = lecture.Day,
+                    TimeFrom = lecture.TimeFrom,
+                    TimeTo = lecture.TimeTo,
+                    Professor = lecture.Professor,
+                    Course = lecture.Course,
+                    Room = lecture.Room,
+                    Type = 1
+                };
+                Lecture newLecture = await _lectureRepository.AddAsync(duplicateLecture);
+                schedule.Lectures.Add(newLecture);
+                schedule.Lectures.Remove(lecture);
+                _context.Entry(schedule).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return schedule;
+            }
+            return null;
+        }
+
+        public async Task<Schedule> RemoveLectureAsync(int id, int lectureId)
+        {
+            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            Schedule schedule = await GetByIdAsync(id);
+            schedule.Lectures.Remove(lecture);
+            if (lecture.OriginalLecture != null)
+            {
+                schedule.Lectures.Add(lecture.OriginalLecture);
+            }
+
+            if (lecture.Type == 1 || lecture.Type == 2)
+            {
+                await _lectureRepository.DeleteAsync(lectureId);
+            }
             _context.Entry(schedule).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return schedule;

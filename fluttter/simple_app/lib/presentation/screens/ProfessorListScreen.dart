@@ -1,98 +1,95 @@
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import '../../service/professor_service.dart';
-// import '../../domain/models/professor.dart';
-// import '../widgets/porfessor_widget.dart';
-// import 'ProfessorDetailsScreen.dart';
-//
-// class ProfessorListScreen extends StatefulWidget {
-//   @override
-//   _ProfessorListScreenState createState() => _ProfessorListScreenState();
-// }
-//
-// class _ProfessorListScreenState extends State<ProfessorListScreen> {
-//   late List<Professor> professors;
-//   List<Professor> filteredProfessors = []; // List to store filtered professors
-//   TextEditingController searchController = TextEditingController();
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     fetchData();
-//   }
-//
-//   Future<void> fetchData() async {
-//     final apiService = ProfessorService(); // Assuming you have created the ApiService class
-//     try {
-//       final data = await apiService.fetchData();
-//       setState(() {
-//         professors = data;
-//         filteredProfessors = data; // Initialize filtered list with all professors
-//       });
-//     } catch (e) {
-//       // Handle the error
-//     }
-//   }
-//
-//   void showProfessorDetails(Professor professor) {
-//     Navigator.of(context).push(
-//       MaterialPageRoute(
-//         builder: (context) => ProfessorDetailsScreen(professor: professor),
-//       ),
-//     );
-//   }
-//
-//   void filterProfessors(String query) {
-//     setState(() {
-//       filteredProfessors = professors
-//           .where((professor) => professor.name.toLowerCase().contains(query.toLowerCase()))
-//           .toList();
-//     });
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: Text('Professor List')),
-//       body: Column(
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: TextField(
-//               controller: searchController,
-//               onChanged: (query) {
-//                 filterProfessors(query);
-//               },
-//               decoration: InputDecoration(
-//                 labelText: 'Search Professors',
-//                 border: OutlineInputBorder(),
-//               ),
-//             ),
-//           ),
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: filteredProfessors.length,
-//               itemBuilder: (context, index) {
-//                 final professor = filteredProfessors[index];
-//                 return GestureDetector(
-//                   onTap: () {
-//                     showProfessorDetails(professor);
-//                   },
-//                   child: ProfessorWidget(
-//                     professor: professor, onPressed: () {  showProfessorDetails(professor); },
-//                   ),
-//                 );
-//               },
-//             ),
-//           ),
-//         ],
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           // Add any other actions you want to perform
-//         },
-//         child: Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }
+import 'package:flutter/material.dart';
+import 'package:simple_app/domain/models/professor.dart';
+import 'package:simple_app/service/professor_service.dart';
+import 'package:simple_app/service/course_service.dart';
+
+import '../widgets/searchBar_widget.dart';
+
+class ProfessorListScreen extends StatefulWidget {
+  final String courseId;
+  final String courseName;
+
+  ProfessorListScreen({required this.courseId, required this.courseName});
+
+  @override
+  _ProfessorListScreenState createState() =>
+      _ProfessorListScreenState(courseId,courseName);
+}
+
+class _ProfessorListScreenState extends State<ProfessorListScreen> {
+  final String courseId;
+  final String courseName;
+  List<Professor> professors = [];
+  List<Professor> filteredProfessors = [];
+  ProfessorService professorService = ProfessorService();
+  CourseService courseService = CourseService();
+  TextEditingController _searchController = TextEditingController(); // Add this line
+
+  _ProfessorListScreenState(this.courseId, this.courseName);
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProfessors();
+  }
+
+  Future<void> fetchProfessors() async {
+    try {
+      List<Professor> fetchedProfessors =
+      await professorService.getProfessorsByCourseId(courseId: courseId);
+      setState(() {
+        professors = fetchedProfessors;
+        filteredProfessors = fetchedProfessors;
+        print('Fetched Professors: $professors');
+      });
+    } catch (e) {
+      print('Error fetching professors: $e');
+    }
+  }
+
+  void filterProfessors(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredProfessors = professors;
+      } else {
+        filteredProfessors = professors
+            .where((professor) =>
+            professor.name.toLowerCase().startsWith(query.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('$courseName'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0), // Adjust padding as needed
+        child: Column(
+          children: [
+            SearchBarWidget(
+              controller: _searchController,
+              onChanged: filterProfessors,
+              hintText: "Пребарај професор..",
+            ),
+            const SizedBox(height: 8), // Add some space between search bar and list
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredProfessors.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(filteredProfessors[index].name),
+                    // Add other professor details or actions if needed
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
