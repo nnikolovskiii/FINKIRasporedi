@@ -17,17 +17,17 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // GET: api/Semesters
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters(int page = 1, int size = 5)
+        public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters(int page, int size)
         {
-            var semesters = await _semesterRepository.GetPageAsync(page, size);
-            return Ok(semesters);
-        }
-
-        // GET: api/Semesters/All
-        [HttpGet("All")]
-        public async Task<ActionResult<IEnumerable<Semester>>> GetAllSemesters()
-        {
-            var semesters = await _semesterRepository.GetAllAsync();
+            IEnumerable<Semester> semesters;
+            if (page == 0 && size == 0)
+            {
+                semesters = await _semesterRepository.GetAllAsync();
+            }
+            else
+            {
+                semesters = await _semesterRepository.GetPageAsync(page, size);
+            }
             return Ok(semesters);
         }
 
