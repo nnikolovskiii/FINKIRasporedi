@@ -44,10 +44,10 @@ namespace FinkiRasporedi.Repository.Data
                 .HasKey(s => s.Code);
             modelBuilder.Entity<Subject>()
                 .HasKey(s => s.Id);
-            /*       modelBuilder.Entity<Schedule>()
+            modelBuilder.Entity<Schedule>()
                        .HasMany(s => s.Lectures)
                        .WithMany()
-                       .UsingEntity(j => j.ToTable("ScheduleLectures"));*/
+                       .UsingEntity(j => j.ToTable("ScheduleLectures"));
             modelBuilder.Entity<Student>()
                .HasMany(s => s.Schedules)
                .WithMany()
