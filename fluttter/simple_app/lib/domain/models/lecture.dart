@@ -7,8 +7,8 @@ class Lecture {
   String? name;
   Lecture? originalLecture;
   int day;
-  String timeFrom;
-  String timeTo;
+  double timeFrom;
+  double timeTo;
   Professor professor;
   Course course;
   Room room;
@@ -35,8 +35,8 @@ class Lecture {
             ? Lecture.fromJson(json['originalLecture'])
             : null,
         day: json['day'],
-        timeFrom: json['timeFrom'],
-        timeTo: json['timeTo'],
+        timeFrom: double.parse(json['timeFrom'].substring(0, 2)),
+        timeTo: double.parse(json['timeTo'].substring(0, 2))+1,
         professor: Professor.fromJson(json['professor']),
         course: Course.fromJson(json['course']),
         room: Room.fromJson(json['room']),

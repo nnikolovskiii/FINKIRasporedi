@@ -12,9 +12,7 @@ class LectureWidget extends StatelessWidget {
   });
 
   double getHeight(Lecture lecture) {
-    double from = double.parse(lecture.timeFrom.substring(0, 2));
-    double to = double.parse(lecture.timeTo.substring(0, 2)) + 1;
-    double interval = to - from;
+    double interval = lecture.timeTo - lecture.timeFrom;
     return 50 * interval;
   }
 

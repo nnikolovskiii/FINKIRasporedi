@@ -6,9 +6,12 @@ import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import 'package:simple_app/presentation/screens/cardsList.dart';
 import 'package:simple_app/presentation/screens/addSubjectsScreen.dart';
 import 'package:simple_app/presentation/screens/courseList.dart';
+import 'package:simple_app/service/lecture_service.dart';
 
 void main() {
   runApp(MyApp());
+  LectureService service = LectureService();
+  service.getLecturesWithPagination();
 }
 
 Color myCustomColor2 = Color(0xFF42587F);
