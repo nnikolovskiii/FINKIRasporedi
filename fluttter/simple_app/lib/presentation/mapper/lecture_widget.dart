@@ -1,17 +1,32 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
-class CustomContainer extends StatelessWidget {
-  final double height;
-  final double width;
-  final Color color;
-  final String text;
+import '../../domain/models/lecture.dart';
 
-  CustomContainer({
-    required this.height,
-    required this.width,
-    required this.color,
-    required this.text,
+class LectureWidget extends StatelessWidget {
+  final Lecture lecture;
+
+  const LectureWidget({super.key,
+    required this.lecture,
   });
+
+  double getHeight(Lecture lecture) {
+    double from = double.parse(lecture.timeFrom.substring(0, 2));
+    double to = double.parse(lecture.timeTo.substring(0, 2)) + 1;
+    double interval = to - from;
+    return 50 * interval;
+  }
+
+
+  Color hexStringToColor(String? hexString) {
+    if(hexString == null){
+      return Colors.green;
+    }
+    hexString = hexString.replaceAll("#", "");
+    int hexValue = int.parse(hexString, radix: 16);
+    return Color(hexValue | 0xFF000000);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,68 +39,40 @@ class CustomContainer extends StatelessWidget {
           ),
         ),
       ),
-      child:
-          Container(
-            height: height,
-            width: width,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: const Flex(
-              direction: Axis.vertical,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown, // Choose the fitting strategy
-                      child: Text(
-                        'Container 1',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: FittedBox(
-                      fit: BoxFit.contain, // Use a fitting strategy that scales up for the middle container
-                      child: Text(
-                        'Container 2 (Bigger)',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Center(
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        'Container 3',
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      child: Container(
+        height: getHeight(lecture),
+        width: 100,
+        decoration: BoxDecoration(
+          color: Colors.cyan,
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(lecture.room.name),
+              Text(lecture.course.subject.name),
+              Text(lecture.professor.name),
+            ],
           ),
+        ),
+      ),
     );
   }
 }
 
 void main() {
+  String jsonString = '{"id":1,"name":null,"originalLecture":null,"day":0,"timeFrom":"08:00:00","timeTo":"09:45:00","professor":{"id":"aleksandar.stojmenski","name":"Александар Стојменски","email":null,"professorTitle":null},"course":{"id":"W23strukturno.programiranje","semester":{"code":"W23","year":"2023","semesterType":1},"subject":{"id":"strukturno.programiranje","name":"Структурно програмирање","level":1,"abbreviation":null}},"room":{"name":"315 ТМФ"},"type":0}';
+
+  Map<String, dynamic> jsonMap = json.decode(jsonString);
+  Lecture lecture = Lecture.fromJson(jsonMap);
   runApp(
     MaterialApp(
       home: Scaffold(
         body: Center(
-          child: CustomContainer(
-            height: 150.0,
-            width: 100.0,
-            color: Colors.purple,
-            text: "Hello!",
+          child: LectureWidget(
+           lecture: lecture,
           ),
         ),
       ),
