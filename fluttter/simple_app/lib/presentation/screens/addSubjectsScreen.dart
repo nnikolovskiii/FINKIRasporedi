@@ -4,6 +4,7 @@ import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import '../../domain/models/subject.dart';
 import '../widgets/searchBar_widget.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 
 Color myCustomColor2 = Color(0xFF42587F);
@@ -129,10 +130,15 @@ class _SearchBarAppState extends State<SearchBarApp> {
               ),
               // Display the filtered list
               if (isLoading)
-                const Center(  child: Padding(
-                  padding: EdgeInsets.all(80.0), // Adjust the margin as needed
-                  child: CircularProgressIndicator(),
-                ),
+                 Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(80.0),
+                    child: LoadingAnimationWidget.flickr(
+                      leftDotColor: Color(0xFF01579B) ,
+                      rightDotColor: Colors.orange,
+                      size: 80,
+                    ),
+                  ),
                 )
               else
                  Expanded(
@@ -151,8 +157,8 @@ class _SearchBarAppState extends State<SearchBarApp> {
                         String courseId = filteredCourses[index].id as String;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('You clicked: $courseId'),
-                            duration: Duration(seconds: 2),
+                            content: Text('Притиснавте: $courseName'),
+                            duration: Duration(seconds: 1),
                           ),
                         );
 
