@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import '../../domain/models/subject.dart';
+import '../widgets/SelectedLecturesProvider.dart';
 import '../widgets/searchBar_widget.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -29,7 +31,12 @@ ThemeData theme = ThemeData(
 
 List<Subject> subjects = [];
 
-void main() => runApp(const SearchBarApp());
+void main() => runApp(
+  ChangeNotifierProvider(
+    create: (context) => SelectedLecturesProvider(), // Adding the provider here
+    child: const SearchBarApp(),
+  ),
+);
 
 class SearchBarApp extends StatefulWidget {
   const SearchBarApp({Key? key}) : super(key: key);

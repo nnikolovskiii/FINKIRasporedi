@@ -2,6 +2,8 @@ import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/domain/models/professor.dart';
 import 'package:simple_app/domain/models/room.dart';
 
+import 'enums/day.dart';
+
 class Lecture {
   int id;
   int day;
@@ -24,7 +26,7 @@ class Lecture {
   factory Lecture.fromJson(Map<String, dynamic> json) {
     return Lecture(
       id: json['id'],
-      day: json['day'],
+      day: Day.values[json['day']].index,
       timeFrom: json['timeFrom'],
       timeTo: json['timeTo'],
       professor: Professor.fromJson(json['professor']),
