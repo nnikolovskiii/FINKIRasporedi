@@ -2,6 +2,8 @@ import 'package:simple_app/domain/models/course.dart';
 import 'package:simple_app/domain/models/professor.dart';
 import 'package:simple_app/domain/models/room.dart';
 
+import 'enums/day.dart';
+
 class Lecture {
   int id;
   String? name;
