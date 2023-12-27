@@ -13,7 +13,6 @@ void main() {
       child: MyApp(),
     ),
   );
-}
 
 Color myCustomColor2 = Color(0xFF42587F);
 
