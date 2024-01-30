@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/lecture_service.dart';
+import 'package:simple_app/service/schedule_service.dart';
 
-void main() {
-  LectureService lectureService = LectureService();
-  lectureService.getLecturesWithPagination();
+import 'domain/models/schedule.dart';
+
+Future<void> main() async {
+  ScheduleService scheduleService = ScheduleService();
+  // Schedule schedule = Schedule(name: "lol", description: "lol1");
+  // await scheduleService.addSchedule(schedule);
+  Schedule schedule = await scheduleService.getSchedule(3);
+  scheduleService.getSchedulesWithPagination();
   runApp(MyApp());
 }
 

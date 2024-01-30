@@ -63,7 +63,7 @@ class ScheduleWidget extends StatelessWidget {
       list.add(lecture);
     }
 
-    List<Lecture> lectures = schedule.lectures;
+    List<Lecture> lectures = schedule.lectures!;
 
     for (int i = 0; i < lectures.length; i++) {
       int idx = lectures[i].day;

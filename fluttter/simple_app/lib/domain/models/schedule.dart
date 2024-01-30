@@ -1,16 +1,16 @@
 import 'package:simple_app/domain/models/lecture.dart';
 
 class Schedule {
-  int id;
+  int? id;
   String name;
   String description;
-  List<Lecture> lectures;
+  List<Lecture>? lectures;
 
   Schedule({
-    required this.id,
+    this.id,
     required this.name,
     required this.description,
-    required this.lectures,
+    this.lectures,
   });
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
@@ -26,14 +26,24 @@ class Schedule {
   }
 
   Map<String, dynamic> toJson() {
-    // Convert the 'lectures' list to a list of JSON objects using Lecture.toJson
-    List<Map<String, dynamic>> lecturesJson = lectures.map((lecture) => lecture.toJson()).toList();
+    List<Map<String, dynamic>>? lecturesJson;
+    if (lectures != null) {
+      lecturesJson = lectures!.map((lecture) => lecture.toJson()).toList();
+    }
 
-    return {
-      'id': id,
-      'name': name,
-      'description': description,
-      'lectures': lecturesJson,
-    };
+    if (id == null || lecturesJson == null) {
+      return {
+        'name': name,
+        'description': description,
+      };
+    }else{
+      return {
+        'id': id,
+        'name': name,
+        'description': description,
+        'lectures': lecturesJson,
+      };
+    }
   }
+
 }
