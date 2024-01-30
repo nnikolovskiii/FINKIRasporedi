@@ -9,7 +9,7 @@ class ScheduleService {
   final String baseUrl = 'http://localhost:5012/api';
 
   Future<List<Schedule>> getSchedulesWithPagination(
-      {int page = 1, int size = 5}) async {
+      {int page = 0, int size = 0}) async {
     final response = await http.get(
       Uri.parse('$baseUrl/Schedules?page=$page&size=$size'),
     );

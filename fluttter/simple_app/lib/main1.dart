@@ -9,6 +9,7 @@ Future<void> main() async {
   // Schedule schedule = Schedule(name: "lol", description: "lol1");
   // await scheduleService.addSchedule(schedule);
   Schedule schedule = await scheduleService.getSchedule(3);
+  await scheduleService.addLecture(3, 5);
   scheduleService.getSchedulesWithPagination();
   runApp(MyApp());
 }
