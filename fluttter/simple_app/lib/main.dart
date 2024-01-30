@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
 import 'package:simple_app/presentation/screens/cardsList.dart';
 import 'package:simple_app/presentation/screens/addSubjectsScreen.dart';
-import 'package:simple_app/presentation/screens/courseList.dart';
-import 'package:simple_app/presentation/widgets/SelectedLecturesProvider.dart';
-import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => SelectedLecturesProvider(), // Adding the provider here
-      child: MyApp(),
-    ),
-  );
+  runApp(MyApp());
+}
 
 Color myCustomColor2 = Color(0xFF42587F);
 
@@ -25,13 +22,13 @@ ThemeData theme = ThemeData(
     color: Color(0xFFF9DB6D),
     iconTheme: IconThemeData(color: Colors.grey),
     titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
+
   ),
   colorScheme: ColorScheme.fromSeed(
     seedColor: myCustomColor2,
     brightness: Brightness.light,
   ),
 );
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,7 +37,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home: SearchBarApp(), // Use a SplashScreen widget
+      home: CardList(), // Use a SplashScreen widget
     );
   }
 }
