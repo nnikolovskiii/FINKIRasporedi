@@ -36,16 +36,16 @@ class DayColumnWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-            child: Container(
-              padding: EdgeInsets.all(5.0),
-              color: Colors.grey[200],
-              child: Flex(
-                direction: Axis.vertical,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: defineColumn(),
-              ),
-            ),
-        );
+      child: Container(
+        padding: EdgeInsets.all(5.0),
+        color: Colors.grey[200],
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: defineColumn(),
+        ),
+      ),
+    );
   }
 
 }
@@ -63,7 +63,7 @@ class ScheduleWidget extends StatelessWidget {
       list.add(lecture);
     }
 
-    List<Lecture> lectures = schedule.lectures;
+    List<Lecture> lectures = schedule.lectures!;
 
     for (int i = 0; i < lectures.length; i++) {
       int idx = lectures[i].day;
@@ -80,10 +80,10 @@ class ScheduleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+            scrollDirection: Axis.vertical,
             child:Container(
               padding: const EdgeInsets.all(5.0),
               color: Colors.grey[200],
@@ -94,9 +94,9 @@ class ScheduleWidget extends StatelessWidget {
               ),
             ),
           ),
-          )
-        );
-}
+        )
+    );
+  }
 
 }
 
@@ -110,7 +110,7 @@ void main() {
       home: Scaffold(
         body: Center(
           child: ScheduleWidget(
-             schedule: schedule,
+            schedule: schedule,
           ),
         ),
       ),
