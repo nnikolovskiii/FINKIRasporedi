@@ -1,10 +1,37 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 
 import '../../domain/models/lecture.dart';
 
 class LectureWidget extends StatelessWidget {
+
+  Color getRandomColor() {
+    // List of predefined colors
+    List<Color> colors = [
+      Colors.lime.shade300,
+      Colors.green.shade200,
+      Colors.teal.shade300,
+      Colors.cyan.shade200,
+      Colors.indigo.shade200,
+      Colors.purple.shade200,
+      Colors.orange.shade200,
+      Colors.deepOrange.shade200,
+      Colors.red.shade200,
+      Colors.pink.shade200,
+      Colors.lightBlue.shade200,
+      Colors.blue.shade300,
+      Colors.blueGrey.shade200,
+    ];
+
+    // Get a random index
+    int randomIndex = Random().nextInt(colors.length);
+
+    // Return the random color
+    return colors[randomIndex];
+  }
+
   final Lecture lecture;
 
   const LectureWidget({super.key,
@@ -41,7 +68,7 @@ class LectureWidget extends StatelessWidget {
         height: getHeight(lecture),
         width: 100,
         decoration: BoxDecoration(
-          color: Colors.cyan,
+          color: getRandomColor(),
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: FittedBox(
@@ -49,9 +76,31 @@ class LectureWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(lecture.room.name),
-              Text(lecture.course.subject.name),
-              Text(lecture.professor.name),
+              Text(
+                lecture.room.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontFamily: 'Lato'
+                ),
+              ),
+              Text(
+                lecture.course.subject.name,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Lato',
+                  color: Colors.black,
+
+                ),
+              ),
+              Text(
+                lecture.professor.name,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontFamily: 'Lato',
+                ),
+              ),
+
             ],
           ),
         ),

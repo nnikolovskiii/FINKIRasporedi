@@ -52,6 +52,7 @@ class DayColumnWidget extends StatelessWidget {
               ),
             ),
         );
+
   }
 
 }
@@ -86,10 +87,10 @@ class ScheduleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+            scrollDirection: Axis.vertical,
             child:Container(
               padding: const EdgeInsets.all(5.0),
               color: Colors.grey[200],
@@ -100,9 +101,9 @@ class ScheduleWidget extends StatelessWidget {
               ),
             ),
           ),
-          )
-        );
-}
+        )
+    );
+  }
 
 }
 
@@ -116,7 +117,7 @@ void main() {
       home: Scaffold(
         body: Center(
           child: ScheduleWidget(
-             schedule: schedule,
+            schedule: schedule,
           ),
         ),
       ),
