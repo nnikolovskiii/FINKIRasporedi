@@ -31,7 +31,7 @@ class AddedLecturesScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SearchBarApp()),
+                  MaterialPageRoute(builder: (context) => SearchBarApp(scheduleId: 3)),
                 );
               },
               child: Text('Add'),

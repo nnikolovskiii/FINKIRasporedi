@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:simple_app/domain/models/lecture.dart';
+import 'package:simple_app/presentation/screens/calendar.dart';
 import 'package:simple_app/service/lecture_service.dart';
 
+import '../../service/schedule_service.dart';
 import '../widgets/SelectedLecturesProvider.dart';
 import 'AddedLecturesScreen.dart'; // Import your lecture service
 
 class LectureSlotsScreen extends StatefulWidget {
+  final int scheduleId;
   final String professorId;
   final String professorName;
   final String courseId;
-  final LectureService lectureService = LectureService(); // Initialize LectureService
+  final LectureService lectureService = LectureService();
+  final ScheduleService scheduleService = ScheduleService(); // Initialize LectureService
 
   LectureSlotsScreen({
     required this.professorId,
     required this.professorName,
     required this.courseId,
+    required this.scheduleId,
   });
 
   @override
@@ -70,26 +75,15 @@ class _LectureSlotsScreenState extends State<LectureSlotsScreen> {
                       // Add more details if needed
                     ],
                   ),
-                  onTap: () {
+                  onTap: () async {
                     // Access the Provider instance
-                    SelectedLecturesProvider lecturesProvider = Provider.of<SelectedLecturesProvider>(context, listen: false);
-
-                    setState(() {
-                      selectedLectures.add(lecture);
-                      //print(selectedLectures);
-                    });
-
-                    // Add the lecture to the provider
-                    lecturesProvider.addSelectedLecture(lecture);
+                    await widget.scheduleService.addLecture(widget.scheduleId, lecture.id);
 
                     // Navigate to AddedLecturesScreen and pass necessary data
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddedLecturesScreen(
-                          //selectedLectures: selectedLectures,
-                          courseId: widget.courseId,
-                        ),
+                        builder: (context) => CalendarApp(widget.scheduleId),
                       ),
                     );
                   },

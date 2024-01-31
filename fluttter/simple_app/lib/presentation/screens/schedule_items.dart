@@ -191,7 +191,7 @@ class _ScheduleListState extends State<ScheduleList> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => CalendarApp(schedule),
+        builder: (context) => CalendarApp(schedule.id ?? 0),
       ),
     );
   }
