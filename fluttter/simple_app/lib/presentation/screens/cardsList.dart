@@ -24,8 +24,7 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   List<Widget> cards = [];
-  String selectedTheme = "resources"
-      "/images/3.jpg";
+  String selectedTheme = "resources/images/3.jpg";
 
   @override
   void initState() {

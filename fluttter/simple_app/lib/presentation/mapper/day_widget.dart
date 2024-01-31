@@ -12,12 +12,6 @@ class DayWidget extends StatelessWidget {
     return Container(
       height: 50,
       width: 100,
-      decoration: BoxDecoration(
-        color: Colors.cyan,
-        borderRadius: BorderRadius.circular(10.0),
-
-        // Adjust the radius as needed
-      ),
       child: Center(
         child: Text(
           daysMap[day]!,
