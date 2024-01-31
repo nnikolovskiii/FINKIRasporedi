@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/mapper/empty_time_slot_widget.dart';
 import 'package:simple_app/presentation/mapper/lecture_widget.dart';
-
+import 'package:simple_app/presentation/mapper/time_slot_widget.dart';
 import '../../domain/models/lecture.dart';
 import '../../domain/models/schedule.dart';
 import 'package:collection/collection.dart';
@@ -97,7 +97,10 @@ class ScheduleWidget extends StatelessWidget {
               child: Flex(
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: getDayColumns(),
+                children:  [
+                  TimeSlotWidget(startTimeHour: 8, endTimeHour: 20),
+                  ...getDayColumns(),
+                ],
               ),
             ),
           ),
