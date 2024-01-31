@@ -29,8 +29,8 @@ class CalendarApp extends StatelessWidget {
           title: Text('Your App Title'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+
 
           children: [
             Padding(
