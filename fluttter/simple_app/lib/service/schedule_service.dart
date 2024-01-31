@@ -9,7 +9,7 @@ class ScheduleService {
   final String baseUrl = 'http://localhost:5012/api';
 
   Future<List<Schedule>> getSchedulesWithPagination(
-      {int page = 1, int size = 5}) async {
+      {int page = 0, int size = 0}) async {
     final response = await http.get(
       Uri.parse('$baseUrl/Schedules?page=$page&size=$size'),
     );
@@ -18,6 +18,20 @@ class ScheduleService {
       final List<dynamic> jsonData = jsonDecode(response.body);
       var list = jsonData.map((json) => Schedule.fromJson(json)).toList();
       return list;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  Future<Schedule> getSchedule(int id) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/Schedules/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var schedule = Schedule.fromJson(jsonData);
+      return schedule;
     } else {
       throw Exception('Failed to fetch data');
     }
@@ -40,4 +54,25 @@ class ScheduleService {
       throw Exception('Failed to add lecture');
     }
   }
+
+  Future<Schedule> addSchedule(Schedule schedule) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/Schedules'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(schedule.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var item = Schedule.fromJson(jsonData);
+      return item;
+    } else {
+      throw Exception('Failed to add schedule');
+    }
+  }
+
+
+
 }
