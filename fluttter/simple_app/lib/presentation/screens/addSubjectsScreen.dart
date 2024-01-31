@@ -31,15 +31,16 @@ ThemeData theme = ThemeData(
 
 List<Subject> subjects = [];
 
-void main() => runApp(
-  ChangeNotifierProvider(
-    create: (context) => SelectedLecturesProvider(), // Adding the provider here
-    child: const SearchBarApp(),
-  ),
-);
+// void main() => runApp(
+//   ChangeNotifierProvider(
+//     create: (context) => SelectedLecturesProvider(), // Adding the provider here
+//     child: const SearchBarApp(),
+//   ),
+// );
 
 class SearchBarApp extends StatefulWidget {
-  const SearchBarApp({Key? key}) : super(key: key);
+  final int scheduleId;
+  const SearchBarApp({Key? key, required this.scheduleId}) : super(key: key);
 
   @override
   State<SearchBarApp> createState() => _SearchBarAppState();
@@ -172,7 +173,7 @@ class _SearchBarAppState extends State<SearchBarApp> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => ProfessorListScreen(courseId: courseId, courseName : courseName), // Pass courseId as argument
+                            builder: (context) => ProfessorListScreen(scheduleId: widget.scheduleId,courseId: courseId, courseName : courseName), // Pass courseId as argument
                           ),
                         );
                       },

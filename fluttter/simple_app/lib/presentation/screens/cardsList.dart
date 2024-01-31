@@ -279,7 +279,7 @@ class _NewScreenState extends State<NewScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchBarApp()),
+                    MaterialPageRoute(builder: (context) => SearchBarApp(scheduleId: 3)),
                   );
                 },
                 child: Text("Предмети"),
