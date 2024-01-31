@@ -8,12 +8,15 @@ import '../../domain/models/lecture.dart';
 import '../../domain/models/schedule.dart';
 import 'package:collection/collection.dart';
 
+import 'day_widge.dart';
+
 
 class DayColumnWidget extends StatelessWidget {
+  final int day;
   final List<Lecture> lectures;
 
   const DayColumnWidget({super.key,
-    required this.lectures,
+    required this.lectures, required this.day,
   });
 
   defineColumn(){
@@ -42,7 +45,10 @@ class DayColumnWidget extends StatelessWidget {
               child: Flex(
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: defineColumn(),
+                children: [
+                  DayWidget(day: day,),
+                ...defineColumn(),
+              ]
               ),
             ),
         );
@@ -71,7 +77,7 @@ class ScheduleWidget extends StatelessWidget {
     }
 
     for (int i = 0; i < 5; i++) {
-      days.add(DayColumnWidget(lectures: list[i]));
+      days.add(DayColumnWidget(lectures: list[i], day: i,));
     }
 
     return days;
