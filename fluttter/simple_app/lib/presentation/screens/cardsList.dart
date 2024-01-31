@@ -24,8 +24,7 @@ class CardList extends StatefulWidget {
 
 class _CardListState extends State<CardList> {
   List<Widget> cards = [];
-  String selectedTheme = "resources"
-      "/images/3.jpg";
+  String selectedTheme = "resources/images/3.jpg";
 
   @override
   void initState() {
@@ -280,7 +279,7 @@ class _NewScreenState extends State<NewScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SearchBarApp()),
+                    MaterialPageRoute(builder: (context) => SearchBarApp(scheduleId: 3)),
                   );
                 },
                 child: Text("Предмети"),

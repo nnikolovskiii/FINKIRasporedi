@@ -8,7 +8,7 @@ import '../../domain/models/lecture.dart';
 import '../../domain/models/schedule.dart';
 import 'package:collection/collection.dart';
 
-import 'day_widge.dart';
+import 'day_widget.dart';
 
 
 class DayColumnWidget extends StatelessWidget {

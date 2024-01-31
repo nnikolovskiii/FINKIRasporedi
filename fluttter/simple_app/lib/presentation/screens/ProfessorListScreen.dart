@@ -7,10 +7,11 @@ import '../widgets/searchBar_widget.dart';
 import 'LectureSlotsScreen.dart';
 
 class ProfessorListScreen extends StatefulWidget {
+  final int scheduleId;
   final String courseId;
   final String courseName;
 
-  ProfessorListScreen({required this.courseId, required this.courseName});
+  ProfessorListScreen({required this.scheduleId, required this.courseId, required this.courseName});
 
   @override
   _ProfessorListScreenState createState() =>
@@ -91,6 +92,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => LectureSlotsScreen(
+                            scheduleId: widget.scheduleId,
                             professorId: professorId,
                             professorName: selectedProfessor.name,
                             courseId: courseId,
