@@ -2,8 +2,13 @@ import 'package:flutter/material.dart';
 
 class DayWidget extends StatelessWidget {
   final int day;
-  static const Map<int, String> daysMap = {0: "Понделник", 1: "Вторник", 2: "Среда",
-  3:"Четврток" , 4:"Петок"};
+  static const Map<int, String> daysMap = {
+    0: "Понделник",
+    1: "Вторник",
+    2: "Среда",
+    3: "Четврток",
+    4: "Петок"
+  };
 
   const DayWidget({super.key, required this.day});
 
@@ -17,7 +22,7 @@ class DayWidget extends StatelessWidget {
           daysMap[day]!,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-          ),// Replace with your actual text
+          ), // Replace with your actual text
         ),
       ),
     );
