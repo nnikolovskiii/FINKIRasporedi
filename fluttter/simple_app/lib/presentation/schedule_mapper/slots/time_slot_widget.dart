@@ -67,20 +67,3 @@ class TimeSlotWidget extends StatelessWidget {
     return timeSlots;
   }
 }
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
