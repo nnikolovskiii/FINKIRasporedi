@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/domain/models/professor.dart';
+import 'package:simple_app/domain/models/schedule.dart';
 import 'package:simple_app/service/professor_service.dart';
 import 'package:simple_app/service/course_service.dart';
 
-import '../widgets/searchBar_widget.dart';
-import 'LectureSlotsScreen.dart';
+import '../../widgets/searchBar_widget.dart';
+import 'lecture_list_screen.dart';
 
 class ProfessorListScreen extends StatefulWidget {
-  final int scheduleId;
+  final Schedule schedule;
   final String courseId;
   final String courseName;
 
-  ProfessorListScreen({required this.scheduleId, required this.courseId, required this.courseName});
+  ProfessorListScreen(
+      {required this.schedule,
+      required this.courseId,
+      required this.courseName});
 
   @override
   _ProfessorListScreenState createState() =>
-      _ProfessorListScreenState(courseId,courseName);
+      _ProfessorListScreenState(courseId, courseName);
 }
 
 class _ProfessorListScreenState extends State<ProfessorListScreen> {
@@ -25,7 +29,8 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   List<Professor> filteredProfessors = [];
   ProfessorService professorService = ProfessorService();
   CourseService courseService = CourseService();
-  TextEditingController _searchController = TextEditingController(); // Add this line
+  TextEditingController _searchController =
+      TextEditingController(); // Add this line
 
   _ProfessorListScreenState(this.courseId, this.courseName);
 
@@ -38,7 +43,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   Future<void> fetchProfessors() async {
     try {
       List<Professor> fetchedProfessors =
-      await professorService.getProfessorsByCourseId(courseId: courseId);
+          await professorService.getProfessorsByCourseId(courseId: courseId);
       setState(() {
         professors = fetchedProfessors;
         filteredProfessors = fetchedProfessors;
@@ -56,7 +61,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
       } else {
         filteredProfessors = professors
             .where((professor) =>
-            professor.name.toLowerCase().startsWith(query.toLowerCase()))
+                professor.name.toLowerCase().startsWith(query.toLowerCase()))
             .toList();
       }
     });
@@ -77,7 +82,8 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
               onChanged: filterProfessors,
               hintText: "Пребарај професор..",
             ),
-            const SizedBox(height: 8), // Add some space between search bar and list
+            const SizedBox(height: 8),
+            // Add some space between search bar and list
             Expanded(
               child: ListView.separated(
                 itemCount: filteredProfessors.length,
@@ -91,8 +97,8 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => LectureSlotsScreen(
-                            scheduleId: widget.scheduleId,
+                          builder: (context) => LectureListScreen(
+                            schedule: widget.schedule,
                             professorId: professorId,
                             professorName: selectedProfessor.name,
                             courseId: courseId,
