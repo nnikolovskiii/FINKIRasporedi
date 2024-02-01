@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home:  ScheduleList(), // Use a SplashScreen widget
+      home:  CardList(), // Use a SplashScreen widget
     );
   }
 }
