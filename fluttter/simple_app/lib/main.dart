@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
+import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:simple_app/presentation/screens/ProfessorListScreen.dart';
-import 'package:simple_app/presentation/screens/cardsList.dart';
-import 'package:simple_app/presentation/screens/addSubjectsScreen.dart';
-import 'package:simple_app/presentation/screens/schedule_items.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -38,7 +33,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.system,
-      home:  CardList(), // Use a SplashScreen widget
+      home:  ScheduleListScreen(), // Use a SplashScreen widget
     );
   }
 }
