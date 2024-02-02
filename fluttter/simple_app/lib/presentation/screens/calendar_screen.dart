@@ -127,21 +127,21 @@ class _CalendarAppState extends State<CalendarScreen> {
                 ),
 
 
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigate to a different screen when the button is pressed
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CourseListScreen(schedule: scheduleFuture!),
-                        ),
-                      );
-                    },
-                    child: Text('Create custom lecture'),
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.all(16.0),
+                //   child: ElevatedButton(
+                //     onPressed: () {
+                //       // Navigate to a different screen when the button is pressed
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //           builder: (context) => CourseListScreen(schedule: scheduleFuture!),
+                //         ),
+                //       );
+                //     },
+                //     child: Text('Create custom lecture'),
+                //   ),
+                // ),
               ]),
             Expanded(
               child: scheduleFuture != null
