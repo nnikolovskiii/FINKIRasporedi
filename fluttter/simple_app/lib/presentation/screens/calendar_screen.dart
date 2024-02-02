@@ -6,7 +6,7 @@ import 'package:simple_app/service/schedule_service.dart';
 
 import '../../domain/models/schedule.dart';
 import '../schedule_mapper/schedule_widget.dart';
-import 'list/course_list_screen.dart'; // Replace with the actual file name
+import 'list/course_list_screen.dart';
 
 void main() {
 
