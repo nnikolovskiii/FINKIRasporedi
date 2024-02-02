@@ -73,6 +73,20 @@ class ScheduleService {
     }
   }
 
+  Future<Schedule> deleteSchedule(int id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/Schedules/$id'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var item = Schedule.fromJson(jsonData);
+      return item;
+    } else {
+      throw Exception('Failed to delete schedule');
+    }
+  }
+
 
 
 }

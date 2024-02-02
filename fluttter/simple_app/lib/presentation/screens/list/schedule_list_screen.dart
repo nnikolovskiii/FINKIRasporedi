@@ -7,13 +7,14 @@ import '../add/add_schedule_screen.dart';
 import '../calendar_screen.dart';
 
 class ScheduleItem extends StatelessWidget {
+  final ScheduleService scheduleService = ScheduleService();
   final Schedule schedule;
   final String theme;
   final Color bgColor;
   final Color bgColor1;
   final VoidCallback? onTap;
 
-  const ScheduleItem(
+  ScheduleItem(
       {super.key,
       required this.schedule,
       required this.theme,
@@ -45,9 +46,7 @@ class ScheduleItem extends StatelessWidget {
           key: UniqueKey(),
           confirmDismiss: (DismissDirection direction) async {
             if (direction == DismissDirection.startToEnd) {
-              // setState(() {
-              //   cards.removeWhere((item) => item.key == UniqueKey());
-              // });
+              await scheduleService.deleteSchedule(schedule.id ?? -1);
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Raspored deleted')),
               );
