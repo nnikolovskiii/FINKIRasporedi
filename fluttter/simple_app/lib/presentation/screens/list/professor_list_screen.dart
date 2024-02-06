@@ -89,7 +89,9 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                 itemCount: filteredProfessors.length,
                 separatorBuilder: (BuildContext context, int index) =>
                     Divider(), // Add Divider between items
+                ////////////////////////////
                 itemBuilder: (context, index) {
+                  Color backgroundColor = index % 2 == 0 ? Colors.white : Colors.grey.shade200;
                   return GestureDetector(
                     onTap: () {
                       final selectedProfessor = filteredProfessors[index];
@@ -107,9 +109,12 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                         ),
                       );
                     },
-                    child: ListTile(
-                      title: Text(filteredProfessors[index].name),
-                      // Add other professor details or actions if needed
+                    child: Container(
+                      color: backgroundColor, // Set background color here
+                      child: ListTile(
+                        title: Text(filteredProfessors[index].name),
+                        // Add other professor details or actions if needed
+                      ),
                     ),
                   );
                 },

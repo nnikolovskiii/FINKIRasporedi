@@ -87,6 +87,7 @@ flutter:
     - resources/images/9.jpg
     - resources/images/deletes.jpg
     - resources/images/deletes.png
+    - resources/images/bgImg.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
