@@ -10,4 +10,7 @@ flutter pub add loading_animation_widget
 dependencies:
   flutter:
     sdk: flutter
-  step_progress_indicator: ^1.0.2 ```
+  step_progress_indicator: ^1.0.2
+````
+
+- [Button design](https://flutteragency.com/create-buttons-with-different-styles-in-flutter/)
