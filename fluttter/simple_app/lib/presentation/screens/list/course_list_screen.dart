@@ -142,10 +142,11 @@ class _CourseListScreenState extends State<CourseListScreen> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(80.0),
-                    child: LoadingAnimationWidget.flickr(
-                      leftDotColor: Color(0xFF01579B),
-                      rightDotColor: Colors.orange,
+                    child: LoadingAnimationWidget.prograssiveDots(
+                      // leftDotColor: Color(0xFF01579B),
+                      // rightDotColor: Colors.orange,
                       size: 80,
+                      color: Colors.blue.shade800,
                     ),
                   ),
                 )

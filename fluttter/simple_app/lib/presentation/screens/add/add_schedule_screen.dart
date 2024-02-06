@@ -22,7 +22,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: Text('Креирај распоред'),
+        title: const Text('Креирај распоред',
+               style: TextStyle(fontSize: 16, color: Color(0xFF0A2472))),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
@@ -109,38 +110,67 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               TextFormField(
                 controller: _notesEditingController,
                 style: TextStyle(color: Colors.black),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Внеси забелешки за распоредот',
-                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                  border: UnderlineInputBorder(),
+                  filled: true,
+
                 ),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     String name = _nameEditingController.text;
                     String notes = _notesEditingController.text;
-                    Schedule schedule =
-                        Schedule(name: name, description: notes);
+                    Schedule schedule = Schedule(name: name, description: notes);
                     widget.scheduleService.addSchedule(schedule);
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ScheduleListScreen()));
+                      context,
+                      MaterialPageRoute(builder: (context) => ScheduleListScreen()),
+                    );
                   }
                 },
-                child: Text('Продолжи'),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                  elevation: MaterialStateProperty.all(0), // Remove elevation
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(01.0)),
+                  ),
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      //colors: [Color(0xff374ABE), Color(0xff64B6FF)],
+                      colors: [Color(0xff1E2F97), Color(0xff1AA7EC)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ),
+                    borderRadius: BorderRadius.circular(30.0),
+                  ),
+                  child: Container(
+                    constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Продолжи',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.white, fontSize: 15),
+                    ),
+                  ),
+                ),
               ),
+
               SizedBox(height: 8.0),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ScheduleListScreen()));
-                },
-                child: Text("Предмети"),
-              )
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.push(
+              //         context,
+              //         MaterialPageRoute(
+              //             builder: (context) => ScheduleListScreen()));
+              //   },
+              //   child: Text("Предмети"),
+              // )
             ],
           ),
         ),
