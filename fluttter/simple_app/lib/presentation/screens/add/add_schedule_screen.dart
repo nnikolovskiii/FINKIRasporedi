@@ -114,10 +114,11 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   labelText: 'Внеси забелешки за распоредот',
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                   border: UnderlineInputBorder(),
+                  filled: true,
 
                 ),
               ),
-              const SizedBox(height: 20.0),
+              const SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
