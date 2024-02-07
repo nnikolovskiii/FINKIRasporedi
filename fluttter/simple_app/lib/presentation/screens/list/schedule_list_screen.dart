@@ -39,6 +39,35 @@ class ScheduleItem extends StatelessWidget {
     );
   }
 
+  confirmDelete(BuildContext context) async {
+    bool deleteConfirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Потврди бришење"),
+          content: const Text("Дали сте сигурни дека сакате да избришете?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text("Откажи"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text("Избриши"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (deleteConfirmed != null && deleteConfirmed) {
+      // Perform delete operation here
+      await scheduleService.deleteSchedule(schedule.id ?? -1);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Избришан распоред')),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -47,26 +76,32 @@ class ScheduleItem extends StatelessWidget {
         key: UniqueKey(),
         confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.startToEnd) {
-            await scheduleService.deleteSchedule(schedule.id ?? -1);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Raspored deleted')),
-            );
+            await confirmDelete(context);
           } else if (direction == DismissDirection.endToStart) {
-            // Handle editing if needed
+            await confirmDelete(context);
           }
           return false;
         },
         onDismissed: (_) {},
         background: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0), // Set your desired radius
+          borderRadius: BorderRadius.circular(10.0),
+        child: Align(
+          alignment: Alignment.centerRight,
           child: Container(
-            color: Colors.red,
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(Icons.delete, color: Colors.white),
+            height: 100, // Adjust the height as needed
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(15), // Adjust the border radius as needed
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Center(
+              child: Icon(Icons.delete, color: Colors.white),
+            ),
           ),
         ),
-        // background: Container(
+      ),
+
+    // background: Container(
         //
         //   color: Colors.red,
         //   alignment: Alignment.centerRight,
@@ -166,12 +201,22 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       //   ),
       // ),
       appBar: AppBar(
+
+        // leading: ClipOval(
+        //   child: Image.asset(
+        //     'resources/images/io.png', // Set your image path here
+        //     fit: BoxFit.scaleDown,
+        //     scale: 8.0,
+        //
+        //   ),
+        // ),
+
         title: const Text('Распореди',
         style: TextStyle(
               fontSize: 16,
               color: Color(0xFF123499),
             ),),
-        elevation: 60,
+        elevation: 20,
         automaticallyImplyLeading: false,
       ),
       body: FutureBuilder<List<Schedule>>(

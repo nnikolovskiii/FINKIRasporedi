@@ -94,9 +94,11 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               SizedBox(height: 30.0),
               TextFormField(
                 controller: _nameEditingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Внеси име на распоред',
-                  border: OutlineInputBorder(),
+                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                  border: UnderlineInputBorder(),
+                  filled: true,
                 ),
                 style: TextStyle(color: Colors.black),
                 validator: (value) {
@@ -108,16 +110,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               ),
               SizedBox(height: 20.0),
               TextFormField(
-                controller: _notesEditingController,
-                style: TextStyle(color: Colors.black),
-                decoration: const InputDecoration(
-                  labelText: 'Внеси забелешки за распоредот',
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                  border: UnderlineInputBorder(),
-                  filled: true,
-
-                ),
+              controller: _notesEditingController,
+              style: TextStyle(color: Colors.black),
+              decoration: const InputDecoration(
+                labelText: 'Внеси забелешки за распоредот',
+                contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+                border: UnderlineInputBorder(),
+                filled: true,
               ),
+               ),
               const SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () {
