@@ -55,6 +55,24 @@ class ScheduleService {
     }
   }
 
+  Future<Schedule> removeLecture(int id, int lectureId) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/Schedules/removeLecture/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(lectureId),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var item = Schedule.fromJson(jsonData);
+      return item;
+    } else {
+      throw Exception('Failed to add lecture');
+    }
+  }
+
   Future<Schedule> addSchedule(Schedule schedule) async {
     final response = await http.post(
       Uri.parse('$baseUrl/Schedules'),
