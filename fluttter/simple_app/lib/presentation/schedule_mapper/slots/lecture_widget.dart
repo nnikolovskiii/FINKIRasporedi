@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 
 import '../../../domain/models/lecture.dart';
+import '../../../service/schedule_service.dart';
 
 class LectureWidget extends StatelessWidget {
+  final ScheduleService scheduleService = ScheduleService();
+  final int scheduleId;
   final bool segmented;
 
   List<TransparentTimeSlotWidget> getEmptyTimeSlots(Lecture lecture) {
@@ -21,10 +24,10 @@ class LectureWidget extends StatelessWidget {
 
   final Lecture lecture;
 
-  const LectureWidget({
+  LectureWidget({
     super.key,
     required this.lecture,
-    required this.segmented,
+    required this.segmented, required this.scheduleId,
   });
 
   double getHeight(Lecture lecture) {
@@ -43,7 +46,33 @@ class LectureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+          onLongPress: () {
+        // Show a dialog or perform any action for deleting the lecture
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Delete Lecture'),
+            content: Text('Do you want to delete this lecture?'),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  await scheduleService.removeLecture(scheduleId, lecture.id);
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Delete'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Container(
       child: Stack(
         children: [
           Container(
@@ -108,6 +137,7 @@ class LectureWidget extends StatelessWidget {
             ),
         ],
       ),
+    )
     );
   }
 

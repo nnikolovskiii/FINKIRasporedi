@@ -146,7 +146,7 @@ class _CalendarAppState extends State<CalendarScreen> {
             Expanded(
               child: scheduleFuture != null
                   ? Center(
-                child: ScheduleWidget(schedule: scheduleFuture!, segmented: true,),
+                child: ScheduleWidget(schedule: scheduleFuture!, segmented:false,),
               )
                   : Center(
                 child: Padding(
