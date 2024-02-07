@@ -5,6 +5,7 @@ import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_s
 
 import '../../../domain/models/lecture.dart';
 import '../../../service/schedule_service.dart';
+import '../../screens/calendar_screen.dart';
 
 class LectureWidget extends StatelessWidget {
   final ScheduleService scheduleService = ScheduleService();
@@ -58,7 +59,13 @@ class LectureWidget extends StatelessWidget {
               TextButton(
                 onPressed: () async {
                   await scheduleService.removeLecture(scheduleId, lecture.id);
-                  Navigator.of(context).pop(); // Close the dialog
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CalendarScreen(scheduleId),
+                    ),
+                  ); // Close the dialog
                 },
                 child: Text('Delete'),
               ),
