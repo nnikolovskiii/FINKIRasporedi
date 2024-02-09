@@ -55,7 +55,12 @@ class _LectureListScreenState extends State<LectureListScreen> {
     print(widget.professorId);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Термини кај ${widget.professorName}'),
+        title: Text('Термини кај ${widget.professorName}',
+          style: const TextStyle(
+          fontSize: 16,
+          color: Color(0xFF123499),
+        ),),
+      elevation: 20,
       ),
       body: FutureBuilder<List<Lecture>>(
         future: widget.lectureService.getLecturesByCourseIdAndProfessorId(
@@ -84,7 +89,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                 final lecture = snapshot.data![index];
 
                 // Determine background color based on index
-                Color backgroundColor = index % 2 == 0 ? Colors.white70 : Colors.grey.shade200;
+                Color backgroundColor = index % 2 == 0 ? Colors.white70 : const Color(0xFFdfe7f2);
 
                 return Container(
                   color: backgroundColor, // Set background color here
@@ -129,10 +134,13 @@ class _LectureListScreenState extends State<LectureListScreen> {
                                 child: Text('Почеток:', style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               Text('${lecture.timeFrom}:00 h'),
+
+
                             ],
                           ),
                         ),
                         // To
+
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

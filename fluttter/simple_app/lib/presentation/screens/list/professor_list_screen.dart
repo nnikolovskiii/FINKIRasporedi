@@ -71,7 +71,12 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$courseName'),
+        title: Text('$courseName',
+          style: const TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),),
+        elevation: 20,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0), // Adjust padding as needed

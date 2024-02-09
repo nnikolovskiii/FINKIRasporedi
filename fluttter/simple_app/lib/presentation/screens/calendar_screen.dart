@@ -59,7 +59,12 @@ class _CalendarAppState extends State<CalendarScreen> {
           //     );
           //   },
           // ),
-          title: Text('Распоред'),
+          title: const Text('Распоред',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),),
+          elevation: 20,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,

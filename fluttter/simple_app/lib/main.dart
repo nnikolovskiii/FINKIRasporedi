@@ -15,7 +15,7 @@ ThemeData theme = ThemeData(
     bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Color(0xFFBBBBBB),
+    color: Color(0xFFDDDDDD),
     iconTheme: IconThemeData(color: Color(0xFF0A2472)),
     titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
 

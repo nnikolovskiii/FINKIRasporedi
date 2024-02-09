@@ -10,23 +10,23 @@ import '../../widgets/searchBar_widget.dart';
 
 Color myCustomColor2 = Color(0xFF42587F);
 
+
+
 ThemeData theme = ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
+    bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Color(0xFFF9DB6D),
-    iconTheme: IconThemeData(color: Colors.grey),
-    titleTextStyle:
-        TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
+    color: Color(0xFFDDDDDD),
+    iconTheme: IconThemeData(color: Color(0xFF0A2472)),
+    titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
+
   ),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: myCustomColor2,
-    brightness: Brightness.light,
+    seedColor: Color(0xFF0A2472),
   ),
 );
-
 // void main() => runApp(
 //   ChangeNotifierProvider(
 //     create: (context) => SelectedLecturesProvider(), // Adding the provider here
@@ -84,7 +84,12 @@ class _CourseListScreenState extends State<CourseListScreen> {
       theme: theme,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Избери предмети'),
+          title: const Text('Избери предмети',
+            style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),),
+        elevation: 20,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
