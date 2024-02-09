@@ -1,8 +1,5 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
-
-import '../domain/models/course.dart';
 import '../domain/models/schedule.dart';
 
 class ScheduleService {

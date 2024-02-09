@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -16,7 +15,7 @@ class ScheduleItem extends StatelessWidget {
   final VoidCallback? onTap;
 
   ScheduleItem(
-      {Key? key,
+      {super.key,
         required this.schedule,
         required this.theme,
         required this.bgColor,
@@ -49,7 +48,7 @@ class ScheduleItem extends StatelessWidget {
           if (direction == DismissDirection.startToEnd) {
             await scheduleService.deleteSchedule(schedule.id ?? -1);
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Raspored deleted')),
+              const SnackBar(content: Text('Raspored deleted')),
             );
           } else if (direction == DismissDirection.endToStart) {
             // Handle editing if needed
@@ -62,8 +61,8 @@ class ScheduleItem extends StatelessWidget {
           child: Container(
             color: Colors.red,
             alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 20.0),
-            child: Icon(Icons.delete, color: Colors.white),
+            padding: const EdgeInsets.only(right: 20.0),
+            child: const Icon(Icons.delete, color: Colors.white),
           ),
         ),
         // background: Container(
@@ -132,7 +131,7 @@ class ScheduleItem extends StatelessWidget {
 }
 
 class ScheduleListScreen extends StatefulWidget {
-  ScheduleListScreen({Key? key}) : super(key: key);
+  const ScheduleListScreen({Key? key}) : super(key: key);
 
   @override
   _ScheduleListScreenState createState() => _ScheduleListScreenState();
@@ -200,7 +199,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 theme: "resources/images/bgImg.jpg",
                 //bgColor: Color(0xFF1A237E),
                 bgColor: Colors.blue.shade900.withOpacity(0.8),
-                bgColor1: Color(0xFFFFFFFF),
+                bgColor1: const Color(0xFFFFFFFF),
               );
             }).toList();
 
@@ -214,7 +213,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               }).toList(),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text('No data found'),
             );
           }
@@ -234,7 +233,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             });
           }
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }

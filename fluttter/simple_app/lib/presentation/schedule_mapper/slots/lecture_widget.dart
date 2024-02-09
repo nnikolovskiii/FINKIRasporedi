@@ -53,8 +53,8 @@ class LectureWidget extends StatelessWidget {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text('Delete Lecture'),
-            content: Text('Do you want to delete this lecture?'),
+            title: const Text('Delete Lecture'),
+            content: const Text('Do you want to delete this lecture?'),
             actions: [
               TextButton(
                 onPressed: () async {
@@ -67,19 +67,18 @@ class LectureWidget extends StatelessWidget {
                     ),
                   ); // Close the dialog
                 },
-                child: Text('Delete'),
+                child: const Text('Delete'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
             ],
           ),
         );
       },
-      child: Container(
       child: Stack(
         children: [
           Container(
@@ -143,8 +142,7 @@ class LectureWidget extends StatelessWidget {
               ),
             ),
         ],
-      ),
-    )
+      )
     );
   }
 

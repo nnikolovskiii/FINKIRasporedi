@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/schedule_mapper/slots/empty_time_slot_widget.dart';
 
@@ -45,7 +44,7 @@ class ColumnScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(5.0),
         color: Colors.grey[200],
         child: Flex(
             direction: Axis.vertical,

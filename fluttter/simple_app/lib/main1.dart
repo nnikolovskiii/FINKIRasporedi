@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/service/lecture_service.dart';
 import 'package:simple_app/service/schedule_service.dart';
-
-import 'domain/models/schedule.dart';
 
 Future<void> main() async {
   ScheduleService scheduleService = ScheduleService();
-  // Schedule schedule = Schedule(name: "lol", description: "lol1");
-  // await scheduleService.addSchedule(schedule);
   await scheduleService.removeLecture(2, 106);
   runApp(MyApp());
 }

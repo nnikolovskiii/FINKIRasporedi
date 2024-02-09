@@ -55,7 +55,7 @@ class ScheduleWidget extends StatelessWidget {
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
+                  const TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
                   ...getDayColumns(),
                 ]),
           ),

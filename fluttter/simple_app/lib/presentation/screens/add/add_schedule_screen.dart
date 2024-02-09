@@ -7,7 +7,9 @@ import '../list/schedule_list_screen.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   final ScheduleService scheduleService =
-      ScheduleService(); // Initialize LectureService
+      ScheduleService();
+
+  AddScheduleScreen({super.key}); // Initialize LectureService
   @override
   _AddScheduleScreenState createState() => _AddScheduleScreenState();
 }
@@ -91,14 +93,14 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               //       pickImage(ImageSource.camera);
               //     }
               // ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               TextFormField(
                 controller: _nameEditingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Внеси име на распоред',
                   border: OutlineInputBorder(),
                 ),
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ве молиме внесете име на распоред';
@@ -106,10 +108,10 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               TextFormField(
                 controller: _notesEditingController,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 decoration: const InputDecoration(
                   labelText: 'Внеси забелешки за распоредот',
                   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
@@ -128,7 +130,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     widget.scheduleService.addSchedule(schedule);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => ScheduleListScreen()),
+                      MaterialPageRoute(builder: (context) => const ScheduleListScreen()),
                     );
                   }
                 },
@@ -150,7 +152,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: Container(
-                    constraints: BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                    constraints: const BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
                     alignment: Alignment.center,
                     child: const Text(
                       'Продолжи',
@@ -161,7 +163,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                 ),
               ),
 
-              SizedBox(height: 8.0),
+              const SizedBox(height: 8.0),
               // ElevatedButton(
               //   onPressed: () {
               //     Navigator.push(

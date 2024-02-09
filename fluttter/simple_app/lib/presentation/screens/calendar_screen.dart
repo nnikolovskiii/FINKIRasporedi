@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
@@ -11,14 +9,14 @@ import 'list/course_list_screen.dart';
 
 void main() {
 
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: CalendarScreen(1),
   ));
 }
 class CalendarScreen extends StatefulWidget {
   final int scheduleId;
 
-  CalendarScreen(this.scheduleId);
+  const CalendarScreen(this.scheduleId, {super.key});
 
   @override
   _CalendarAppState createState() => _CalendarAppState();
@@ -59,7 +57,7 @@ class _CalendarAppState extends State<CalendarScreen> {
           //     );
           //   },
           // ),
-          title: Text('Распоред'),
+          title: const Text('Распоред'),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -114,8 +112,8 @@ class _CalendarAppState extends State<CalendarScreen> {
                       );
                     },
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.all(8.0), // Set padding for the button
-                      minimumSize: Size(100, 40),),
+                      padding: const EdgeInsets.all(8.0), // Set padding for the button
+                      minimumSize: const Size(100, 40),),
                     child: const Row(
                       children: [
                         Icon(Icons.save_alt_outlined, color: Colors.blueGrey), // Replace with your desired icon

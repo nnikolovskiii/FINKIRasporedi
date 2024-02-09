@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_app/presentation/screens/list/professor_list_screen.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 import '../../../domain/models/schedule.dart';
-import '../../widgets/searchBar_widget.dart';
+import '../../widgets/search_bar_widget.dart';
 
-Color myCustomColor2 = Color(0xFF42587F);
+Color myCustomColor2 = const Color(0xFF42587F);
 
 ThemeData theme = ThemeData(
   textTheme: const TextTheme(
@@ -47,7 +46,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
   bool isDark = false;
   List<Course> courses = []; // Add a list to store courses
   List<Course> filteredCourses = []; // Add a list to store courses
-  CourseService _courseService = CourseService(); // Initialize CourseService
+  final CourseService _courseService = CourseService(); // Initialize CourseService
   bool isLoading = true;
 
   @override
@@ -76,9 +75,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = ThemeData(
-      brightness: isDark ? Brightness.dark : Brightness.light,
-    );
 
     return MaterialApp(
       theme: theme,
@@ -104,9 +100,8 @@ class _CourseListScreenState extends State<CourseListScreen> {
                           filteredCourses = courses
                               .where((course) =>
                                   course.subject.name
-                                      ?.toLowerCase()
-                                      .startsWith(value.toLowerCase()) ??
-                                  false)
+                                      .toLowerCase()
+                                      .startsWith(value.toLowerCase()))
                               .toList();
                           print(filteredCourses.length);
                         }
@@ -122,7 +117,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   return List<Widget>.generate(filteredCourses.length,
                       (int index) {
                     final String itemName =
-                        filteredCourses[index].subject.name ?? '';
+                        filteredCourses[index].subject.name;
                     return ListTile(
                       title: Text(itemName),
                     );
@@ -155,21 +150,21 @@ class _CourseListScreenState extends State<CourseListScreen> {
                   child: ListView.separated(
                     itemCount: filteredCourses.length,
                     separatorBuilder: (BuildContext context, int index) =>
-                        Divider(), // Add Divider between items
+                        const Divider(), // Add Divider between items
                     itemBuilder: (BuildContext context, int index) {
                       final String itemName =
-                          filteredCourses[index].subject.name ?? '';
+                          filteredCourses[index].subject.name;
 
                       return ListTile(
                         title: Text(itemName),
                         onTap: () {
                           String courseName =
-                              filteredCourses[index].subject.name as String;
-                          String courseId = filteredCourses[index].id as String;
+                              filteredCourses[index].subject.name;
+                          String courseId = filteredCourses[index].id;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Притиснавте: $courseName'),
-                              duration: Duration(seconds: 1),
+                              duration: const Duration(seconds: 1),
                             ),
                           );
 
