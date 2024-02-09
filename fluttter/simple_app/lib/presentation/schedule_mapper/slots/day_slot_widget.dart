@@ -22,6 +22,7 @@ class DayWidget extends StatelessWidget {
           daysMap[day]!,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
+              color: Color(0xFF3585b8),
           ), // Replace with your actual text
         ),
       ),
