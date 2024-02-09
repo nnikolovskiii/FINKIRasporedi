@@ -10,12 +10,14 @@ class ColumnScheduleWidget extends StatelessWidget {
   final int day;
   final List<Lecture> lectures;
   final bool segmented;
+  final int scheduleId;
 
   const ColumnScheduleWidget({
     super.key,
     required this.lectures,
     required this.day,
     required this.segmented,
+    required this.scheduleId,
   });
 
   defineColumn() {
@@ -26,7 +28,7 @@ class ColumnScheduleWidget extends StatelessWidget {
       if (j < lectures.length && i == lectures[j].timeFrom as int) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
-          segmented: segmented,
+          segmented: segmented, scheduleId: scheduleId,
         ));
 
         double interval = lectures[j].timeTo - lectures[j].timeFrom;

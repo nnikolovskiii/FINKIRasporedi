@@ -33,7 +33,7 @@ class ScheduleWidget extends StatelessWidget {
       days.add(ColumnScheduleWidget(
         lectures: list[i],
         day: i,
-        segmented: segmented,
+        segmented: segmented, scheduleId: schedule.id ?? -1,
       ));
     }
 
