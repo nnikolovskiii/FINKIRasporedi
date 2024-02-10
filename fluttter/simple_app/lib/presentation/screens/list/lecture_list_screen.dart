@@ -111,21 +111,43 @@ class _LectureListScreenState extends State<LectureListScreen> {
                       children: [
                         // Room
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
-                                child: Text('Просторија:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              ),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              //   color: Colors.black, // Choose the color of your border
+                              //   width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Your Column children here
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Просторија:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
 
-                              Text('${lecture.room.name}'),
-                            ],
+                                Text('${lecture.room.name}'),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 6),
+
                         // From
                         Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                            // border: Border.all(
+                            // color: Colors.black, // Choose the color of your border
+                            // width: 1.0, // Choose the width of your border
+                            // ),
+                            //color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -138,22 +160,34 @@ class _LectureListScreenState extends State<LectureListScreen> {
 
                             ],
                           ),
-                        ),
+                        ),),
                         // To
 
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
-                                child: Text('Крај:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              ),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              // color: Colors.black, // Choose the color of your border
+                              // width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Крај:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
 
-                              Text('${lecture.timeTo}:00 h'),
-                            ],
-                          ),
-                        ),
+                                Text('${lecture.timeTo}:00 h'),
+
+                              ],
+                            ),
+                          ),),
+                        // To
                       ],
                     ),
                   onTap: () async {
