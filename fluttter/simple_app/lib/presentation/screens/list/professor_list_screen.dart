@@ -96,7 +96,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                     Divider(), // Add Divider between items
                 ////////////////////////////
                 itemBuilder: (context, index) {
-                  Color backgroundColor = index % 2 == 0 ? Colors.white : Colors.grey.shade200;
+                  Color backgroundColor = index % 2 == 0 ? Colors.transparent : Colors.grey.shade200;
                   return GestureDetector(
                     onTap: () {
                       final selectedProfessor = filteredProfessors[index];

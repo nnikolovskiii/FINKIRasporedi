@@ -162,37 +162,41 @@ class _CourseListScreenState extends State<CourseListScreen> {
                     separatorBuilder: (BuildContext context, int index) =>
                         Divider(), // Add Divider between items
                     itemBuilder: (BuildContext context, int index) {
+                      Color backgroundColor = index % 2 == 0 ? Colors.grey.shade200 : Colors.transparent;
                       final String itemName =
                           filteredCourses[index].subject.name ?? '';
+                      return Container(
+                        color: backgroundColor, // Set background color
+                        child: ListTile(
+                          title: Text(itemName),
+                          onTap: () {
+                            String courseName =
+                            filteredCourses[index].subject.name as String;
+                            String courseId = filteredCourses[index].id as String;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Притиснавте: $courseName'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
 
-                      return ListTile(
-                        title: Text(itemName),
-                        onTap: () {
-                          String courseName =
-                              filteredCourses[index].subject.name as String;
-                          String courseId = filteredCourses[index].id as String;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Притиснавте: $courseName'),
-                              duration: Duration(seconds: 1),
-                            ),
-                          );
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfessorListScreen(
-                                  schedule: widget.schedule,
-                                  courseId: courseId,
-                                  courseName:
-                                      courseName), // Pass courseId as argument
-                            ),
-                          );
-                        },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfessorListScreen(
+                                    schedule: widget.schedule,
+                                    courseId: courseId,
+                                    courseName:
+                                    courseName), // Pass courseId as argument
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
                 ),
+
             ],
           ),
         ),

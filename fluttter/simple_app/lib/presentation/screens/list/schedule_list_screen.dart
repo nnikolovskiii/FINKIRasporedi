@@ -8,6 +8,8 @@ import '../add/add_schedule_screen.dart';
 import '../calendar_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
+import '../login.dart';
+
 class ScheduleItem extends StatelessWidget {
   final ScheduleService scheduleService = ScheduleService();
   final Schedule schedule;
@@ -254,7 +256,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             child: IconButton(
               icon: Icon(Icons.account_circle_sharp), // Replace 'icon1' with the icon you want to use
               onPressed: () {
-                // Add your onPressed action for the first icon here
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),
           ),
