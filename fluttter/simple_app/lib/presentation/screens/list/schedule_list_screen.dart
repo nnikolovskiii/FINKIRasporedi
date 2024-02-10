@@ -6,6 +6,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/models/schedule.dart';
 import '../add/add_schedule_screen.dart';
 import '../calendar_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ScheduleItem extends StatelessWidget {
   final ScheduleService scheduleService = ScheduleService();
@@ -186,6 +187,43 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   Future<List<Schedule>> fetchSchedules() async {
     return await scheduleService.getSchedulesWithPagination();
   }
+  void _showImageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0), // Set your desired border radius here
+            // Optionally, you can add a border to the dialog as well
+            side: const BorderSide(
+              color: Colors.grey, // Set your desired border color here
+              width: 3.0, // Set your desired border width here
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Replace 'path_to_your_image' with the path to your image asset
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, color: Color(0xFF123499)),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Image.asset('resources/images/info.png'),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -201,24 +239,38 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       //   ),
       // ),
       appBar: AppBar(
-
-        // leading: ClipOval(
-        //   child: Image.asset(
-        //     'resources/images/io.png', // Set your image path here
-        //     fit: BoxFit.scaleDown,
-        //     scale: 8.0,
-        //
-        //   ),
-        // ),
-
-        title: const Text('Распореди',
-        style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFF123499),
-            ),),
+        title: const Text(
+          'Распореди',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),
+        ),
         elevation: 20,
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,2,0), // Adjust the horizontal padding as needed
+            child: IconButton(
+              icon: Icon(Icons.account_circle_sharp), // Replace 'icon1' with the icon you want to use
+              onPressed: () {
+                // Add your onPressed action for the first icon here
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,20,0), // Adjust the horizontal padding as needed
+            child: IconButton(
+              icon: Icon(Icons.info_sharp), // Replace 'icon2' with the icon you want to use
+              onPressed: () {
+                _showImageDialog(context);
+
+              },
+            ),
+          ),
+        ],
       ),
+
       body: FutureBuilder<List<Schedule>>(
         future: futureSchedules,
         builder: (context, snapshot) {
