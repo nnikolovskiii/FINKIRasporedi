@@ -1,5 +1,6 @@
 ﻿using FinkiRasporedi.Models.Identity;
 using FinkiRasporedi.Repository.Interface;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -27,7 +28,11 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
             try
             {
                 var user = await _studentRepository.RegisterAsync(model);
-                return Ok(user);
+                return Ok(new
+                {
+                    Username = user.UserName,
+                    Password = user.PasswordHash
+                });
             }
             catch (Exception ex)
             {
@@ -45,7 +50,27 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
                     return Unauthorized(new { message = "Invalid username or password" });
 
                 var tokenString = GenerateJwtToken(user);
-                return Ok(new { Token = tokenString });
+                return Ok(
+                    new
+                    {
+                        Token = tokenString,
+                        Username = user.UserName
+                    });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            try
+            {
+                await HttpContext.SignOutAsync();
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -81,15 +106,11 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
                 }
                 else
                 {
-                    // Handle case when 'Secret' key is not found or null
-                    // You may throw an exception, provide a default value, or handle it accordingly
                     throw new Exception("Secret key not found in configuration.");
                 }
             }
             else
             {
-                // Handle case when 'JwtSettings' section is not found or null
-                // You may throw an exception, provide a default value, or handle it accordingly
                 throw new Exception("JwtSettings section not found in configuration.");
             }
         }

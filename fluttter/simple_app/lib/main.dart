@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import '../presentation/screens/list/schedule_list_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:simple_app/presentation/screens/wrapper.dart';
+import 'package:simple_app/service/auth_service.dart';
+
+import 'domain/models/student.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
-Color myCustomColor2 = Color(0xFF42587F);
+Color myCustomColor2 = const Color(0xFF42587F);
 
 ThemeData theme = ThemeData(
   textTheme: const TextTheme(
@@ -21,18 +23,24 @@ ThemeData theme = ThemeData(
 
   ),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Color(0xFF0A2472),
+    seedColor: const Color(0xFF0A2472),
   ),
 );
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: theme,
-      darkTheme: theme,
-      themeMode: ThemeMode.system,
-      home:  ScheduleListScreen(), // Use a SplashScreen widget
+    return StreamProvider<Student?>.value(
+      initialData: null,
+      value: AuthService().user,
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: theme,
+        darkTheme: theme,
+        themeMode: ThemeMode.system,
+        home:  const Wrapper(), // Use a SplashScreen widget
+      ),
     );
   }
 }
