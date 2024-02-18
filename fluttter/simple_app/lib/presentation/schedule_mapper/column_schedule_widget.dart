@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/schedule_mapper/slots/empty_time_slot_widget.dart';
+import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
 
 import '../../domain/models/lecture.dart';
 import 'slots/day_slot_widget.dart';
@@ -23,7 +25,8 @@ class ColumnScheduleWidget extends StatelessWidget {
     List<Widget> lectureWidgets = [];
     lectures.sort((a, b) => a.timeFrom.compareTo(b.timeFrom));
     int j = 0;
-    for (int i = 8; i < 21; i++) {
+    lectureWidgets.add(HorizontalDividerWidget(hasColor: true,));
+    for (int i = 8; i < 20; i++) {
       if (j < lectures.length && i == lectures[j].timeFrom as int) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
@@ -36,6 +39,8 @@ class ColumnScheduleWidget extends StatelessWidget {
       } else {
         lectureWidgets.add(EmptyTimeSlotWidget(segmented: segmented));
       }
+      if (i != 19)
+        lectureWidgets.add(HorizontalDividerWidget(hasColor: true,));
     }
     return lectureWidgets;
   }
@@ -44,9 +49,8 @@ class ColumnScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: const EdgeInsets.all(5.0),
-        color: Colors.grey[200],
-        child: Flex(
+        padding: EdgeInsets.all(5.0),
+          child: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

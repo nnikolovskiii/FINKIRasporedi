@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/domain/models/lecture.dart';
 import 'package:simple_app/presentation/screens/calendar_screen.dart';
 import 'package:simple_app/service/lecture_service.dart';
@@ -6,6 +7,7 @@ import 'package:simple_app/service/lecture_service.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../service/schedule_service.dart';
 import '../../schedule_mapper/slots/day_slot_widget.dart';
+import '../../widgets/SelectedLecturesProvider.dart';
 
 bool isOverlapping(Schedule schedule, Lecture lec) {
   List<Lecture> lectures = schedule.lectures ?? [];
@@ -33,7 +35,7 @@ class LectureListScreen extends StatefulWidget {
   final ScheduleService scheduleService =
       ScheduleService(); // Initialize LectureService
 
-  LectureListScreen({super.key,
+  LectureListScreen({
     required this.professorId,
     required this.professorName,
     required this.courseId,
@@ -53,7 +55,12 @@ class _LectureListScreenState extends State<LectureListScreen> {
     print(widget.professorId);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Термини кај ${widget.professorName}'),
+        title: Text('Термини кај ${widget.professorName}',
+          style: const TextStyle(
+          fontSize: 16,
+          color: Color(0xFF123499),
+        ),),
+      elevation: 20,
       ),
       body: FutureBuilder<List<Lecture>>(
         future: widget.lectureService.getLecturesByCourseIdAndProfessorId(
@@ -62,7 +69,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
         ),
         builder: (BuildContext context, AsyncSnapshot<List<Lecture>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
+            return Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -70,7 +77,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
               child: Text('Error: ${snapshot.error}'),
             );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Center(
+            return Center(
               child: Text('No lectures available'),
             );
           } else {
@@ -82,7 +89,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                 final lecture = snapshot.data![index];
 
                 // Determine background color based on index
-                Color backgroundColor = index % 2 == 0 ? Colors.white70 : Colors.grey.shade200;
+                Color backgroundColor = index % 2 == 0 ? Colors.white70 : const Color(0xFFdfe7f2);
 
                 return Container(
                   color: backgroundColor, // Set background color here
@@ -104,21 +111,43 @@ class _LectureListScreenState extends State<LectureListScreen> {
                       children: [
                         // Room
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
-                                child: Text('Просторија:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              ),
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              //   color: Colors.black, // Choose the color of your border
+                              //   width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Your Column children here
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Просторија:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
 
-                              Text(lecture.room.name),
-                            ],
+                                Text('${lecture.room.name}'),
+                              ],
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 6),
+
                         // From
                         Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                            // border: Border.all(
+                            // color: Colors.black, // Choose the color of your border
+                            // width: 1.0, // Choose the width of your border
+                            // ),
+                            //color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -127,23 +156,38 @@ class _LectureListScreenState extends State<LectureListScreen> {
                                 child: Text('Почеток:', style: TextStyle(fontWeight: FontWeight.bold)),
                               ),
                               Text('${lecture.timeFrom}:00 h'),
-                            ],
-                          ),
-                        ),
-                        // To
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
-                                child: Text('Крај:', style: TextStyle(fontWeight: FontWeight.bold)),
-                              ),
 
-                              Text('${lecture.timeTo}:00 h'),
+
                             ],
                           ),
-                        ),
+                        ),),
+                        // To
+
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              // color: Colors.black, // Choose the color of your border
+                              // width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Крај:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+
+                                Text('${lecture.timeTo}:00 h'),
+
+                              ],
+                            ),
+                          ),),
+                        // To
                       ],
                     ),
                   onTap: () async {
@@ -155,15 +199,15 @@ class _LectureListScreenState extends State<LectureListScreen> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Overlap Warning'),
-                            content: const Text(
+                            title: Text('Overlap Warning'),
+                            content: Text(
                                 'The selected lecture overlaps with an existing one.'),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context); // Close the dialog
                                 },
-                                child: const Text('OK'),
+                                child: Text('OK'),
                               ),
                             ],
                           );

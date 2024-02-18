@@ -33,7 +33,7 @@ class LectureWidget extends StatelessWidget {
 
   double getHeight(Lecture lecture) {
     double interval = lecture.timeTo - lecture.timeFrom;
-    return 50 * interval;
+    return 50 * interval + 8*(interval-1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -83,12 +83,13 @@ class LectureWidget extends StatelessWidget {
         children: [
           Container(
             decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              ),
+              // border: Border(
+              //   top: BorderSide(
+              //     color: Colors.grey,
+              //     width: 2.0,
+              //   ),
+              //
+              // ),
             ),
             child: Container(
               height: getHeight(lecture),

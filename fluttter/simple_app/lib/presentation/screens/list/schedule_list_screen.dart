@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -5,6 +6,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/models/schedule.dart';
 import '../add/add_schedule_screen.dart';
 import '../calendar_screen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+
+import '../login.dart';
 
 class ScheduleItem extends StatelessWidget {
   final ScheduleService scheduleService = ScheduleService();
@@ -15,7 +19,7 @@ class ScheduleItem extends StatelessWidget {
   final VoidCallback? onTap;
 
   ScheduleItem(
-      {super.key,
+      {Key? key,
         required this.schedule,
         required this.theme,
         required this.bgColor,
@@ -38,6 +42,35 @@ class ScheduleItem extends StatelessWidget {
     );
   }
 
+  confirmDelete(BuildContext context) async {
+    bool deleteConfirmed = await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Потврди бришење"),
+          content: const Text("Дали сте сигурни дека сакате да избришете?"),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text("Откажи"),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text("Избриши"),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (deleteConfirmed != null && deleteConfirmed) {
+      // Perform delete operation here
+      await scheduleService.deleteSchedule(schedule.id ?? -1);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Избришан распоред')),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -46,26 +79,32 @@ class ScheduleItem extends StatelessWidget {
         key: UniqueKey(),
         confirmDismiss: (DismissDirection direction) async {
           if (direction == DismissDirection.startToEnd) {
-            await scheduleService.deleteSchedule(schedule.id ?? -1);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Raspored deleted')),
-            );
+            await confirmDelete(context);
           } else if (direction == DismissDirection.endToStart) {
-            // Handle editing if needed
+            await confirmDelete(context);
           }
           return false;
         },
         onDismissed: (_) {},
         background: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0), // Set your desired radius
+          borderRadius: BorderRadius.circular(10.0),
+        child: Align(
+          alignment: Alignment.centerRight,
           child: Container(
-            color: Colors.red,
-            alignment: Alignment.centerRight,
-            padding: const EdgeInsets.only(right: 20.0),
-            child: const Icon(Icons.delete, color: Colors.white),
+            height: 100, // Adjust the height as needed
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.circular(15), // Adjust the border radius as needed
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: Center(
+              child: Icon(Icons.delete, color: Colors.white),
+            ),
           ),
         ),
-        // background: Container(
+      ),
+
+    // background: Container(
         //
         //   color: Colors.red,
         //   alignment: Alignment.centerRight,
@@ -131,7 +170,7 @@ class ScheduleItem extends StatelessWidget {
 }
 
 class ScheduleListScreen extends StatefulWidget {
-  const ScheduleListScreen({Key? key}) : super(key: key);
+  ScheduleListScreen({Key? key}) : super(key: key);
 
   @override
   _ScheduleListScreenState createState() => _ScheduleListScreenState();
@@ -150,6 +189,43 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   Future<List<Schedule>> fetchSchedules() async {
     return await scheduleService.getSchedulesWithPagination();
   }
+  void _showImageDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20.0), // Set your desired border radius here
+            // Optionally, you can add a border to the dialog as well
+            side: const BorderSide(
+              color: Colors.grey, // Set your desired border color here
+              width: 3.0, // Set your desired border width here
+            ),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Replace 'path_to_your_image' with the path to your image asset
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, color: Color(0xFF123499)),
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Close the dialog
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              Image.asset('resources/images/info.png'),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -165,14 +241,38 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       //   ),
       // ),
       appBar: AppBar(
-        title: const Text('Распореди',
-        style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFF123499),
-            ),),
-        elevation: 60,
+        title: const Text(
+          'Распореди',
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),
+        ),
+        elevation: 20,
         automaticallyImplyLeading: false,
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,2,0), // Adjust the horizontal padding as needed
+            child: IconButton(
+              icon: Icon(Icons.account_circle_sharp), // Replace 'icon1' with the icon you want to use
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LoginPage()));
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0,0,20,0), // Adjust the horizontal padding as needed
+            child: IconButton(
+              icon: Icon(Icons.info_sharp), // Replace 'icon2' with the icon you want to use
+              onPressed: () {
+                _showImageDialog(context);
+
+              },
+            ),
+          ),
+        ],
       ),
+
       body: FutureBuilder<List<Schedule>>(
         future: futureSchedules,
         builder: (context, snapshot) {
@@ -199,7 +299,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 theme: "resources/images/bgImg.jpg",
                 //bgColor: Color(0xFF1A237E),
                 bgColor: Colors.blue.shade900.withOpacity(0.8),
-                bgColor1: const Color(0xFFFFFFFF),
+                bgColor1: Color(0xFFFFFFFF),
               );
             }).toList();
 
@@ -213,7 +313,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               }).toList(),
             );
           } else {
-            return const Center(
+            return Center(
               child: Text('No data found'),
             );
           }
@@ -233,7 +333,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             });
           }
         },
-        child: const Icon(Icons.add),
+        child: Icon(Icons.add),
       ),
     );
   }

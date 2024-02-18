@@ -9,20 +9,21 @@ import '../../widgets/search_bar_widget.dart';
 
 Color myCustomColor2 = const Color(0xFF42587F);
 
+
+
 ThemeData theme = ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
+    bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Color(0xFFF9DB6D),
-    iconTheme: IconThemeData(color: Colors.grey),
-    titleTextStyle:
-        TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
+    color: Color(0xFFDDDDDD),
+    iconTheme: IconThemeData(color: Color(0xFF0A2472)),
+    titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
+
   ),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: myCustomColor2,
-    brightness: Brightness.light,
+    seedColor: Color(0xFF0A2472),
   ),
 );
 
@@ -80,7 +81,12 @@ class _CourseListScreenState extends State<CourseListScreen> {
       theme: theme,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Избери предмети'),
+          title: const Text('Избери предмети',
+            style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),),
+        elevation: 20,
         ),
         body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -152,37 +158,41 @@ class _CourseListScreenState extends State<CourseListScreen> {
                     separatorBuilder: (BuildContext context, int index) =>
                         const Divider(), // Add Divider between items
                     itemBuilder: (BuildContext context, int index) {
+                      Color backgroundColor = index % 2 == 0 ? Colors.grey.shade200 : Colors.transparent;
                       final String itemName =
-                          filteredCourses[index].subject.name;
+                          filteredCourses[index].subject.name ?? '';
+                      return Container(
+                        color: backgroundColor, // Set background color
+                        child: ListTile(
+                          title: Text(itemName),
+                          onTap: () {
+                            String courseName =
+                            filteredCourses[index].subject.name as String;
+                            String courseId = filteredCourses[index].id as String;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Притиснавте: $courseName'),
+                                duration: Duration(seconds: 1),
+                              ),
+                            );
 
-                      return ListTile(
-                        title: Text(itemName),
-                        onTap: () {
-                          String courseName =
-                              filteredCourses[index].subject.name;
-                          String courseId = filteredCourses[index].id;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Притиснавте: $courseName'),
-                              duration: const Duration(seconds: 1),
-                            ),
-                          );
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfessorListScreen(
-                                  schedule: widget.schedule,
-                                  courseId: courseId,
-                                  courseName:
-                                      courseName), // Pass courseId as argument
-                            ),
-                          );
-                        },
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfessorListScreen(
+                                    schedule: widget.schedule,
+                                    courseId: courseId,
+                                    courseName:
+                                    courseName), // Pass courseId as argument
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
                 ),
+
             ],
           ),
         ),
