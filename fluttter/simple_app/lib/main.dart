@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
-
-
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import '../presentation/screens/list/schedule_list_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,17 +12,16 @@ Color myCustomColor2 = Color(0xFF42587F);
 ThemeData theme = ThemeData(
   textTheme: const TextTheme(
     displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 18, color: Colors.white70),
+    bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
   ),
   appBarTheme: const AppBarTheme(
-    color: Color(0xFFF9DB6D),
-    iconTheme: IconThemeData(color: Colors.grey),
+    color: Color(0xFFDDDDDD),
+    iconTheme: IconThemeData(color: Color(0xFF0A2472)),
     titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
 
   ),
   colorScheme: ColorScheme.fromSeed(
-    seedColor: myCustomColor2,
-    brightness: Brightness.light,
+    seedColor: Color(0xFF0A2472),
   ),
 );
 class MyApp extends StatelessWidget {

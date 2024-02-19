@@ -56,7 +56,12 @@ class _LectureListScreenState extends State<LectureListScreen> {
     print(widget.professorId);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lecture Slots for ${widget.professorName}'),
+        title: Text('Термини кај ${widget.professorName}',
+          style: const TextStyle(
+          fontSize: 16,
+          color: Color(0xFF123499),
+        ),),
+      elevation: 20,
       ),
       body: FutureBuilder<List<Lecture>>(
         future: widget.lectureService.getLecturesByCourseIdAndProfessorId(
@@ -80,20 +85,112 @@ class _LectureListScreenState extends State<LectureListScreen> {
             // Display the list of lecture slots
             return ListView.separated(
               itemCount: snapshot.data!.length,
-              separatorBuilder: (BuildContext context, int index) => Divider(),
-              // Divider added here
+              separatorBuilder: (BuildContext context, int index) => const Divider(),
               itemBuilder: (context, index) {
                 final lecture = snapshot.data![index];
-                return ListTile(
-                  title: Text('${DayWidget.daysMap[lecture.day]}'),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('From: ${lecture.timeFrom}, To: ${lecture.timeTo}'),
-                      Text('Room: ${lecture.room.name}'),
-                      // Add more details if needed
-                    ],
-                  ),
+
+                // Determine background color based on index
+                Color backgroundColor = index % 2 == 0 ? Colors.white70 : const Color(0xFFdfe7f2);
+
+                return Container(
+                  color: backgroundColor, // Set background color here
+                  child: ListTile(
+                    title: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.fromLTRB(0,2,0,5),
+                      //color: const Color(0xFFc4cfe2), // Set background color for the title text
+                      child: Text(
+                        '${DayWidget.daysMap[lecture.day]}',
+                        style: const TextStyle(
+                          color: Color(0xFF19448e),
+                          //fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    subtitle: Row(
+                      children: [
+                        // Room
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              //   color: Colors.black, // Choose the color of your border
+                              //   width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Your Column children here
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Просторија:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+
+                                Text('${lecture.room.name}'),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        // From
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                            // border: Border.all(
+                            // color: Colors.black, // Choose the color of your border
+                            // width: 1.0, // Choose the width of your border
+                            // ),
+                            //color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Padding(
+                                padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                child: Text('Почеток:', style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              Text('${lecture.timeFrom}:00 h'),
+
+
+                            ],
+                          ),
+                        ),),
+                        // To
+
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            decoration: BoxDecoration(
+                              // border: Border.all(
+                              // color: Colors.black, // Choose the color of your border
+                              // width: 1.0, // Choose the width of your border
+                              // ),
+                              //color: Colors.grey.shade200,
+                              borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
+                                  child: Text('Крај:', style: TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+
+                                Text('${lecture.timeTo}:00 h'),
+
+                              ],
+                            ),
+                          ),),
+                        // To
+                      ],
+                    ),
                   onTap: () async {
                     // Access the Provider instance
                     //
@@ -130,7 +227,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                     }
                     // Navigate to AddedLecturesScreen and pass necessary data
                   },
-                );
+                ),);
               },
             );
           }

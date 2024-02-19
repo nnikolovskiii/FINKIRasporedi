@@ -14,13 +14,13 @@ class EmptyTimeSlotWidget extends StatelessWidget {
           height: 50,
           width: 100,
           decoration: BoxDecoration(
-            color: Colors.grey[200],
-            border: const Border(
-              top: BorderSide(
-                color: Colors.grey,
-                width: 2.0,
-              ),
-            ),
+            // border: const Border(
+            //   top: BorderSide(
+            //     color: Colors.grey,
+            //     width: 2.0,
+            //   ),
+            //
+            // ),
             // Adjust the radius as needed
           ),
         ),

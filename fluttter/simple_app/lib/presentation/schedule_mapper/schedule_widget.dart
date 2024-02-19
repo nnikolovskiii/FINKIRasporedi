@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/presentation/schedule_mapper/slots/time_slot_widget.dart';
+import 'package:simple_app/presentation/schedule_mapper/slots/vertical_divider_widget.dart';
 
 import '../../domain/models/lecture.dart';
 import '../../domain/models/lecture_slots.dart';
@@ -17,6 +19,8 @@ class ScheduleWidget extends StatelessWidget {
     List<ColumnScheduleWidget> days = [];
     List<List<LectureSlot>> list = [];
 
+    days.add(TimeSlotWidget(startTimeHour: 8, endTimeHour: 20));
+
     for (int i = 0; i < 5; i++) {
       List<LectureSlot> lecture = [];
       list.add(lecture);
@@ -29,12 +33,16 @@ class ScheduleWidget extends StatelessWidget {
       list[idx].add(lectures[i]);
     }
 
+    days.add(VerticalDividerWidget());
+
     for (int i = 0; i < 5; i++) {
       days.add(ColumnScheduleWidget(
         lectures: list[i],
         day: i,
         segmented: segmented,
+        scheduleId: schedule.id ?? -1,
       ));
+      if (i != 4) days.add(VerticalDividerWidget());
     }
 
     return days;
@@ -50,12 +58,12 @@ class ScheduleWidget extends StatelessWidget {
         child: Stack(children: [
           Container(
             padding: const EdgeInsets.all(5.0),
-            color: Colors.grey[200],
             child: Flex(
-              direction: Axis.horizontal,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: getDayColumns(),
-            ),
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ...getDayColumns(),
+                ]),
           ),
           //DraggableContainer()
         ]),

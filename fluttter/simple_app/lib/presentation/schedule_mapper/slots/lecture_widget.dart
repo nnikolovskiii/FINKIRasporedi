@@ -6,7 +6,10 @@ import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_s
 import '../../../domain/models/lecture.dart';
 import '../../../domain/models/lecture_slots.dart';
 
+
 class LectureWidget extends StatelessWidget {
+  final ScheduleService scheduleService = ScheduleService();
+  final int scheduleId;
   final bool segmented;
 
   List<TransparentTimeSlotWidget> getEmptyTimeSlots(LectureSlot lecture) {
@@ -22,15 +25,15 @@ class LectureWidget extends StatelessWidget {
 
   final LectureSlot lecture;
 
-  const LectureWidget({
+  LectureWidget({
     super.key,
     required this.lecture,
-    required this.segmented,
+    required this.segmented, required this.scheduleId,
   });
 
   double getHeight(LectureSlot lecture) {
     double interval = lecture.timeTo - lecture.timeFrom;
-    return 50 * interval;
+    return 50 * interval + 8*(interval-1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -44,17 +47,50 @@ class LectureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+          onLongPress: () {
+        // Show a dialog or perform any action for deleting the lecture
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Delete Lecture'),
+            content: Text('Do you want to delete this lecture?'),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  await scheduleService.removeLecture(scheduleId, lecture.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          CalendarScreen(scheduleId),
+                    ),
+                  ); // Close the dialog
+                },
+                child: Text('Delete'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+                child: Text('Cancel'),
+              ),
+            ],
+          ),
+        );
+      },
+      child: Container(
       child: Stack(
         children: [
           Container(
             decoration: const BoxDecoration(
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey,
-                  width: 2.0,
-                ),
-              ),
+              // border: Border(
+              //   top: BorderSide(
+              //     color: Colors.grey,
+              //     width: 2.0,
+              //   ),
+              //
+              // ),
             ),
             child: Container(
               height: getHeight(lecture),
@@ -109,6 +145,7 @@ class LectureWidget extends StatelessWidget {
             ),
         ],
       ),
+    )
     );
   }
 

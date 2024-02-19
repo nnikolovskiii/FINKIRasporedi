@@ -71,7 +71,12 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$courseName'),
+        title: Text('$courseName',
+          style: const TextStyle(
+            fontSize: 16,
+            color: Color(0xFF123499),
+          ),),
+        elevation: 20,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0), // Adjust padding as needed
@@ -89,7 +94,9 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                 itemCount: filteredProfessors.length,
                 separatorBuilder: (BuildContext context, int index) =>
                     Divider(), // Add Divider between items
+                ////////////////////////////
                 itemBuilder: (context, index) {
+                  Color backgroundColor = index % 2 == 0 ? Colors.transparent : Colors.grey.shade200;
                   return GestureDetector(
                     onTap: () {
                       final selectedProfessor = filteredProfessors[index];
@@ -107,9 +114,12 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                         ),
                       );
                     },
-                    child: ListTile(
-                      title: Text(filteredProfessors[index].name),
-                      // Add other professor details or actions if needed
+                    child: Container(
+                      color: backgroundColor, // Set background color here
+                      child: ListTile(
+                        title: Text(filteredProfessors[index].name),
+                        // Add other professor details or actions if needed
+                      ),
                     ),
                   );
                 },

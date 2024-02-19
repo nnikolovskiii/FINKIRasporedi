@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
+import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 
 class TimeSlotWidget extends StatelessWidget {
   final int startTimeHour;
@@ -14,46 +16,25 @@ class TimeSlotWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> timeSlots = generateTimeSlots();
+    List<Widget> timeSlots = generateTimeSlots();
 
-    return Container(
-      width: 100, // Adjust width as needed
-      decoration: BoxDecoration(
-        border: Border(
-          right: BorderSide(
-            color: Colors.grey[200]!, // Border color
-            width: 1.0, // Border width
-          ),
-        ),
-      ),
-      child: Column(
-        children: timeSlots
-            .map((time) => Container(
-          height: 50,
-          width: double.infinity, // Take full width of the container
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                color: Colors.grey[200]!, // Border color
-                width: 1.0, // Border width
-              ),
-            ),
-          ),
-          child: Text(
-            time,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ))
-            .toList(),
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(5.0),
+        child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TransparentTimeSlotWidget(),
+              ...timeSlots
+            ]),
       ),
     );
   }
 
-  List<String> generateTimeSlots() {
+  List<Widget> generateTimeSlots() {
     List<String> timeSlots = [];
+    List<Widget> widgets = [];
     for (int i = startTimeHour; i < endTimeHour; i++) {
       String startHour = i.toString().padLeft(2, '0');
       String startMinute = '00';
@@ -64,23 +45,24 @@ class TimeSlotWidget extends StatelessWidget {
           '$startHour:$startMinute - ${endHour.toString().padLeft(2, '0')}:$endMinute';
       timeSlots.add(timeSlot);
     }
-    return timeSlots;
-  }
-}
 
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
-            ],
+    widgets.add(HorizontalDividerWidget(hasColor: true));
+    for (int i = 0; i < timeSlots.length; i++){
+      widgets.add(Container(
+        height: 50,
+        width: 100,
+        alignment: Alignment.center,
+        child: Text(
+          timeSlots[i],
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ),
-    ),
-  );
+      ));
+      if (i != timeSlots.length -1)
+        widgets.add(HorizontalDividerWidget(hasColor: true,));
+    }
+
+      return widgets;
+  }
 }
