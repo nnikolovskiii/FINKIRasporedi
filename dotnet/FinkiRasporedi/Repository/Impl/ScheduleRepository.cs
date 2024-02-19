@@ -1,4 +1,5 @@
 ﻿using FinkiRasporedi.Models.Base;
+using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
 using FinkiRasporedi.Repository.Data;
 using FinkiRasporedi.Repository.Interface;
@@ -11,12 +12,15 @@ namespace FinkiRasporedi.Repository
         private readonly DbSet<Schedule> _schedules;
         private readonly ApplicationDbContext _context;
         private readonly ILectureRepository _lectureRepository;
+        private readonly ILectureSlotRepository _lectureSlotRepository;
 
-        public ScheduleRepository(ApplicationDbContext context, ILectureRepository lectureRepository)
+        public ScheduleRepository(ApplicationDbContext context,
+            ILectureRepository lectureRepository, ILectureSlotRepository lectureSlotRepository)
         {
             _schedules = context.Set<Schedule>();
             _context = context;
             _lectureRepository = lectureRepository;
+            _lectureSlotRepository = lectureSlotRepository;
         }
 
         public async Task<Schedule> AddAsync(Schedule entity)
@@ -41,60 +45,33 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
-        public async Task<Schedule> AddLectureAsync(int id, int lectureId)
+        public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot)
         {
-            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
             Schedule schedule = await GetByIdAsync(id);
-            schedule.Lectures.Add(lecture);
+            if (lectureSlot.Lecture != null)
+            {
+                int lectureId = lectureSlot.Lecture.Id;
+                Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
+                lectureSlot.Lecture = lecture;
+                lectureSlot.TimeFrom = lecture.TimeFrom;
+                lectureSlot.TimeTo = lecture.TimeTo;
+                lectureSlot.Name = lecture.Name;
+                lectureSlot.Day = lecture.Day;
+            }
+            LectureSlot tmp = await _lectureSlotRepository.AddAsync(lectureSlot);
+            schedule.Lectures.Add(tmp);
             _context.Entry(schedule).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return schedule;
         }
 
-        public async Task<Schedule?> AddDuplicateLectureAsync(int id, int original_lectureId)
+
+        public async Task<Schedule> RemoveLectureAsync(int id, int lectureSlotId)
         {
-            Lecture lecture = await _lectureRepository.GetByIdAsync(original_lectureId);
-            if (lecture.Type == 0)
-            {
-
-
-                Schedule schedule = await GetByIdAsync(id);
-                Lecture duplicateLecture = new()
-                {
-                    Name = lecture.Name,
-                    OriginalLecture = lecture,
-                    Day = lecture.Day,
-                    TimeFrom = lecture.TimeFrom,
-                    TimeTo = lecture.TimeTo,
-                    Professor = lecture.Professor,
-                    Course = lecture.Course,
-                    Room = lecture.Room,
-                    Type = 1
-                };
-                Lecture newLecture = await _lectureRepository.AddAsync(duplicateLecture);
-                schedule.Lectures.Add(newLecture);
-                schedule.Lectures.Remove(lecture);
-                _context.Entry(schedule).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-                return schedule;
-            }
-            return null;
-        }
-
-        public async Task<Schedule> RemoveLectureAsync(int id, int lectureId)
-        {
-            Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
+            LectureSlot lectureSlot = await _lectureSlotRepository.GetByIdAsync(lectureSlotId);
+            await _lectureSlotRepository.DeleteAsync(lectureSlotId);
             Schedule schedule = await GetByIdAsync(id);
-            schedule.Lectures.Remove(lecture);
-            if (lecture.OriginalLecture != null)
-            {
-                schedule.Lectures.Add(lecture.OriginalLecture);
-            }
-
-            if (lecture.Type == 1 || lecture.Type == 2)
-            {
-                await _lectureRepository.DeleteAsync(lectureId);
-            }
+            schedule.Lectures.Remove(lectureSlot);
             _context.Entry(schedule).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return schedule;

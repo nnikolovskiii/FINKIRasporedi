@@ -18,5 +18,7 @@ dependencies:
 
 - [Button design](https://flutteragency.com/create-buttons-with-different-styles-in-flutter/)
 
+- [LogIn/Register UI](https://medium.com/@flutterdynasty/login-signup-page-design-with-code-c593e7c82a4c)
+
 
 

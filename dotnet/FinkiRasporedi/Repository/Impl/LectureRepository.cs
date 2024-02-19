@@ -124,7 +124,7 @@ namespace FinkiRasporedi.Repository
         public async Task<List<Lecture>> GetLecturesByCourseAndProfessor(string courseId, string professorId)
         {
             return await _lectures
-                .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId && lecture.Type == 0)
+                .Where(lecture => lecture.Course.Id == courseId && lecture.Professor.Id == professorId)
                 .ToListAsync();
         }
 
