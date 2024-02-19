@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FinkiRasporedi.Migrations
 {
     /// <inheritdoc />
-    public partial class all_migrations : Migration
+    public partial class lol : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -39,8 +39,6 @@ namespace FinkiRasporedi.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Discriminator = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -79,9 +77,9 @@ namespace FinkiRasporedi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    ProfessorTitle = table.Column<int>(type: "int", nullable: false)
+                    ProfessorTitle = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -103,7 +101,7 @@ namespace FinkiRasporedi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Schedule",
+                name: "Schedules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -115,7 +113,23 @@ namespace FinkiRasporedi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Schedule", x => x.Id);
+                    table.PrimaryKey("PK_Schedules", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Semesters",
+                columns: table => new
+                {
+                    Code = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Year = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SemesterType = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Semesters", x => x.Code);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -127,9 +141,9 @@ namespace FinkiRasporedi.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Name = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Abbreviation = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SemesterType = table.Column<int>(type: "int", nullable: false)
+                    Level = table.Column<int>(type: "int", nullable: false),
+                    Abbreviation = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -282,34 +296,11 @@ namespace FinkiRasporedi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_StudentSchedules_Schedule_SchedulesId",
+                        name: "FK_StudentSchedules_Schedules_SchedulesId",
                         column: x => x.SchedulesId,
-                        principalTable: "Schedule",
+                        principalTable: "Schedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Semesters",
-                columns: table => new
-                {
-                    Code = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Year = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    SemesterType = table.Column<int>(type: "int", nullable: true),
-                    SubjectId = table.Column<string>(type: "varchar(255)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Semesters", x => x.Code);
-                    table.ForeignKey(
-                        name: "FK_Semesters_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
-                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -320,6 +311,8 @@ namespace FinkiRasporedi.Migrations
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     SemesterCode = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    SubjectId = table.Column<string>(type: "varchar(255)", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -331,6 +324,38 @@ namespace FinkiRasporedi.Migrations
                         principalTable: "Semesters",
                         principalColumn: "Code",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Courses_Subjects_SubjectId",
+                        column: x => x.SubjectId,
+                        principalTable: "Subjects",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "CourseProfessors",
+                columns: table => new
+                {
+                    CourseId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ProfessorId = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CourseProfessors", x => new { x.CourseId, x.ProfessorId });
+                    table.ForeignKey(
+                        name: "FK_CourseProfessors_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CourseProfessors_Professors_ProfessorId",
+                        column: x => x.ProfessorId,
+                        principalTable: "Professors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -340,7 +365,7 @@ namespace FinkiRasporedi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: false)
+                    Name = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Day = table.Column<int>(type: "int", nullable: false),
                     TimeFrom = table.Column<TimeSpan>(type: "time(6)", nullable: false),
@@ -377,6 +402,32 @@ namespace FinkiRasporedi.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "LectureSlots",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    LectureId = table.Column<int>(type: "int", nullable: true),
+                    Name = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Day = table.Column<int>(type: "int", nullable: true),
+                    TimeFrom = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    TimeTo = table.Column<TimeSpan>(type: "time(6)", nullable: true),
+                    HexColor = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LectureSlots", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LectureSlots_Lectures_LectureId",
+                        column: x => x.LectureId,
+                        principalTable: "Lectures",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ScheduleLectures",
                 columns: table => new
                 {
@@ -387,15 +438,15 @@ namespace FinkiRasporedi.Migrations
                 {
                     table.PrimaryKey("PK_ScheduleLectures", x => new { x.LecturesId, x.ScheduleId });
                     table.ForeignKey(
-                        name: "FK_ScheduleLectures_Lectures_LecturesId",
+                        name: "FK_ScheduleLectures_LectureSlots_LecturesId",
                         column: x => x.LecturesId,
-                        principalTable: "Lectures",
+                        principalTable: "LectureSlots",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ScheduleLectures_Schedule_ScheduleId",
+                        name: "FK_ScheduleLectures_Schedules_ScheduleId",
                         column: x => x.ScheduleId,
-                        principalTable: "Schedule",
+                        principalTable: "Schedules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -439,9 +490,19 @@ namespace FinkiRasporedi.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CourseProfessors_ProfessorId",
+                table: "CourseProfessors",
+                column: "ProfessorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Courses_SemesterCode",
                 table: "Courses",
                 column: "SemesterCode");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Courses_SubjectId",
+                table: "Courses",
+                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lectures_CourseId",
@@ -459,14 +520,14 @@ namespace FinkiRasporedi.Migrations
                 column: "RoomName");
 
             migrationBuilder.CreateIndex(
+                name: "IX_LectureSlots_LectureId",
+                table: "LectureSlots",
+                column: "LectureId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ScheduleLectures_ScheduleId",
                 table: "ScheduleLectures",
                 column: "ScheduleId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Semesters_SubjectId",
-                table: "Semesters",
-                column: "SubjectId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StudentSchedules_StudentId",
@@ -493,6 +554,9 @@ namespace FinkiRasporedi.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "CourseProfessors");
+
+            migrationBuilder.DropTable(
                 name: "ScheduleLectures");
 
             migrationBuilder.DropTable(
@@ -502,13 +566,16 @@ namespace FinkiRasporedi.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Lectures");
+                name: "LectureSlots");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Schedule");
+                name: "Schedules");
+
+            migrationBuilder.DropTable(
+                name: "Lectures");
 
             migrationBuilder.DropTable(
                 name: "Courses");

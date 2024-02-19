@@ -30,6 +30,8 @@ namespace FinkiRasporedi.Repository.Data
         public DbSet<Student> Students { get; set; }
 
         public DbSet<CourseProfessor> CourseProfessors { get; set; }
+        public DbSet<LectureSlot> LectureSlots { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,23 +64,21 @@ namespace FinkiRasporedi.Repository.Data
                .HasOne(s => s.Room)
                .WithMany();
             modelBuilder.Entity<Lecture>()
-                .ToTable("Lecture");
-            modelBuilder.Entity<Lecture>()
-                .HasOne(s => s.OriginalLecture);
+                .ToTable("Lectures");
 
             modelBuilder.Entity<Course>()
                 .HasOne(s => s.Subject);
 
-
-            modelBuilder.Entity<ScheduleLecture>()
-               .HasOne(cp => cp.Schedule)
+            modelBuilder.Entity<LectureSlot>()
+               .HasOne(s => s.Lecture)
                .WithMany();
-            modelBuilder.Entity<ScheduleLecture>()
-               .HasOne(cp => cp.Lecture)
-               .WithMany();
-            modelBuilder.Entity<ScheduleLecture>()
-               .HasKey("ScheduleId", "LectureId");
 
+            modelBuilder.Entity<LectureSlot>()
+               .HasKey(c => c.Id);
+
+
+            modelBuilder.Entity<LectureSlot>()
+               .ToTable("LectureSlots");
 
             modelBuilder.Entity<CourseProfessor>()
                .HasOne(cp => cp.Course)
