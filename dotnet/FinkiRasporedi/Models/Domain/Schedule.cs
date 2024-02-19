@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using FinkiRasporedi.Models.Domain;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinkiRasporedi.Models.Base
 {
@@ -8,6 +9,6 @@ namespace FinkiRasporedi.Models.Base
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public virtual List<Lecture>? Lectures { get; set; }
+        public virtual List<LectureSlot>? Lectures { get; set; }
     }
 }

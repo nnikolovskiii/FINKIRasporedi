@@ -143,19 +143,19 @@ if __name__ == '__main__':
     li = []
     for index, row in df.iterrows():
         prof_id = unidecode(row["professor"].lower().replace(' ', '.'))
-        time_from = datetime.strptime(row["time_from"][:-3], "%H:%M")
-        time_to = datetime.strptime(row["time_to"][:-3], "%H:%M")
+        time_from = int(row["time_from"][:2])
+        time_to = int(row["time_to"][:2])+1
         day = d[row["day"]]
         room_name = row["rooms"]
         course_id = "W23"+unidecode(row["subject"].lower().replace(' ', '.'))
         li.append((index,prof_id,time_from,time_to,day,room_name,course_id))
 
-    insert_query2 = "INSERT INTO lecture ( Day, TimeFrom, TimeTo,ProfessorId,CourseId, RoomName, Type) VALUES ( %s, %s,%s,%s,%s,%s, %s)"
+    insert_query2 = "INSERT INTO lectures ( Day, TimeFrom, TimeTo,ProfessorId,CourseId, RoomName) VALUES ( %s, %s,%s,%s,%s,%s)"
 
     for c in li:
-        cursor.execute(insert_query2, (c[4], c[2], c[3], c[1], c[6], c[5], 0))
+        cursor.execute(insert_query2, (c[4], c[2], c[3], c[1], c[6], c[5]))
 
-    query_select = "SELECT CourseId, ProfessorId FROM lecture GROUP BY CourseId, ProfessorId"
+    query_select = "SELECT CourseId, ProfessorId FROM lectures GROUP BY CourseId, ProfessorId"
     cursor.execute(query_select)
 
     distinct_pairs = cursor.fetchall()
