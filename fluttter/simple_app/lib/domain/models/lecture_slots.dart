@@ -7,7 +7,7 @@ class LectureSlot {
   final int day;
   final double timeFrom;
   final double timeTo;
-  final String? hexColor;
+  String? hexColor;
 
   LectureSlot({
     this.id,
@@ -25,21 +25,25 @@ class LectureSlot {
       lecture: json['lecture'] != null ? Lecture.fromJson(json['lecture']) : null,
       name: json['name'],
       day: json['day'],
-      timeFrom: double.parse(json['timeFrom'].substring(0, 2)),
-      timeTo: double.parse(json['timeTo'].substring(0, 2))+1,
+      timeFrom: json['timeFrom'],
+      timeTo: json['timeTo'],
       hexColor: json['hexColor'],
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'lecture': lecture != null ? lecture!.toJson() : null,
-      'name': name,
+    Map<String, dynamic> json = {
       'day': day,
       'timeFrom': timeFrom,
       'timeTo': timeTo,
-      'hexColor': hexColor,
     };
+
+    if (id != null) json['id'] = id;
+    if (lecture != null) json['lecture'] = lecture!.toJson();
+    if (name != null) json['name'] = name;
+    if (hexColor != null) json['hexColor'] = hexColor;
+
+    return json;
   }
+
 }

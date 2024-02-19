@@ -5,6 +5,8 @@ import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_s
 
 import '../../../domain/models/lecture.dart';
 import '../../../domain/models/lecture_slots.dart';
+import '../../../service/schedule_service.dart';
+import '../../screens/calendar_screen.dart';
 
 
 class LectureWidget extends StatelessWidget {
@@ -58,7 +60,7 @@ class LectureWidget extends StatelessWidget {
             actions: [
               TextButton(
                 onPressed: () async {
-                  await scheduleService.removeLecture(scheduleId, lecture.id);
+                  await scheduleService.removeLecture(scheduleId, lecture.id ?? -1);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -96,7 +98,7 @@ class LectureWidget extends StatelessWidget {
               height: getHeight(lecture),
               width: 100,
               decoration: BoxDecoration(
-                color: getRandomColor(),
+                color: hexToColor(lecture.hexColor ?? "#888888"),
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: FittedBox(
@@ -149,28 +151,16 @@ class LectureWidget extends StatelessWidget {
     );
   }
 
-  Color getRandomColor() {
-    // List of predefined colors
-    List<Color> colors = [
-      Colors.lime.shade300,
-      Colors.green.shade200,
-      Colors.teal.shade300,
-      Colors.cyan.shade200,
-      Colors.indigo.shade200,
-      Colors.purple.shade200,
-      Colors.orange.shade200,
-      Colors.deepOrange.shade200,
-      Colors.red.shade200,
-      Colors.pink.shade200,
-      Colors.lightBlue.shade200,
-      Colors.blue.shade300,
-      Colors.blueGrey.shade200,
-    ];
 
-    // Get a random index
-    int randomIndex = Random().nextInt(colors.length);
-
-    // Return the random color
-    return colors[randomIndex];
+  Color hexToColor(String hexColor) {
+    // Remove the # character if present
+    if (hexColor.startsWith('#')) {
+      hexColor = hexColor.substring(1);
+    }
+    // Parse the hex color string to an integer
+    int hexValue = int.parse(hexColor, radix: 16);
+    // Create a color object from the hex value
+    return Color(hexValue).withOpacity(1.0);
   }
+
 }

@@ -30,8 +30,8 @@ class Lecture {
         id: json['id'],
         name: json['name'],
         day: json['day'],
-        timeFrom: double.parse(json['timeFrom'].substring(0, 2)),
-        timeTo: double.parse(json['timeTo'].substring(0, 2))+1,
+        timeFrom: json['timeFrom'],
+        timeTo: json['timeTo'],
         professor: Professor.fromJson(json['professor']),
         course: Course.fromJson(json['course']),
         room: Room.fromJson(json['room']));
@@ -44,9 +44,9 @@ class Lecture {
       'day': day,
       'timeFrom': timeFrom,
       'timeTo': timeTo,
-      'professorId': professor.toJson(),
-      'courseId': course.toJson(),
-      'roomName': room.toJson(),
+      'professor': professor.toJson(),
+      'course': course.toJson(),
+      'room': room.toJson(),
     };
   }
 }

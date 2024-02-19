@@ -16,9 +16,12 @@ class Schedule {
   });
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
-    var lectureList = json['lectures'] as List<dynamic>;
-    List<LectureSlot> lectures = lectureList.map((lectureJson) => LectureSlot.fromJson(lectureJson)).toList();
-
+    List<LectureSlot>? lectures;
+    if(json["lectures"] != null) {
+      var lectureList = json['lectures'] as List<dynamic>;
+      lectures = lectureList.map((lectureJson) =>
+          LectureSlot.fromJson(lectureJson)).toList();
+    }
     return Schedule(
       id: json['id'] as int,
       name: json['name'] as String,

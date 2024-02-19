@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import 'package:flutter/material.dart';
 // import 'package:simple_app/service/lecture_service.dart';
 // import 'package:simple_app/service/schedule_service.dart';

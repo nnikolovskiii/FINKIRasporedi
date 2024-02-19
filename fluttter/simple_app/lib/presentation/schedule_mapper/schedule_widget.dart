@@ -16,7 +16,7 @@ class ScheduleWidget extends StatelessWidget {
       {super.key, required this.schedule, required this.segmented});
 
   getDayColumns() {
-    List<ColumnScheduleWidget> days = [];
+    List<Widget> days = [];
     List<List<LectureSlot>> list = [];
 
     days.add(TimeSlotWidget(startTimeHour: 8, endTimeHour: 20));

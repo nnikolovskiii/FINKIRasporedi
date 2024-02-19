@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:simple_app/domain/models/lecture_slots.dart';
 
-void main() {
-  runApp(MyApp());
-}
+import '../../domain/models/schedule.dart';
+import '../../service/schedule_service.dart';
+import '../screens/calendar_screen.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ColorPickerScreen(),
-    );
-  }
-}
+
 
 class ColorPickerScreen extends StatefulWidget {
+  final Schedule schedule;
+  final LectureSlot lectureSlot;
+  final ScheduleService scheduleService =
+  ScheduleService(); // Initialize LectureService
+
+  ColorPickerScreen({
+    required this.schedule,
+    required this.lectureSlot,
+  });
+
   @override
   _ColorPickerScreenState createState() => _ColorPickerScreenState();
 }
@@ -25,6 +26,7 @@ class ColorPickerScreen extends StatefulWidget {
 class _ColorPickerScreenState extends State<ColorPickerScreen> {
   Color selectedColor = Colors.blue; // Initial color
   TextEditingController hexController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,9 +102,17 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
-                    // Add functionality to use the selected color
-                    // For example, you can pass 'selectedColor' to another widget.
+                  onPressed: () async {
+                    widget.lectureSlot.hexColor = selectedColor.toHex().toString();
+                    await widget.scheduleService
+                        .addLecture(widget.schedule.id ?? 0, widget.lectureSlot);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) =>
+                        CalendarScreen(widget.schedule.id ?? 0),
+                    ),
+                    );
                   },
                   child: Text('Use Color'),
                   style: ElevatedButton.styleFrom(
