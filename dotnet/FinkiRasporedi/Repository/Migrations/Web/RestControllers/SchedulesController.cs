@@ -1,4 +1,5 @@
 ﻿using FinkiRasporedi.Models.Base;
+using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -67,19 +68,12 @@ namespace FinkiRasporedi.Controllers.Rest
 
         // POST: api/Schedules/addLecture/5
         [HttpPost("addLecture/{id}")]
-        public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] int lectureId)
+        public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] LectureSlot lectureSlot)
         {
-            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureId);
+            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureSlot);
             return Ok(updatedSchedule);
         }
 
-        // POST: api/Schedules/addDuplicateLecture/5
-        [HttpPost("addDuplicateLecture/{id}")]
-        public async Task<ActionResult<Schedule>> AddDuplicateLecture(int id, [FromBody] int lectureId)
-        {
-            var updatedSchedule = await _scheduleRepository.AddDuplicateLectureAsync(id, lectureId);
-            return Ok(updatedSchedule);
-        }
 
         // DELETE: api/Schedules/removeLecture/5
         [HttpDelete("removeLecture/{id}")]

@@ -4,12 +4,13 @@ import 'package:simple_app/presentation/schedule_mapper/slots/empty_time_slot_wi
 import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
 
 import '../../domain/models/lecture.dart';
+import '../../domain/models/lecture_slots.dart';
 import 'slots/day_slot_widget.dart';
 import 'slots/lecture_widget.dart';
 
 class ColumnScheduleWidget extends StatelessWidget {
   final int day;
-  final List<Lecture> lectures;
+  final List<LectureSlot> lectures;
   final bool segmented;
   final int scheduleId;
 

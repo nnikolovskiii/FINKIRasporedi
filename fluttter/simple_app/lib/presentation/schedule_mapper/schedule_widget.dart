@@ -3,6 +3,7 @@ import 'package:simple_app/presentation/schedule_mapper/slots/time_slot_widget.d
 import 'package:simple_app/presentation/schedule_mapper/slots/vertical_divider_widget.dart';
 
 import '../../domain/models/lecture.dart';
+import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 
 import 'column_schedule_widget.dart';
@@ -15,17 +16,17 @@ class ScheduleWidget extends StatelessWidget {
       {super.key, required this.schedule, required this.segmented});
 
   getDayColumns() {
-    List<StatelessWidget> days = [];
-    List<List<Lecture>> list = [];
+    List<Widget> days = [];
+    List<List<LectureSlot>> list = [];
 
     days.add(TimeSlotWidget(startTimeHour: 8, endTimeHour: 20));
 
     for (int i = 0; i < 5; i++) {
-      List<Lecture> lecture = [];
+      List<LectureSlot> lecture = [];
       list.add(lecture);
     }
 
-    List<Lecture> lectures = schedule.lectures!;
+    List<LectureSlot> lectures = schedule.lectures!;
 
     for (int i = 0; i < lectures.length; i++) {
       int idx = lectures[i].day;

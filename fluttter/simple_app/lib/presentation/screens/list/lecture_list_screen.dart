@@ -4,14 +4,16 @@ import 'package:simple_app/domain/models/lecture.dart';
 import 'package:simple_app/presentation/screens/calendar_screen.dart';
 import 'package:simple_app/service/lecture_service.dart';
 
+import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../service/schedule_service.dart';
 import '../../schedule_mapper/slots/day_slot_widget.dart';
 import '../../widgets/SelectedLecturesProvider.dart';
+import '../../widgets/color_picker_widget.dart';
 
 bool isOverlapping(Schedule schedule, Lecture lec) {
-  List<Lecture> lectures = schedule.lectures ?? [];
-  for (Lecture lec1 in lectures) {
+  List<LectureSlot> lectures = schedule.lectures ?? [];
+  for (LectureSlot lec1 in lectures) {
     if (lec1.day == lec.day) {
       bool overlap =
           ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
@@ -214,13 +216,11 @@ class _LectureListScreenState extends State<LectureListScreen> {
                         },
                       );
                     } else {
-                      await widget.scheduleService
-                          .addLecture(widget.schedule.id ?? 0, lecture.id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              CalendarScreen(widget.schedule.id ?? 0),
+                              ColorPickerScreen(schedule: widget.schedule, lectureSlot: new LectureSlot(lecture: lecture, day: lecture.day, timeFrom: lecture.timeFrom, timeTo: lecture.timeTo),),
                         ),
                       );
                     }
