@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:simple_app/service/lecture_slot_service.dart';
 import '../presentation/screens/list/schedule_list_screen.dart';
 
 void main() {
