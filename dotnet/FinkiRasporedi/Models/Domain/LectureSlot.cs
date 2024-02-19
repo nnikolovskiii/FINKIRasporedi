@@ -14,8 +14,8 @@ namespace FinkiRasporedi.Models.Domain
         public String? Name { get; set; }
 
         public Day? Day { get; set; }
-        public TimeSpan? TimeFrom { get; set; }
-        public TimeSpan? TimeTo { get; set; }
+        public int? TimeFrom { get; set; }
+        public int? TimeTo { get; set; }
 
 
         public String? HexColor { get; set; }
