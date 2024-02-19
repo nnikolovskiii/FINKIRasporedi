@@ -3,6 +3,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:simple_app/domain/models/lecture_slots.dart';
 
 import '../../domain/models/schedule.dart';
+import '../../service/lecture_slot_service.dart';
 import '../../service/schedule_service.dart';
 import '../screens/calendar_screen.dart';
 
@@ -11,12 +12,16 @@ import '../screens/calendar_screen.dart';
 class ColorPickerScreen extends StatefulWidget {
   final Schedule schedule;
   final LectureSlot lectureSlot;
+  final bool update;
   final ScheduleService scheduleService =
-  ScheduleService(); // Initialize LectureService
+  ScheduleService();
+  final LectureSlotService lectureSlotService =
+  LectureSlotService();
+  final String? color;
 
   ColorPickerScreen({
     required this.schedule,
-    required this.lectureSlot,
+    required this.lectureSlot, required this.update, this.color,
   });
 
   @override
@@ -24,9 +29,14 @@ class ColorPickerScreen extends StatefulWidget {
 }
 
 class _ColorPickerScreenState extends State<ColorPickerScreen> {
-  Color selectedColor = Colors.blue; // Initial color
+  late Color selectedColor; // Initial color
   TextEditingController hexController = TextEditingController();
 
+
+  @override
+  void initState() {
+    selectedColor = HexColor.fromHex(widget.color??"#808080");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,15 +114,30 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                 ElevatedButton(
                   onPressed: () async {
                     widget.lectureSlot.hexColor = selectedColor.toHex().toString();
-                    await widget.scheduleService
-                        .addLecture(widget.schedule.id ?? 0, widget.lectureSlot);
-                    Navigator.push(
+
+                    if (widget.update){
+                      await widget.lectureSlotService
+                          .updateLectureSlot(
+                          widget.lectureSlot.id ?? 0, widget.lectureSlot);
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
-                        builder: (context) =>
-                        CalendarScreen(widget.schedule.id ?? 0),
-                    ),
-                    );
+                          builder: (context) =>
+                              CalendarScreen(widget.schedule.id ?? 0),
+                        ),
+                      );
+                    }else {
+                      await widget.scheduleService
+                          .addLecture(
+                          widget.schedule.id ?? 0, widget.lectureSlot);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CalendarScreen(widget.schedule.id ?? 0),
+                        ),
+                      );
+                    }
                   },
                   child: Text('Use Color'),
                   style: ElevatedButton.styleFrom(

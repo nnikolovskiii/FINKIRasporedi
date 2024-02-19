@@ -40,7 +40,7 @@ class ScheduleWidget extends StatelessWidget {
         lectures: list[i],
         day: i,
         segmented: segmented,
-        scheduleId: schedule.id ?? -1,
+        schedule: schedule,
       ));
       if (i != 4) days.add(VerticalDividerWidget());
     }

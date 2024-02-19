@@ -5,6 +5,7 @@ import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider
 
 import '../../domain/models/lecture.dart';
 import '../../domain/models/lecture_slots.dart';
+import '../../domain/models/schedule.dart';
 import 'slots/day_slot_widget.dart';
 import 'slots/lecture_widget.dart';
 
@@ -12,14 +13,14 @@ class ColumnScheduleWidget extends StatelessWidget {
   final int day;
   final List<LectureSlot> lectures;
   final bool segmented;
-  final int scheduleId;
+  final Schedule schedule;
 
   const ColumnScheduleWidget({
     super.key,
     required this.lectures,
     required this.day,
     required this.segmented,
-    required this.scheduleId,
+    required this.schedule,
   });
 
   defineColumn() {
@@ -31,7 +32,7 @@ class ColumnScheduleWidget extends StatelessWidget {
       if (j < lectures.length && i == lectures[j].timeFrom as int) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
-          segmented: segmented, scheduleId: scheduleId,
+          segmented: segmented, schedule: schedule,
         ));
 
         double interval = lectures[j].timeTo - lectures[j].timeFrom;

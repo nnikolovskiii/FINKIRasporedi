@@ -220,7 +220,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              ColorPickerScreen(schedule: widget.schedule, lectureSlot: new LectureSlot(lecture: lecture, day: lecture.day, timeFrom: lecture.timeFrom, timeTo: lecture.timeTo),),
+                              ColorPickerScreen(schedule: widget.schedule, lectureSlot: new LectureSlot(lecture: lecture, day: lecture.day, timeFrom: lecture.timeFrom, timeTo: lecture.timeTo), update: false,),
                         ),
                       );
                     }

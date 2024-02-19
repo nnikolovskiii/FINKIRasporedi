@@ -3,10 +3,10 @@ import 'lecture.dart';
 class LectureSlot {
   final int? id;
   final Lecture? lecture;
-  final String? name;
-  final int day;
-  final double timeFrom;
-  final double timeTo;
+  String? name;
+  int day;
+  double timeFrom;
+  double timeTo;
   String? hexColor;
 
   LectureSlot({
@@ -22,7 +22,8 @@ class LectureSlot {
   factory LectureSlot.fromJson(Map<String, dynamic> json) {
     return LectureSlot(
       id: json['id'],
-      lecture: json['lecture'] != null ? Lecture.fromJson(json['lecture']) : null,
+      lecture:
+          json['lecture'] != null ? Lecture.fromJson(json['lecture']) : null,
       name: json['name'],
       day: json['day'],
       timeFrom: json['timeFrom'],
@@ -45,5 +46,4 @@ class LectureSlot {
 
     return json;
   }
-
 }
