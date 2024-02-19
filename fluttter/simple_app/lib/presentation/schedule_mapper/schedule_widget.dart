@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/models/lecture.dart';
+import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 
 import 'column_schedule_widget.dart';
@@ -14,14 +15,14 @@ class ScheduleWidget extends StatelessWidget {
 
   getDayColumns() {
     List<ColumnScheduleWidget> days = [];
-    List<List<Lecture>> list = [];
+    List<List<LectureSlot>> list = [];
 
     for (int i = 0; i < 5; i++) {
-      List<Lecture> lecture = [];
+      List<LectureSlot> lecture = [];
       list.add(lecture);
     }
 
-    List<Lecture> lectures = schedule.lectures!;
+    List<LectureSlot> lectures = schedule.lectures!;
 
     for (int i = 0; i < lectures.length; i++) {
       int idx = lectures[i].day;

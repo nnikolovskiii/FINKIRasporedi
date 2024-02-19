@@ -1,10 +1,12 @@
 import 'package:simple_app/domain/models/lecture.dart';
 
+import 'lecture_slots.dart';
+
 class Schedule {
   int? id;
   String name;
   String description;
-  List<Lecture>? lectures;
+  List<LectureSlot>? lectures;
 
   Schedule({
     this.id,
@@ -15,7 +17,7 @@ class Schedule {
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
     var lectureList = json['lectures'] as List<dynamic>;
-    List<Lecture> lectures = lectureList.map((lectureJson) => Lecture.fromJson(lectureJson)).toList();
+    List<LectureSlot> lectures = lectureList.map((lectureJson) => LectureSlot.fromJson(lectureJson)).toList();
 
     return Schedule(
       id: json['id'] as int,

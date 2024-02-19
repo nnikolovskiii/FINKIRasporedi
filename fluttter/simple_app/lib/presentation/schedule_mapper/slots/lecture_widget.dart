@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 
 import '../../../domain/models/lecture.dart';
+import '../../../domain/models/lecture_slots.dart';
 
 class LectureWidget extends StatelessWidget {
   final bool segmented;
 
-  List<TransparentTimeSlotWidget> getEmptyTimeSlots(Lecture lecture) {
+  List<TransparentTimeSlotWidget> getEmptyTimeSlots(LectureSlot lecture) {
     double interval = lecture.timeTo - lecture.timeFrom;
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
@@ -19,7 +20,7 @@ class LectureWidget extends StatelessWidget {
     return emptyWidgets;
   }
 
-  final Lecture lecture;
+  final LectureSlot lecture;
 
   const LectureWidget({
     super.key,
@@ -27,7 +28,7 @@ class LectureWidget extends StatelessWidget {
     required this.segmented,
   });
 
-  double getHeight(Lecture lecture) {
+  double getHeight(LectureSlot lecture) {
     double interval = lecture.timeTo - lecture.timeFrom;
     return 50 * interval;
   }
@@ -68,14 +69,14 @@ class LectureWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      lecture.room.name,
+                      lecture.lecture!.room.name,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.black,
                           fontFamily: 'Lato'),
                     ),
                     Text(
-                      lecture.course.subject.name,
+                      lecture.lecture!.course.subject.name,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Lato',
@@ -83,7 +84,7 @@ class LectureWidget extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      lecture.professor.name,
+                      lecture.lecture!.professor.name,
                       style: const TextStyle(
                         color: Colors.black,
                         fontFamily: 'Lato',

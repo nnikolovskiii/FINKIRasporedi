@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../domain/models/course.dart';
+import '../domain/models/lecture_slots.dart';
 import '../domain/models/schedule.dart';
 
 class ScheduleService {
@@ -37,13 +38,13 @@ class ScheduleService {
     }
   }
 
-  Future<Schedule> addLecture(int id, int lectureId) async {
+  Future<Schedule> addLecture(int id, LectureSlot lectureSlot) async {
     final response = await http.post(
       Uri.parse('$baseUrl/Schedules/addLecture/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
-      body: jsonEncode(lectureId),
+      body: jsonEncode(lectureSlot.toJson()),
     );
 
     if (response.statusCode == 200) {
