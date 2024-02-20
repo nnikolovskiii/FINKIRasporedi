@@ -28,10 +28,11 @@ class LoginPage extends StatelessWidget {
     return const Column(
       children: [
         Text(
-          "Welcome Back",
+          "Добредојдовте назад",
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
         ),
-        Text("Enter your credential to login"),
+        Text("Внесете ги вашите податоци"),
       ],
     );
   }
@@ -42,40 +43,40 @@ class LoginPage extends StatelessWidget {
       children: [
         TextField(
           decoration: InputDecoration(
-              hintText: "Username",
+              hintText: "Корисничко име",
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
                   borderSide: BorderSide.none
               ),
-              fillColor: Colors.purple.withOpacity(0.1),
+              fillColor: Color(0xFF123499).withOpacity(0.1),
               filled: true,
               prefixIcon: const Icon(Icons.person)),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         TextField(
           decoration: InputDecoration(
-            hintText: "Password",
+            hintText: "Лозинка",
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide.none),
-            fillColor: Colors.purple.withOpacity(0.1),
+            fillColor: Color(0xFF123499).withOpacity(0.1),
             filled: true,
             prefixIcon: const Icon(Icons.password),
           ),
           obscureText: true,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
           },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.purple,
+            backgroundColor: Color(0xFF123499).withOpacity(0.7),
           ),
           child: const Text(
-            "Login",
-            style: TextStyle(fontSize: 20),
+            "Логирај се",
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         )
       ],
@@ -85,21 +86,20 @@ class LoginPage extends StatelessWidget {
   _forgotPassword(context) {
     return TextButton(
       onPressed: () {},
-      child: const Text("Forgot password?",
-        style: TextStyle(color: Colors.purple),
+      child: const Text("Заборавена лозинка?",
+        style: TextStyle(color: Color(0xFF123499) ),
       ),
     );
   }
 
   _signup(context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+     // mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Dont have an account? "),
         TextButton(
             onPressed: () {
             },
-            child: const Text("Sign Up", style: TextStyle(color: Colors.purple),)
+            child: const Text("Регистрирај се", style: TextStyle(color: Colors.white),)
         )
       ],
     );
