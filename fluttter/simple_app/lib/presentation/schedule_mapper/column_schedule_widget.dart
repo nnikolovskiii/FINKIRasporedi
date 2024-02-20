@@ -15,6 +15,7 @@ class ColumnScheduleWidget extends StatelessWidget {
   final bool segmented;
   final Schedule schedule;
   bool dayBool;
+  int num;
 
   ColumnScheduleWidget({
     super.key,
@@ -22,7 +23,7 @@ class ColumnScheduleWidget extends StatelessWidget {
     required this.day,
     required this.segmented,
     required this.schedule,
-    this.dayBool = true,
+    this.dayBool = true,  this.num = 6,
   });
 
   defineColumn() {
@@ -31,25 +32,27 @@ class ColumnScheduleWidget extends StatelessWidget {
     int j = 0;
     if (dayBool) {
       lectureWidgets.add(DayWidget(
+        num: num,
         day: day,
       ));
     }
-    lectureWidgets.add(HorizontalDividerWidget(hasColor: true,));
+    lectureWidgets.add(HorizontalDividerWidget(hasColor: true,num: num));
     for (int i = 8; i < 20; i++) {
       if (j < lectures.length && i == lectures[j].timeFrom as int) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
           segmented: segmented, schedule: schedule,
+            num: num
         ));
 
         double interval = lectures[j].timeTo - lectures[j].timeFrom;
         i = i + (interval as int) - 1;
         j++;
       } else {
-        lectureWidgets.add(EmptyTimeSlotWidget(segmented: segmented));
+        lectureWidgets.add(EmptyTimeSlotWidget(segmented: segmented, num: num));
       }
       if (i != 19)
-        lectureWidgets.add(HorizontalDividerWidget(hasColor: true,));
+        lectureWidgets.add(HorizontalDividerWidget(hasColor: true,num: num));
     }
     return lectureWidgets;
   }

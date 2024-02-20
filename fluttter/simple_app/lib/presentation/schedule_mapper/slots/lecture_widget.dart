@@ -13,6 +13,7 @@ import '../../screens/calendar_screen.dart';
 
 
 class LectureWidget extends StatelessWidget {
+  int num;
   final ScheduleService scheduleService = ScheduleService();
   final LectureSlotService lectureSlotService = LectureSlotService();
   final Schedule schedule;
@@ -23,7 +24,7 @@ class LectureWidget extends StatelessWidget {
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
     for (double i = 0; i < interval; i++) {
-      emptyWidgets.add(const TransparentTimeSlotWidget());
+      emptyWidgets.add(TransparentTimeSlotWidget(num: num,));
     }
 
     return emptyWidgets;
@@ -34,7 +35,7 @@ class LectureWidget extends StatelessWidget {
   LectureWidget({
     super.key,
     required this.lecture,
-    required this.segmented, required this.schedule,
+    required this.segmented, required this.schedule, this.num = 6,
   });
 
   double getHeight(LectureSlot lecture) {
@@ -53,6 +54,8 @@ class LectureWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return GestureDetector(
           onLongPress: () {
         // Show a dialog or perform any action for deleting the lecture
@@ -125,7 +128,7 @@ class LectureWidget extends StatelessWidget {
             ),
             child: Container(
               height: getHeight(lecture),
-              width: 100,
+              width:  (width-90)/num,
               decoration: BoxDecoration(
                 color: hexToColor(lecture.hexColor ?? "#888888"),
                 borderRadius: BorderRadius.circular(10.0),

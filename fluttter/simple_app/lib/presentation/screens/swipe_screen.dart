@@ -57,9 +57,11 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Tutorials',
       home: Scaffold(
         appBar: AppBar(
@@ -67,15 +69,16 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
         ),
         body: Center(
           child: GestureDetector(
+            behavior: HitTestBehavior.translucent,
             // Detect both touch and mouse events
             onHorizontalDragUpdate: (details) {
-              if (details.delta.dx > 0) {
+              if (details.delta.dx > 0 && currentPage > 0) {
                 // Swiping right
                 controller.previousPage(
                   duration: Duration(milliseconds: 300),
                   curve: Curves.ease,
                 );
-              } else if (details.delta.dx < 0) {
+              } else if (details.delta.dx < 0 && currentPage < (5 - num)) {
                 // Swiping left
                 controller.nextPage(
                   duration: Duration(milliseconds: 300),
@@ -90,6 +93,11 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                   child: PageView(
                     controller: controller,
                     children: getColumns(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentPage = index.toDouble();
+                      });
+                    },
                   ),
                 ),
                 Row(
@@ -97,7 +105,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                   children: [
                     DotsIndicator(
                       dotsCount: 5 - num + 1, // Assuming you have 5 pages
-                      position: currentPage,
+                      position: currentPage.toDouble(),
                       decorator: DotsDecorator(
                         color: Colors.grey, // Inactive color
                         activeColor: Colors.blueAccent,
@@ -111,8 +119,14 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                         TextButton(
                           onPressed: () {
                             setState(() {
-                              num = (num % 5) +
-                                  1; // Increment num and reset to 1 when it reaches 5
+                              num = (num % 5) + 1; // Increment num and reset to 1 when it reaches 5
+                              if (currentPage != 0) {
+                                controller.previousPage(
+                                  duration: Duration(milliseconds: 300),
+                                  curve: Curves.ease,
+                                );
+                                currentPage -= 1;
+                              }
                             });
                           },
                           child: Text(
@@ -131,6 +145,9 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
       ),
     );
   }
+
+
+
 
   List<List<LectureSlot>> getListLectureSlots() {
     List<List<LectureSlot>> list = [];
@@ -172,6 +189,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                     startTimeHour: 8,
                     endTimeHour: 20,
                     dayBool: false,
+                    num: num +1,
                   ),
                   VerticalDividerWidget(numCells: 12, color: Colors.grey.shade300,),
                   ...getDays(i, i + num, list)
@@ -198,6 +216,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
           segmented: false,
           schedule: widget.schedule,
           dayBool: false,
+          num: num +1,
         ));
       }else {
         widgets.add(ColumnScheduleWidget(
@@ -206,6 +225,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
           segmented: false,
           schedule: widget.schedule,
           dayBool: false,
+          num: num +1,
         ));
         widgets.add(
             VerticalDividerWidget(numCells: 12, color: Colors.grey.shade300,)
@@ -218,16 +238,18 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
 
   List<Widget> getDaysLabels(int fromIndex, int toIndex) {
     List<Widget> widgets = [];
-    widgets.add(TransparentTimeSlotWidget());
+    widgets.add(TransparentTimeSlotWidget( num: num +1,));
     widgets.add(VerticalDividerWidget(numCells: 1, color: Colors.transparent,));
     for (int i = fromIndex; i < 5 && i < toIndex; i++) {
       if (i == 4 || i == toIndex-1){
         widgets.add(DayWidget(
           day: i,
+          num: num +1,
         ));
       }else {
         widgets.add(DayWidget(
           day: i,
+          num: num +1,
         ));
         widgets.add(
             VerticalDividerWidget(numCells: 1, color: Colors.transparent,)
