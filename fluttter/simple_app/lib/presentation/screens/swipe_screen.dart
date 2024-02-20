@@ -43,9 +43,11 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
   }
 
   void _onPageChanged() {
-    setState(() {
-      currentPage = controller.page ?? 0;
-    });
+    if (currentPage < (5 - num)) {
+      setState(() {
+        currentPage = controller.page ?? 0;
+      });
+    }
   }
 
   void _onDotTapped(double position) {
@@ -60,14 +62,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Tutorials',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Flutter Horizontal Swipe Example'),
-        ),
-        body: Center(
+    return Center(
           child: GestureDetector(
             behavior: HitTestBehavior.translucent,
             // Detect both touch and mouse events
@@ -141,9 +136,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
               ],
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 
 
@@ -171,7 +164,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
     List<Widget> days = [];
     List<List<LectureSlot>> list = getListLectureSlots();
 
-    for (int i = 0; i < 5; i += 1) {
+    for (int i = 0; i < 5 - num+1; i += 1) {
       days.add(Column(
         children: [
           Row(
@@ -261,8 +254,3 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
   }
 }
 
-Future<void> main() async {
-  ScheduleService scheduleService = ScheduleService();
-  Schedule schedule = await scheduleService.getSchedule(1);
-  runApp(HorizontalSwipeScreen(schedule: schedule, segmented: false));
-}
