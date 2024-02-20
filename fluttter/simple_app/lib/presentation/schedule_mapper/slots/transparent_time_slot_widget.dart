@@ -26,12 +26,6 @@ class _TransparentTimeSlotWidgetState extends State<TransparentTimeSlotWidget> {
       child: Container(
         height: 50,
         width: 100,
-        decoration: BoxDecoration(
-          color: isHovered
-              ? Colors.grey.withOpacity(0.4) // Adjust alpha value as needed
-              : Colors.transparent,
-          // Adjust the radius as needed
-        ),
       ),
     );
   }

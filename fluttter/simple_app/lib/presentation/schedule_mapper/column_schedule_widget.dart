@@ -14,19 +14,26 @@ class ColumnScheduleWidget extends StatelessWidget {
   final List<LectureSlot> lectures;
   final bool segmented;
   final Schedule schedule;
+  bool dayBool;
 
-  const ColumnScheduleWidget({
+  ColumnScheduleWidget({
     super.key,
     required this.lectures,
     required this.day,
     required this.segmented,
     required this.schedule,
+    this.dayBool = true,
   });
 
   defineColumn() {
     List<Widget> lectureWidgets = [];
     lectures.sort((a, b) => a.timeFrom.compareTo(b.timeFrom));
     int j = 0;
+    if (dayBool) {
+      lectureWidgets.add(DayWidget(
+        day: day,
+      ));
+    }
     lectureWidgets.add(HorizontalDividerWidget(hasColor: true,));
     for (int i = 8; i < 20; i++) {
       if (j < lectures.length && i == lectures[j].timeFrom as int) {
@@ -51,14 +58,10 @@ class ColumnScheduleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        padding: EdgeInsets.all(5.0),
           child: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              DayWidget(
-                day: day,
-              ),
               ...defineColumn(),
             ]),
       ),

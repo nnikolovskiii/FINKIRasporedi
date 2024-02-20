@@ -13,16 +13,7 @@ class EmptyTimeSlotWidget extends StatelessWidget {
         Container(
           height: 50,
           width: 100,
-          decoration: BoxDecoration(
-            // border: const Border(
-            //   top: BorderSide(
-            //     color: Colors.grey,
-            //     width: 2.0,
-            //   ),
-            //
-            // ),
-            // Adjust the radius as needed
-          ),
+
         ),
         if (segmented) // Only include TransparentTimeSlotWidget if segmented is true
           const Positioned(

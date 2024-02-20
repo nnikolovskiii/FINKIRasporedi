@@ -6,12 +6,14 @@ class TimeSlotWidget extends StatelessWidget {
   final int startTimeHour;
   final int endTimeHour;
   final int intervalMinutes;
+  bool dayBool;
 
-  const TimeSlotWidget({
+  TimeSlotWidget({
     Key? key,
     required this.startTimeHour,
     required this.endTimeHour,
     this.intervalMinutes = 45,
+    this.dayBool = true
   }) : super(key: key);
 
   @override
@@ -20,12 +22,10 @@ class TimeSlotWidget extends StatelessWidget {
 
     return Center(
       child: Container(
-        padding: EdgeInsets.all(5.0),
         child: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TransparentTimeSlotWidget(),
               ...timeSlots
             ]),
       ),
@@ -35,6 +35,10 @@ class TimeSlotWidget extends StatelessWidget {
   List<Widget> generateTimeSlots() {
     List<String> timeSlots = [];
     List<Widget> widgets = [];
+    if(dayBool){
+      widgets.add(TransparentTimeSlotWidget());
+    }
+
     for (int i = startTimeHour; i < endTimeHour; i++) {
       String startHour = i.toString().padLeft(2, '0');
       String startMinute = '00';
