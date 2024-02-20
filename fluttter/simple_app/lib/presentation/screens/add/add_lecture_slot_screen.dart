@@ -5,7 +5,22 @@ import '../../../domain/models/schedule.dart';
 import '../../widgets/color_picker_widget.dart';
 
 
+bool isOverlapping(Schedule schedule, LectureSlot lec) {
+  List<LectureSlot> lectures = schedule.lectures ?? [];
+  for (LectureSlot lec1 in lectures) {
+    if (lec1.day == lec.day) {
+      bool overlap =
+      ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
+          (lec1.timeTo > lec.timeFrom && lec1.timeTo <= lec.timeTo) ||
+          (lec1.timeFrom <= lec.timeFrom && lec1.timeTo >= lec.timeTo));
 
+      if (overlap) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 class FieldScreen extends StatefulWidget {
   final Schedule schedule;
@@ -136,6 +151,8 @@ class _FieldScreenState extends State<FieldScreen> {
                   print('Time From: $selectedTimeFrom');
                   print('Time To: $selectedTimeTo');
 
+
+
                   // If lectureSlot is null, it's a new lecture slot, else it's editing
                   if (widget.lectureSlot == null) {
                     // Create a new LectureSlot object
@@ -146,17 +163,40 @@ class _FieldScreenState extends State<FieldScreen> {
                       timeTo: selectedTimeTo.toDouble(),
                     );
 
-                    // Navigate to ColorPickerScreen for saving new lecture slot
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ColorPickerScreen(
-                          schedule: widget.schedule,
-                          lectureSlot: newLectureSlot,
-                            update: false
+                    if (isOverlapping(widget.schedule, newLectureSlot)) {
+                      // Show pop-up indicating overlap
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Overlap Warning'),
+                            content: Text(
+                                'The selected lecture overlaps with an existing one.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context); // Close the dialog
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }else {
+                      // Navigate to ColorPickerScreen for saving new lecture slot
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ColorPickerScreen(
+                                  schedule: widget.schedule,
+                                  lectureSlot: newLectureSlot,
+                                  update: false
+                              ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   } else {
                     // Modify existing LectureSlot object
                     widget.lectureSlot!.name = name;
@@ -164,18 +204,41 @@ class _FieldScreenState extends State<FieldScreen> {
                     widget.lectureSlot!.timeFrom = selectedTimeFrom.toDouble();
                     widget.lectureSlot!.timeTo = selectedTimeTo.toDouble();
 
-                    // Navigate back
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ColorPickerScreen(
-                          schedule: widget.schedule,
-                          lectureSlot: widget.lectureSlot!,
-                          update: true,
-                          color:widget.lectureSlot!.hexColor
+                    if (isOverlapping(widget.schedule, widget.lectureSlot!)) {
+                      // Show pop-up indicating overlap
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Overlap Warning'),
+                            content: Text(
+                                'The selected lecture overlaps with an existing one.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context); // Close the dialog
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      // Navigate back
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ColorPickerScreen(
+                                  schedule: widget.schedule,
+                                  lectureSlot: widget.lectureSlot!,
+                                  update: true,
+                                  color: widget.lectureSlot!.hexColor
+                              ),
                         ),
-                      ),
-                    );
+                      );
+                    }
                   }
                 },
                 child: Text('Save'),
