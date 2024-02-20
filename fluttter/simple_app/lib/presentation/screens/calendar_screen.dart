@@ -120,10 +120,12 @@ class _CalendarAppState extends State<CalendarScreen> {
             ActionButton(
               onPressed: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CourseListScreen(schedule: scheduleFuture!),
-                  ),
+                    context,
+                    MaterialPageRoute(
+                    builder: (context) => ScheduleListScreen(),
+
+                ),
+
                 );
               },
               icon: const Icon(Icons.add_circle_outlined),
