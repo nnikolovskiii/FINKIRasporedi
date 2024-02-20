@@ -49,23 +49,23 @@ class _CalendarAppState extends State<CalendarScreen> {
       theme: theme,
       home: Scaffold(
         appBar: AppBar(
-          // leading: IconButton(
-          //   icon: Icon(Icons.arrow_back),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(
-          //         builder: (context) => ScheduleListScreen(),
-          //
-          //       ),
-          //     );
-          //   },
-          // ),
-          title: const Text('Распоред',
-          style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFF123499),
-          ),),
+          title: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScheduleListScreen(),
+                ),
+              );
+            },
+            child: Text(
+              'Распоред',
+              style: TextStyle(
+                fontSize: 16,
+                color: Color(0xFF123499),
+              ),
+            ),
+          ),
           elevation: 20,
         ),
         body: Column(
