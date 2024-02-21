@@ -16,51 +16,85 @@ class ChooseLectureScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Choose Lecture'),
         ),
-        body: Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CourseListScreen(schedule: schedule),
-                    ),
-                  );
-                },
-                child: Container(
-                  color: Colors.blue,
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Постоечки предмети',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 3, // Add elevation for a shadow effect
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CourseListScreen(schedule: schedule),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Термин од распоред',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text(
+                          'Додади предавање или вежби според термини во распоредот на ФИНКИ.',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FieldScreen(schedule: schedule),
-                    ),
-                  );
-                },
-                child: Container(
-                  color: Colors.green,
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Изборни предмети',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
+              SizedBox(height: 20), // Add space between the two cards
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  elevation: 3, // Add elevation for a shadow effect
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: OutlinedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FieldScreen(schedule: schedule),
+                              ),
+                            );
+                          },
+                          child: const Text(
+                            'Custom термин',
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: const Text(
+                          'Додади свои предавања, вежби и лабораториски.',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
 }

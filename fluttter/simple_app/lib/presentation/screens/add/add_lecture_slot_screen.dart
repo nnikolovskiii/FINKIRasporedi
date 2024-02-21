@@ -38,8 +38,8 @@ class FieldScreen extends StatefulWidget {
 class _FieldScreenState extends State<FieldScreen> {
   final TextEditingController nameController = TextEditingController();
   int selectedDayIndex = 0; // Default selection is Monday
-  int selectedTimeFrom = 0; // Default selection is 0 hours
-  int selectedTimeTo = 0; // Default selection is 0 hours
+  int selectedTimeFrom = 8; // Default selection is 0 hours
+  int selectedTimeTo = 8; // Default selection is 0 hours
 
   @override
   void initState() {
@@ -55,7 +55,8 @@ class _FieldScreenState extends State<FieldScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> hours = List.generate(24, (index) => index); // List of hours from 0 to 23
+    List<int> hours = List<int>.generate(13, (index) => index + 8); // List of hours from 8 to 20
+
 
     return MaterialApp(
       home: Scaffold(
@@ -67,11 +68,24 @@ class _FieldScreenState extends State<FieldScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // TextField(
+              //   controller: nameController,
+              //   decoration: InputDecoration(labelText: 'Name'),
+              // ),
               TextField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: InputDecoration(
+                    hintText: "Име",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(18),
+                        borderSide: BorderSide.none
+                    ),
+                    fillColor:  Color(0xFF123499).withOpacity(0.1),
+                    filled: true,
+                    prefixIcon: const Icon(Icons.drive_file_rename_outline)),
               ),
-              SizedBox(height: 10),
+              SizedBox(height: 20),
+
               DropdownButtonFormField<int>(
                 value: selectedDayIndex,
                 onChanged: (int? newIndex) {
@@ -79,70 +93,113 @@ class _FieldScreenState extends State<FieldScreen> {
                     selectedDayIndex = newIndex!;
                   });
                 },
-                decoration: InputDecoration(labelText: 'Day'),
-                items: [
+                decoration: InputDecoration(
+                  hintText: "Day",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide.none,
+                  ),
+                  fillColor: Color(0xFF123499).withOpacity(0.1),
+                  filled: true,
+                  prefixIcon: const Icon(Icons.calendar_today),
+                ),
+                items: const [
                   DropdownMenuItem<int>(
                     value: 0,
-                    child: Text('Monday'),
+                    child: Text('Понеделник'),
                   ),
                   DropdownMenuItem<int>(
                     value: 1,
-                    child: Text('Tuesday'),
+                    child: Text('Вторник'),
                   ),
                   DropdownMenuItem<int>(
                     value: 2,
-                    child: Text('Wednesday'),
+                    child: Text('Среда'),
                   ),
                   DropdownMenuItem<int>(
                     value: 3,
-                    child: Text('Thursday'),
+                    child: Text('Четврток'),
                   ),
                   DropdownMenuItem<int>(
                     value: 4,
-                    child: Text('Friday'),
+                    child: Text('Петок'),
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+
+              SizedBox(height: 20),
               Row(
                 children: [
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      value: selectedTimeFrom,
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          selectedTimeFrom = newValue!;
-                        });
-                      },
-                      decoration: InputDecoration(labelText: 'Time From (hours)'),
-                      items: hours.map((hour) {
-                        return DropdownMenuItem<int>(
-                          value: hour,
-                          child: Text(hour.toString()),
-                        );
-                      }).toList(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        DropdownButtonFormField<int>(
+                          value: selectedTimeFrom,
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              selectedTimeFrom = newValue!;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'Од (часот)',
+                            hintText: "Од ",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide.none,
+                            ),
+                            fillColor:Color(0xFF123499).withOpacity(0.1),
+                            filled: true,
+                            prefixIcon: Icon(Icons.access_time),
+                          ),
+                          items: hours.map((hour) {
+                            return DropdownMenuItem<int>(
+                              value: hour,
+                              child: Text(hour.toString()),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 20),
                   Expanded(
-                    child: DropdownButtonFormField<int>(
-                      value: selectedTimeTo,
-                      onChanged: (int? newValue) {
-                        setState(() {
-                          selectedTimeTo = newValue!;
-                        });
-                      },
-                      decoration: InputDecoration(labelText: 'Time To (hours)'),
-                      items: hours.map((hour) {
-                        return DropdownMenuItem<int>(
-                          value: hour,
-                          child: Text(hour.toString()),
-                        );
-                      }).toList(),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        DropdownButtonFormField<int>(
+                          value: selectedTimeTo,
+                          onChanged: (int? newValue) {
+                            setState(() {
+                              selectedTimeTo = newValue!;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            labelText: 'До (часот)',
+                            hintText: "до",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide.none,
+                            ),
+                            fillColor: Color(0xFF123499).withOpacity(0.1),
+                            filled: true,
+                            prefixIcon: Icon(Icons.access_time),
+                          ),
+                          items: hours.map((hour) {
+                            return DropdownMenuItem<int>(
+                              value: hour,
+                              child: Text(hour.toString()),
+                            );
+                          }).toList(),
+                        ),
+                        SizedBox(height: 10),
+                      ],
                     ),
                   ),
                 ],
               ),
+
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
