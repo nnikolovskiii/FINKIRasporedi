@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TransparentTimeSlotWidget extends StatefulWidget {
-  const TransparentTimeSlotWidget({Key? key}) : super(key: key);
+  int num;
+  TransparentTimeSlotWidget({Key? key, this.num = 6}) : super(key: key);
 
   @override
   _TransparentTimeSlotWidgetState createState() =>
@@ -14,6 +15,7 @@ class _TransparentTimeSlotWidgetState extends State<TransparentTimeSlotWidget> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return MouseRegion(
       onEnter: (event) {
         setState(() => isHovered = true);
@@ -25,13 +27,7 @@ class _TransparentTimeSlotWidgetState extends State<TransparentTimeSlotWidget> {
       onExit: (_) => setState(() => isHovered = false),
       child: Container(
         height: 50,
-        width: 100,
-        decoration: BoxDecoration(
-          color: isHovered
-              ? Colors.grey.withOpacity(0.4) // Adjust alpha value as needed
-              : Colors.transparent,
-          // Adjust the radius as needed
-        ),
+        width:  (width-90)/widget.num,
       ),
     );
   }

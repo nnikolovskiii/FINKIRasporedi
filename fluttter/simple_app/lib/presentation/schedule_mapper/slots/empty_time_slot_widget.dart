@@ -3,32 +3,26 @@ import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_s
 
 class EmptyTimeSlotWidget extends StatelessWidget {
   final bool segmented;
+  int num;
 
-  const EmptyTimeSlotWidget({super.key, required this.segmented});
+  EmptyTimeSlotWidget({super.key, required this.segmented, this.num = 6});
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Container(
           height: 50,
-          width: 100,
-          decoration: BoxDecoration(
-            // border: const Border(
-            //   top: BorderSide(
-            //     color: Colors.grey,
-            //     width: 2.0,
-            //   ),
-            //
-            // ),
-            // Adjust the radius as needed
-          ),
+          width:  (width-90)/num,
+
         ),
         if (segmented) // Only include TransparentTimeSlotWidget if segmented is true
-          const Positioned(
+           Positioned(
             top: 0,
             left: 0,
-            child: TransparentTimeSlotWidget(),
+            child: TransparentTimeSlotWidget(num: num,),
           ),
       ],
     );

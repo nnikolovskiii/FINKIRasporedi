@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:simple_app/presentation/screens/list/choose_lecture_type_screen.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:simple_app/presentation/screens/swipe_screen.dart';
 import 'package:simple_app/presentation/theme/app_theme.dart';
 import 'package:simple_app/service/schedule_service.dart';
 
@@ -50,11 +51,21 @@ class _CalendarAppState extends State<CalendarScreen> {
       theme: brightTheme,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Распоред',
-            style: TextStyle(
-              fontSize: 16,
-              color: Color(0xFF123499),
+          title: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ScheduleListScreen(),
+                ),
+              );
+            },
+            child: Text(
+              'Распоред',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Color(0xFF123499),
+              ),
             ),
           ),
           elevation: 20,
@@ -65,10 +76,13 @@ class _CalendarAppState extends State<CalendarScreen> {
             Expanded(
               child: scheduleFuture != null
                   ? Center(
-                child: ScheduleWidget(
-                  schedule: scheduleFuture!,
-                  segmented: false,
-                ),
+                child: HorizontalSwipeScreen(schedule: scheduleFuture!, segmented: false),
+
+                // child: ScheduleWidget(
+                //   schedule: scheduleFuture!,
+                //   segmented: false,
+                // ),
+
               )
                   : Center(
                 child: Padding(
