@@ -241,6 +241,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       //   ),
       // ),
       appBar: AppBar(
+
         title: const Text(
           'Распореди',
           style: TextStyle(
@@ -320,7 +321,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber.shade600.withOpacity(0.9),
+        // backgroundColor: Colors.amber.shade600.withOpacity(0.9),
         onPressed: () async {
           final result = await Navigator.push(
             context,

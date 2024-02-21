@@ -114,7 +114,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                         // Room
                         Expanded(
                           child: Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            //margin: const EdgeInsets.fromLTRB(0, 0, 3.0, 0),
                             decoration: BoxDecoration(
                               // border: Border.all(
                               //   color: Colors.black, // Choose the color of your border
@@ -124,7 +124,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                               borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // Your Column children here
                                 const Padding(
@@ -137,11 +137,17 @@ class _LectureListScreenState extends State<LectureListScreen> {
                             ),
                           ),
                         ),
-
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 3.0, 0),
+                          width: 2,
+                          height: 30,
+                          color: Colors.grey, // Add color here
+                        ),
+                        SizedBox(width: 6,),
                         // From
                         Expanded(
                           child: Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
+                            margin: const EdgeInsets.fromLTRB(3.0, 0, 6.0, 0),
                             decoration: BoxDecoration(
                             // border: Border.all(
                             // color: Colors.black, // Choose the color of your border
@@ -151,7 +157,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                             borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
@@ -164,7 +170,13 @@ class _LectureListScreenState extends State<LectureListScreen> {
                           ),
                         ),),
                         // To
-
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 3.0, 0),
+                          width: 1,
+                          height: 30,
+                          color: Colors.white30, // Add color here
+                        ),
+                        SizedBox(width: 6,),
                         Expanded(
                           child: Container(
                             margin: const EdgeInsets.fromLTRB(0, 0, 6.0, 0),
@@ -177,7 +189,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                               borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
