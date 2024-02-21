@@ -5,22 +5,22 @@ LoginResponseModel loginResponseJson(String str) =>
 
 class LoginResponseModel {
   LoginResponseModel({
-    required this.message,
-    required this.data,
+    required this.token,
+    required this.username,
   });
-  late final String message;
-  late final Data data;
+  late final String token;
+  late final String username;
 
   LoginResponseModel.fromJson(Map<String, dynamic> json) {
-    message = json['message'];
-    data = Data.fromJson(json['data']);
+    token = json['token'];
+    username = json['username'];
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['message'] = message;
-    _data['data'] = data.toJson();
-    return _data;
+    final data = <String, dynamic>{};
+    data['token'] = token;
+    data['username'] = username;
+    return data;
   }
 }
 

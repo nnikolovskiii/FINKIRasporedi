@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/domain/models/login_request_model.dart';
 import 'package:simple_app/domain/models/register_request_model.dart';
-import 'package:simple_app/service/shared_service.dart';
 
 import '../domain/models/login_response_model.dart';
 import '../domain/models/register_response_model.dart';
@@ -19,7 +19,8 @@ class AuthService {
         body: jsonEncode(model.toJson()));
 
     if (response.statusCode == 200) {
-      await SharedService.setLoginDetails(loginResponseJson(response.body));
+      final loginResponse = loginResponseJson(response.body);
+      await _saveLoginDetails(loginResponse);
       return true;
     } else {
       return false;
@@ -37,10 +38,19 @@ class AuthService {
     return registerResponseJson(response.body);
   }
 
-  Future<void> logout() async {
-    final response = await http.post(Uri.parse('$baseUrl/logout'));
-    if (response.statusCode != 200) {
-      throw Exception('Failed to logout: ${response.body}');
-    }
+  static Future<void> logout() async {
+    // Perform logout logic, clear stored user data
+    await _clearLoginDetails();
+  }
+
+  static Future<void> _saveLoginDetails(
+      LoginResponseModel loginResponse) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('login_details', jsonEncode(loginResponse.toJson()));
+  }
+
+  static Future<void> _clearLoginDetails() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('login_details');
   }
 }
