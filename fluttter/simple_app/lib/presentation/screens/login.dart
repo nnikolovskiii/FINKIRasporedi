@@ -99,7 +99,7 @@ class LoginPage extends StatelessWidget {
         TextButton(
             onPressed: () {
             },
-            child: const Text("Регистрирај се", style: TextStyle(color: Colors.white),)
+            child: const Text("Регистрирај се", style: TextStyle(color: Color(0xFF123499) ),)
         )
       ],
     );

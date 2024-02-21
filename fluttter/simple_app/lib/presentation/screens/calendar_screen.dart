@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:simple_app/presentation/screens/list/choose_lecture_type_screen.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:simple_app/presentation/theme/app_theme.dart';
 import 'package:simple_app/service/schedule_service.dart';
 
 import '../../domain/models/schedule.dart';
@@ -46,7 +47,7 @@ class _CalendarAppState extends State<CalendarScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: theme,
+      theme: brightTheme,
       home: Scaffold(
         appBar: AppBar(
           title: const Text(
@@ -97,27 +98,34 @@ class _CalendarAppState extends State<CalendarScreen> {
                 );
               },
               icon: const Icon(Icons.save),
-              //label: "Зачувај",
+             // label: "Зачувај",
             ),
 
-            ActionButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => FieldScreen(schedule: scheduleFuture!),
-                  ),
-                );
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //   const SnackBar(
-                //     content: Text('Распоредот е зачуван'),
-                //     duration: Duration(seconds: 2),
-                //   ),
-                // );
-              },
-              icon: const Icon(Icons.dashboard_customize),
-              //label: "Custom",
+            Row(
+              children: [
+                const Text("Custom" , style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF0A2472)),),
+                SizedBox(width: 5,),
+                ActionButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FieldScreen(schedule: scheduleFuture!),
+                      ),
+                    );
+                    // ScaffoldMessenger.of(context).showSnackBar(
+                    //   const SnackBar(
+                    //     content: Text('Распоредот е зачуван'),
+                    //     duration: Duration(seconds: 2),
+                    //   ),
+                    // );
+                  },
+                  icon: const Icon(Icons.dashboard_customize),
+                  //label: "Custom",
+                ),
+              ],
             ),
+
             ActionButton(
               onPressed: () {
                 Navigator.push(
@@ -127,8 +135,9 @@ class _CalendarAppState extends State<CalendarScreen> {
                   ),
                 );
               },
+             // label: "Постоечки",
               icon: const Icon(Icons.add_circle_outlined),
-              //label: "Постоечки",
+
             ),
 
           ],
