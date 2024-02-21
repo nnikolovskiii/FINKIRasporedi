@@ -33,7 +33,7 @@ class ScheduleWidget extends StatelessWidget {
       list[idx].add(lectures[i]);
     }
 
-    days.add(VerticalDividerWidget());
+    days.add(VerticalDividerWidget(numCells: 13, color: Colors.grey.shade300,));
 
     for (int i = 0; i < 5; i++) {
       days.add(ColumnScheduleWidget(
@@ -42,7 +42,7 @@ class ScheduleWidget extends StatelessWidget {
         segmented: segmented,
         schedule: schedule,
       ));
-      if (i != 4) days.add(VerticalDividerWidget());
+      if (i != 4) days.add(VerticalDividerWidget(numCells: 13, color: Colors.grey.shade300,));
     }
 
     return days;
@@ -57,7 +57,6 @@ class ScheduleWidget extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Stack(children: [
           Container(
-            padding: const EdgeInsets.all(5.0),
             child: Flex(
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.center,

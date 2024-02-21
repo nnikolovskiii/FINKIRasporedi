@@ -6,35 +6,42 @@ class TimeSlotWidget extends StatelessWidget {
   final int startTimeHour;
   final int endTimeHour;
   final int intervalMinutes;
+  int num;
+  bool dayBool;
 
-  const TimeSlotWidget({
+  TimeSlotWidget({
     Key? key,
     required this.startTimeHour,
     required this.endTimeHour,
     this.intervalMinutes = 45,
+    this.dayBool = true, this.num = 6
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> timeSlots = generateTimeSlots();
+    double width = MediaQuery.of(context).size.width;
+
+    List<Widget> timeSlots = generateTimeSlots(width);
 
     return Center(
       child: Container(
-        padding: EdgeInsets.all(5.0),
         child: Flex(
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TransparentTimeSlotWidget(),
               ...timeSlots
             ]),
       ),
     );
   }
 
-  List<Widget> generateTimeSlots() {
+  List<Widget> generateTimeSlots(double width) {
     List<String> timeSlots = [];
     List<Widget> widgets = [];
+    if(dayBool){
+      widgets.add(TransparentTimeSlotWidget(num: num,));
+    }
+
     for (int i = startTimeHour; i < endTimeHour; i++) {
       String startHour = i.toString().padLeft(2, '0');
       String startMinute = '00';
@@ -46,11 +53,11 @@ class TimeSlotWidget extends StatelessWidget {
       timeSlots.add(timeSlot);
     }
 
-    widgets.add(HorizontalDividerWidget(hasColor: true));
+    widgets.add(HorizontalDividerWidget(hasColor: true, num: num));
     for (int i = 0; i < timeSlots.length; i++){
       widgets.add(Container(
         height: 50,
-        width: 100,
+        width:  (width-90)/num,
         alignment: Alignment.center,
         child: Text(
           timeSlots[i],
@@ -60,7 +67,7 @@ class TimeSlotWidget extends StatelessWidget {
         ),
       ));
       if (i != timeSlots.length -1)
-        widgets.add(HorizontalDividerWidget(hasColor: true,));
+        widgets.add(HorizontalDividerWidget(hasColor: true, num:num));
     }
 
       return widgets;
