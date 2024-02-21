@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:simple_app/presentation/screens/wrapper.dart';
-import 'package:simple_app/service/auth_service.dart';
+import 'package:simple_app/presentation/screens/auth/login.dart';
+import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:simple_app/service/shared_service.dart';
 
-import 'domain/models/student.dart';
+Widget _defaultHome = const LoginPage();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Get result of the login function.
+  bool _result = await SharedService.isLoggedIn();
+  if (_result) {
+    _defaultHome = ScheduleListScreen();
+  }
+
   runApp(const MyApp());
 }
 
-Color myCustomColor2 = const Color(0xFF42587F);
-
-ThemeData theme = ThemeData(
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
-  ),
-  appBarTheme: const AppBarTheme(
-    color: Color(0xFFDDDDDD),
-    iconTheme: IconThemeData(color: Color(0xFF0A2472)),
-    titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
-
-  ),
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: const Color(0xFF0A2472),
-  ),
-);
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<Student?>.value(
-      initialData: null,
-      value: AuthService().user,
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: theme,
-        darkTheme: theme,
-        themeMode: ThemeMode.system,
-        home:  const Wrapper(), // Use a SplashScreen widget
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      routes: {
+        '/': (context) => _defaultHome,
+        '/home': (context) => ScheduleListScreen(),
+        '/login': (context) => const LoginPage(),
+        //  '/register': (context) => const RegisterPage(),
+      },
     );
   }
 }

@@ -1,61 +1,46 @@
 import 'dart:async';
 import 'dart:convert';
-
-import '../domain/models/student.dart';
 import 'package:http/http.dart' as http;
+import 'package:simple_app/domain/models/login_request_model.dart';
+import 'package:simple_app/domain/models/register_request_model.dart';
+import 'package:simple_app/service/shared_service.dart';
+
+import '../domain/models/login_response_model.dart';
+import '../domain/models/register_response_model.dart';
 
 class AuthService {
-  final String baseUrl = 'http://localhost:5012/api/auth';
-  Student? _student;
+  static const String baseUrl = 'https://localhost:7069/api/auth';
 
-  get user => _student;
-
-  Future<Student?> login(String username, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(<String, String>{
-        'Username': username,
-        'Password': password,
-      }),
-    );
+  static Future<bool> login(LoginRequestModel model) async {
+    final response = await http.post(Uri.parse('$baseUrl/login'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(model.toJson()));
 
     if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final String token = responseData['Token'];
-      _student = Student(username: username, token: token);
-      return _student;
+      await SharedService.setLoginDetails(loginResponseJson(response.body));
+      return true;
     } else {
-      throw Exception('Failed to login: ${response.body}');
+      return false;
     }
   }
 
-  Future<String> register(String username, String email, String password) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': username,
-        'email': email,
-        'password': password,
-      }),
-    );
+  static Future<RegisterResponseModel> register(
+      RegisterRequestModel model) async {
+    final response = await http.post(Uri.parse('$baseUrl/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(model.toJson()));
 
-    if (response.statusCode == 200) {
-      return 'Registration successful'; // or any success message you prefer
-    } else {
-      throw Exception('Failed to register: ${response.body}');
-    }
+    return registerResponseJson(response.body);
   }
 
   Future<void> logout() async {
     final response = await http.post(Uri.parse('$baseUrl/logout'));
     if (response.statusCode != 200) {
-      throw Exception('Failed to register: ${response.body}');
+      throw Exception('Failed to logout: ${response.body}');
     }
   }
 }

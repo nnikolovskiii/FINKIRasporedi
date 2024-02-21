@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:simple_app/domain/models/lecture.dart';
 import 'package:simple_app/presentation/screens/calendar_screen.dart';
 import 'package:simple_app/service/lecture_service.dart';
@@ -7,7 +6,6 @@ import 'package:simple_app/service/lecture_service.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../service/schedule_service.dart';
 import '../../schedule_mapper/slots/day_slot_widget.dart';
-import '../../widgets/SelectedLecturesProvider.dart';
 
 bool isOverlapping(Schedule schedule, Lecture lec) {
   List<Lecture> lectures = schedule.lectures ?? [];

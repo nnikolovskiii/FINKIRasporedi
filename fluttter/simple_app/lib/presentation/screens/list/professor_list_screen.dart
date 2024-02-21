@@ -4,7 +4,7 @@ import 'package:simple_app/domain/models/schedule.dart';
 import 'package:simple_app/service/professor_service.dart';
 import 'package:simple_app/service/course_service.dart';
 
-import '../../widgets/searchBar_widget.dart';
+import '../../widgets/search_bar_widget.dart';
 import 'lecture_list_screen.dart';
 
 class ProfessorListScreen extends StatefulWidget {
