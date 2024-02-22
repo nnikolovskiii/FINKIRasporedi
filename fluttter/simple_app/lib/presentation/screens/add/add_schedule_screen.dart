@@ -94,13 +94,18 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               SizedBox(height: 30.0),
               TextFormField(
                 controller: _nameEditingController,
-                decoration: const InputDecoration(
-                  labelText: 'Внеси име на распоред',
-                  contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                  border: UnderlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: "Внеси име на распоред",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none),
+                  fillColor: Color(0xFF123499).withOpacity(0.1),
                   filled: true,
+                  prefixIcon: const Icon(Icons.drive_file_rename_outline),
+
                 ),
-                style: TextStyle(color: Colors.black),
+
+                obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ве молиме внесете име на распоред';
@@ -108,17 +113,51 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   return null;
                 },
               ),
+
               SizedBox(height: 20.0),
+
               TextFormField(
-              controller: _notesEditingController,
-              style: TextStyle(color: Colors.black),
-              decoration: const InputDecoration(
-                labelText: 'Внеси забелешки за распоредот',
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                border: UnderlineInputBorder(),
-                filled: true,
+                controller: _notesEditingController,
+                decoration: InputDecoration(
+                  hintText: "Внеси забелешки за распоредот",
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none),
+                  fillColor: Color(0xFF123499).withOpacity(0.1),
+                  filled: true,
+                  prefixIcon: const Icon(Icons.drive_file_rename_outline),
+
+                ),
+
+                obscureText: true,
               ),
-               ),
+
+              // TextFormField(
+              //   controller: _nameEditingController,
+              //   decoration: const InputDecoration(
+              //     labelText: 'Внеси име на распоред',
+              //     contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+              //     border: UnderlineInputBorder(),
+              //     filled: true,
+              //   ),
+              //   style: TextStyle(color: Colors.black),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Ве молиме внесете име на распоред';
+              //     }
+              //     return null;
+              //   },
+              // ),
+              // TextFormField(
+              // controller: _notesEditingController,
+              // style: TextStyle(color: Colors.black),
+              // decoration: const InputDecoration(
+              //   labelText: 'Внеси забелешки за распоредот',
+              //   contentPadding: EdgeInsets.symmetric(vertical: 10.0),
+              //   border: UnderlineInputBorder(),
+              //   filled: true,
+              // ),
+              //  ),
               const SizedBox(height: 30.0),
               ElevatedButton(
                 onPressed: () {
@@ -144,7 +183,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
                       //colors: [Color(0xff374ABE), Color(0xff64B6FF)],
-                      colors: [Color(0xff1E2F97), Color(0xff1AA7EC)],
+                      colors: [Color(0xff1E2F97), Color(0xff1E2F97)],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                     ),

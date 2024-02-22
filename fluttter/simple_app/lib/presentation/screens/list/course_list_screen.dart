@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/list/professor_list_screen.dart';
+import 'package:simple_app/presentation/theme/app_theme.dart';
 import 'package:simple_app/service/course_service.dart';
 import 'package:simple_app/domain/models/course.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -9,30 +10,6 @@ import '../../widgets/search_bar_widget.dart';
 
 Color myCustomColor2 = const Color(0xFF42587F);
 
-
-
-ThemeData theme = ThemeData(
-  textTheme: const TextTheme(
-    displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-    bodyLarge: TextStyle(fontSize: 14, color: Color(0xFF0A2472)),
-  ),
-  appBarTheme: const AppBarTheme(
-    color: Color(0xFFDDDDDD),
-    iconTheme: IconThemeData(color: Color(0xFF0A2472)),
-    titleTextStyle: TextStyle(color: Colors.black38, fontWeight: FontWeight.bold),
-
-  ),
-  colorScheme: ColorScheme.fromSeed(
-    seedColor: Color(0xFF0A2472),
-  ),
-);
-
-// void main() => runApp(
-//   ChangeNotifierProvider(
-//     create: (context) => SelectedLecturesProvider(), // Adding the provider here
-//     child: const SearchBarApp(),
-//   ),
-// );
 
 class CourseListScreen extends StatefulWidget {
   final Schedule schedule;
@@ -77,9 +54,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      theme: theme,
-      home: Scaffold(
+    return  Scaffold(
         appBar: AppBar(
           title: const Text('Избери предмети',
             style: TextStyle(
@@ -196,7 +171,7 @@ class _CourseListScreenState extends State<CourseListScreen> {
             ],
           ),
         ),
-      ),
-    );
+      );
+
   }
 }

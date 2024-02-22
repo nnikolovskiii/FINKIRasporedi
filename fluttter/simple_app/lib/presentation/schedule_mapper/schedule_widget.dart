@@ -3,6 +3,7 @@ import 'package:simple_app/presentation/schedule_mapper/slots/time_slot_widget.d
 import 'package:simple_app/presentation/schedule_mapper/slots/vertical_divider_widget.dart';
 
 import '../../domain/models/lecture.dart';
+import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 
 import 'column_schedule_widget.dart';
@@ -15,33 +16,33 @@ class ScheduleWidget extends StatelessWidget {
       {super.key, required this.schedule, required this.segmented});
 
   getDayColumns() {
-    List<StatelessWidget> days = [];
-    List<List<Lecture>> list = [];
+    List<Widget> days = [];
+    List<List<LectureSlot>> list = [];
 
     days.add(TimeSlotWidget(startTimeHour: 8, endTimeHour: 20));
 
     for (int i = 0; i < 5; i++) {
-      List<Lecture> lecture = [];
+      List<LectureSlot> lecture = [];
       list.add(lecture);
     }
 
-    List<Lecture> lectures = schedule.lectures!;
+    List<LectureSlot> lectures = schedule.lectures!;
 
     for (int i = 0; i < lectures.length; i++) {
       int idx = lectures[i].day;
       list[idx].add(lectures[i]);
     }
 
-    days.add(VerticalDividerWidget());
+    days.add(VerticalDividerWidget(numCells: 13, color: Colors.grey.shade300,));
 
     for (int i = 0; i < 5; i++) {
       days.add(ColumnScheduleWidget(
         lectures: list[i],
         day: i,
         segmented: segmented,
-        scheduleId: schedule.id ?? -1,
+        schedule: schedule,
       ));
-      if (i != 4) days.add(VerticalDividerWidget());
+      if (i != 4) days.add(VerticalDividerWidget(numCells: 13, color: Colors.grey.shade300,));
     }
 
     return days;
@@ -56,12 +57,11 @@ class ScheduleWidget extends StatelessWidget {
         scrollDirection: Axis.vertical,
         child: Stack(children: [
           Container(
-            padding: const EdgeInsets.all(5.0),
             child: Flex(
                 direction: Axis.horizontal,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
+                   TimeSlotWidget(startTimeHour: 8, endTimeHour: 19),
                   ...getDayColumns(),
                 ]),
           ),

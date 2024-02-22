@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DayWidget extends StatelessWidget {
   final int day;
+  int num;
   static const Map<int, String> daysMap = {
     0: "Понделник",
     1: "Вторник",
@@ -10,13 +11,16 @@ class DayWidget extends StatelessWidget {
     4: "Петок"
   };
 
-  const DayWidget({super.key, required this.day});
+  DayWidget({super.key, required this.day, this.num = 6});
+
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+
+    double width = MediaQuery.of(context).size.width;
+    return Container(
       height: 50,
-      width: 100,
+      width: (width-90)/num,
       child: Center(
         child: Text(
           daysMap[day]!,
@@ -30,21 +34,3 @@ class DayWidget extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(
-    const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Other widgets
-              DayWidget(day: 0),
-              // Other widgets
-            ],
-          ),
-        ),
-      ),
-    ),
-  );
-}
