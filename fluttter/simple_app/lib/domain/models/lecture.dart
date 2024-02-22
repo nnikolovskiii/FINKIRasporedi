@@ -8,8 +8,8 @@ class Lecture {
   int id;
   String? name;
   int day;
-  double timeFrom;
-  double timeTo;
+  int timeFrom;
+  int timeTo;
   Professor professor;
   Course course;
   Room room;
