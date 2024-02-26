@@ -216,8 +216,8 @@ class _FieldScreenState extends State<FieldScreen> {
                     LectureSlot newLectureSlot = LectureSlot(
                       name: name,
                       day: selectedDayIndex,
-                      timeFrom: selectedTimeFrom.toDouble(),
-                      timeTo: selectedTimeTo.toDouble(),
+                      timeFrom: selectedTimeFrom,
+                      timeTo: selectedTimeTo,
                     );
 
                     if (isOverlapping(widget.schedule, newLectureSlot)) {
@@ -258,8 +258,8 @@ class _FieldScreenState extends State<FieldScreen> {
                     // Modify existing LectureSlot object
                     widget.lectureSlot!.name = name;
                     widget.lectureSlot!.day = selectedDayIndex;
-                    widget.lectureSlot!.timeFrom = selectedTimeFrom.toDouble();
-                    widget.lectureSlot!.timeTo = selectedTimeTo.toDouble();
+                    widget.lectureSlot!.timeFrom = selectedTimeFrom;
+                    widget.lectureSlot!.timeTo = selectedTimeTo;
 
                     if (isOverlapping(widget.schedule, widget.lectureSlot!)) {
                       // Show pop-up indicating overlap

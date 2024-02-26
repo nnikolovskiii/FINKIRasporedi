@@ -84,17 +84,6 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: PageView(
-                    controller: controller,
-                    children: getColumns(),
-                    onPageChanged: (index) {
-                      setState(() {
-                        currentPage = index.toDouble();
-                      });
-                    },
-                  ),
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -132,6 +121,17 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                       ],
                     ),
                   ],
+                ),
+                Expanded(
+                  child: PageView(
+                    controller: controller,
+                    children: getColumns(),
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentPage = index.toDouble();
+                      });
+                    },
+                  ),
                 ),
               ],
             ),
