@@ -105,7 +105,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
 
                 ),
 
-                obscureText: true,
+                // obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Ве молиме внесете име на распоред';
@@ -129,7 +129,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
 
                 ),
 
-                obscureText: true,
+                // obscureText: true,
               ),
 
               // TextFormField(

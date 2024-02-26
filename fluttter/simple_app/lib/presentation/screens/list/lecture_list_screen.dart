@@ -124,7 +124,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                               borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 // Your Column children here
                                 const Padding(
@@ -157,7 +157,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                             borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
                                 padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
@@ -189,7 +189,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                               borderRadius: BorderRadius.circular(5.0), // Optional: Add border radius
                             ),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Padding(
                                   padding: EdgeInsets.only(bottom: 2), // Adjust the padding as needed
