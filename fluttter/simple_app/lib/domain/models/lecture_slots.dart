@@ -5,8 +5,8 @@ class LectureSlot {
   final Lecture? lecture;
   String? name;
   int day;
-  double timeFrom;
-  double timeTo;
+  int timeFrom;
+  int timeTo;
   String? hexColor;
 
   LectureSlot({
@@ -27,7 +27,7 @@ class LectureSlot {
       name: json['name'],
       day: json['day'],
       timeFrom: json['timeFrom'],
-      timeTo: json['timeTo'],
+      timeTo: json['timeTo'] ,
       hexColor: json['hexColor'],
     );
   }

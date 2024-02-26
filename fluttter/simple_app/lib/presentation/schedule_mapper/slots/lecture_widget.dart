@@ -20,7 +20,7 @@ class LectureWidget extends StatelessWidget {
   final bool segmented;
 
   List<TransparentTimeSlotWidget> getEmptyTimeSlots(LectureSlot lecture) {
-    double interval = lecture.timeTo - lecture.timeFrom;
+    int interval = lecture.timeTo - lecture.timeFrom;
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
     for (double i = 0; i < interval; i++) {
@@ -39,7 +39,7 @@ class LectureWidget extends StatelessWidget {
   });
 
   double getHeight(LectureSlot lecture) {
-    double interval = lecture.timeTo - lecture.timeFrom;
+    int interval = lecture.timeTo - lecture.timeFrom;
     return 50 * interval + 8*(interval-1);
   }
 
