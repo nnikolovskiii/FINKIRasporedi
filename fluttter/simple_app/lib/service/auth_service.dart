@@ -31,7 +31,7 @@ class AuthService {
       RegisterRequestModel model) async {
     final response = await http.post(Uri.parse('$baseUrl/register'),
         headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
+          'Content-Type': 'application/json',
         },
         body: jsonEncode(model.toJson()));
 
@@ -52,5 +52,16 @@ class AuthService {
   static Future<void> _clearLoginDetails() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('login_details');
+  }
+
+  static Future<Map<String, dynamic>?> getLoggedInUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? loginDetailsString = prefs.getString('login_details');
+    if (loginDetailsString != null) {
+      final Map<String, dynamic> loginDetails =
+      jsonDecode(loginDetailsString);
+      return loginDetails;
+    }
+    return null;
   }
 }

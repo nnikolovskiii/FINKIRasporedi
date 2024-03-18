@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:simple_app/domain/models/login_request_model.dart';
+import 'package:simple_app/presentation/screens/auth/signup.dart';
+import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:simple_app/service/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -11,29 +15,31 @@ class _LoginPageState extends State<LoginPage> {
   bool isApiCallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? userName;
-  String? password;
+  String username = '';
+  String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _header(context),
-              _inputField(context),
-              _forgotPassword(context),
-              _loginButton(context),
-              _signup(context),
-            ],
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: Container(
+            margin: const EdgeInsets.all(24),
+            child: Form(
+              key: globalFormKey, // Assigned the globalFormKey here
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _header(context),
+                  _inputField(context),
+                  _loginButton(context),
+                  _signup(context),
+                ],
+              ),
+            ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 
   _header(context) {
@@ -53,9 +59,9 @@ class _LoginPageState extends State<LoginPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextFormField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             hintText: "Username",
-            prefixIcon: const Icon(Icons.person),
+            prefixIcon: Icon(Icons.person),
           ),
           validator: (value) {
             if (value == null || value.isEmpty) {
@@ -63,7 +69,9 @@ class _LoginPageState extends State<LoginPage> {
             }
             return null;
           },
-          onSaved: (newValue) => userName = newValue,
+          onChanged: (val) {
+            setState(() => username = val);
+          },
         ),
         const SizedBox(height: 10),
         TextFormField(
@@ -88,27 +96,17 @@ class _LoginPageState extends State<LoginPage> {
             }
             return null;
           },
-          onSaved: (newValue) => password = newValue,
+          onChanged: (val) {
+            setState(() => password = val);
+          },
         ),
       ],
     );
   }
 
-  _forgotPassword(context) {
-    return TextButton(
-      onPressed: () {
-        // Add forgot password functionality here
-      },
-      child: const Text(
-        "Forgot password?",
-        style: TextStyle(color: Colors.blue),
-      ),
-    );
-  }
-
   _loginButton(context) {
     return ElevatedButton(
-      onPressed: () {
+      onPressed: () async {
         if (globalFormKey.currentState!.validate()) {
           globalFormKey.currentState!.save();
 
@@ -119,16 +117,24 @@ class _LoginPageState extends State<LoginPage> {
 
           // Call your API here to perform login
           // Replace the following lines with your actual API call
-          Future.delayed(const Duration(seconds: 2), () {
+          Future.delayed(const Duration(seconds: 2), () async {
             // Simulate API call completion
             setState(() {
               isApiCallProcess = false;
             });
 
             // Check login credentials
-            if (userName == 'example' && password == 'password') {
-              // Navigate to home screen upon successful login
-              Navigator.pushReplacementNamed(context, '/home');
+            dynamic result = await AuthService.login(LoginRequestModel(
+              username: username,
+              password: password,
+            ));
+            if (result == true) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ScheduleListScreen(),
+                ),
+              );
             } else {
               // Show error message if login fails
               ScaffoldMessenger.of(context).showSnackBar(
@@ -151,8 +157,12 @@ class _LoginPageState extends State<LoginPage> {
         const Text("Don't have an account? "),
         TextButton(
           onPressed: () {
-            // Navigate to signup screen
-            Navigator.pushNamed(context, '/signup');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SignupPage(),
+              ),
+            );
           },
           child: const Text(
             "Sign Up",

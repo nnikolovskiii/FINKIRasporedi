@@ -1,8 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/presentation/screens/auth/authenticate.dart';
+import 'package:simple_app/presentation/screens/auth/login.dart';
+import 'package:simple_app/service/auth_service.dart';
 import 'package:simple_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:simple_app/service/shared_service.dart';
 
 import '../../../domain/models/schedule.dart';
 import '../add/add_schedule_screen.dart';
@@ -17,7 +20,7 @@ class ScheduleItem extends StatelessWidget {
   final VoidCallback? onTap;
 
   ScheduleItem(
-      {Key? key,
+      {super.key,
       required this.schedule,
       required this.theme,
       required this.bgColor,
@@ -61,11 +64,11 @@ class ScheduleItem extends StatelessWidget {
       },
     );
 
-    if (deleteConfirmed != null && deleteConfirmed) {
+    if (deleteConfirmed) {
       // Perform delete operation here
       await scheduleService.deleteSchedule(schedule.id ?? -1);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Избришан распоред')),
+        const SnackBar(content: Text('Избришан распоред')),
       );
     }
   }
@@ -96,8 +99,8 @@ class ScheduleItem extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                     15), // Adjust the border radius as needed
               ),
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Center(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: const Center(
                 child: Icon(Icons.delete, color: Colors.white),
               ),
             ),
@@ -170,7 +173,7 @@ class ScheduleItem extends StatelessWidget {
 }
 
 class ScheduleListScreen extends StatefulWidget {
-  ScheduleListScreen({Key? key}) : super(key: key);
+  const ScheduleListScreen({Key? key}) : super(key: key);
 
   @override
   _ScheduleListScreenState createState() => _ScheduleListScreenState();
@@ -221,7 +224,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Image.asset('resources/images/info.png'),
             ],
           ),
@@ -244,7 +247,6 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
       //   ),
       // ),
       appBar: AppBar(
-
         title: const Text(
           'Распореди',
           style: TextStyle(
@@ -257,13 +259,41 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
         actions: <Widget>[
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 2, 0),
-            // Adjust the horizontal padding as needed
-            child: IconButton(
-              icon: Icon(Icons.account_circle_sharp),
-              // Replace 'icon1' with the icon you want to use
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => Authenticate()));
+            child: FutureBuilder<Map<String, dynamic>?>(
+              future: AuthService.getLoggedInUser(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError || snapshot.data == null) {
+                  return IconButton(
+                    icon: const Icon(Icons.account_circle_sharp),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                      );
+                    },
+                  );
+                } else {
+                  return Row(
+                    children: [
+                      Text(
+                        snapshot.data!['username'],
+                        style: const TextStyle(color: Color(0xFF123499)),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.logout),
+                        onPressed: () {
+                          AuthService.logout();
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()),
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                }
               },
             ),
           ),
@@ -271,7 +301,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
             // Adjust the horizontal padding as needed
             child: IconButton(
-              icon: Icon(Icons.info_sharp),
+              icon: const Icon(Icons.info_sharp),
               // Replace 'icon2' with the icon you want to use
               onPressed: () {
                 _showImageDialog(context);
@@ -307,7 +337,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 theme: "resources/images/bgImg.jpg",
                 //bgColor: Color(0xFF1A237E),
                 bgColor: Colors.blue.shade900.withOpacity(0.8),
-                bgColor1: Color(0xFFFFFFFF),
+                bgColor1: const Color(0xFFFFFFFF),
               );
             }).toList();
 
@@ -321,7 +351,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               }).toList(),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text('No data found'),
             );
           }
@@ -342,7 +372,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
             });
           }
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
