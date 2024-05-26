@@ -16,6 +16,7 @@ class _SignUpState extends State<SignupPage> {
   String username = '';
   String email = '';
   String password = '';
+  String confirmPassword = '';
   String error = '';
 
   @override
@@ -65,8 +66,7 @@ class _SignUpState extends State<SignupPage> {
                         filled: true,
                         prefixIcon: const Icon(Icons.person),
                       ),
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an username' : null,
+                      validator: (val) => validateUsername(val),
                       onChanged: (val) {
                         setState(() => username = val);
                       },
@@ -83,8 +83,7 @@ class _SignUpState extends State<SignupPage> {
                         filled: true,
                         prefixIcon: const Icon(Icons.email),
                       ),
-                      validator: (val) =>
-                          val!.isEmpty ? 'Enter an email' : null,
+                      validator: (val) => validatePassword(val),
                       onChanged: (val) {
                         setState(() => email = val);
                       },
@@ -102,9 +101,7 @@ class _SignUpState extends State<SignupPage> {
                         prefixIcon: const Icon(Icons.password),
                       ),
                       obscureText: true,
-                      validator: (val) => val!.length < 6
-                          ? 'Enter a password 6+ chars long'
-                          : null,
+                      validator: (val) => validatePassword(val),
                       onChanged: (val) {
                         setState(() => password = val);
                       },
@@ -122,11 +119,10 @@ class _SignUpState extends State<SignupPage> {
                         prefixIcon: const Icon(Icons.password),
                       ),
                       obscureText: true,
-                      validator: (val) => val!.length < 6
-                          ? 'Enter a password 6+ chars long'
-                          : null,
+                      validator: (val) =>
+                          val != password ? 'Passwords do not match' : null,
                       onChanged: (val) {
-                        setState(() => password = val);
+                        setState(() => confirmPassword = val);
                       },
                     ),
                   ],
@@ -205,6 +201,52 @@ class _SignUpState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  String? validateEmail(String? value) {
+    const emailPattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    if (value == null || value.isEmpty) {
+      return 'Enter an email';
+    }
+    if (!RegExp(emailPattern).hasMatch(value)) {
+      return 'Enter a valid email';
+    }
+    return null;
+  }
+
+  String? validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Enter a username';
+    }
+    if (value.length < 3) {
+      return 'Username must be at least 3 characters long';
+    }
+    if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
+      return 'Username must not contain special characters';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Enter a password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    if (!RegExp(r'(?=.*?[A-Z])').hasMatch(value)) {
+      return 'Password must contain at least one uppercase letter';
+    }
+    if (!RegExp(r'(?=.*?[a-z])').hasMatch(value)) {
+      return 'Password must contain at least one lowercase letter';
+    }
+    if (!RegExp(r'(?=.*?[0-9])').hasMatch(value)) {
+      return 'Password must contain at least one digit';
+    }
+    if (!RegExp(r'(?=.*?[!@#\$&*~])').hasMatch(value)) {
+      return 'Password must contain at least one special character';
+    }
+    return null;
   }
 
   // Method to attempt sign-up
