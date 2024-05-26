@@ -14,7 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isApiCallProcess = false;
   bool hidePassword = true;
-  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String username = '';
   String password = '';
   String error = '';
@@ -22,27 +22,28 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Container(
-            margin: const EdgeInsets.all(24),
-            child: Form(
-              key: globalFormKey, // Assigned the globalFormKey here
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _header(context),
-                  _inputField(context),
-                  _loginButton(context),
-                  _signup(context),
-                ],
-              ),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Container(
+          margin: const EdgeInsets.all(24),
+          child: Form(
+            key: globalFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _header(context),
+                _inputField(context),
+                _loginButton(context),
+                _signup(context),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
-  _header(context) {
+  Column _header(BuildContext context) {
     return const Column(
       children: [
         Text(
@@ -54,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _inputField(context) {
+  Column _inputField(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -73,6 +74,8 @@ class _LoginPageState extends State<LoginPage> {
             setState(() => username = val);
           },
         ),
+        const SizedBox(height: 5),
+        if (error.isNotEmpty) _showErrorMessage(),
         const SizedBox(height: 10),
         TextFormField(
           decoration: InputDecoration(
@@ -104,30 +107,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  _loginButton(context) {
+  ElevatedButton _loginButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () async {
         if (globalFormKey.currentState!.validate()) {
           globalFormKey.currentState!.save();
 
-          // Show loading indicator
           setState(() {
             isApiCallProcess = true;
           });
 
-          // Call your API here to perform login
-          // Replace the following lines with your actual API call
-          Future.delayed(const Duration(seconds: 2), () async {
-            // Simulate API call completion
+          try {
+            dynamic result = await AuthService.login(
+              LoginRequestModel(
+                username: username,
+                password: password,
+              ),
+            );
+
             setState(() {
               isApiCallProcess = false;
             });
 
-            // Check login credentials
-            dynamic result = await AuthService.login(LoginRequestModel(
-              username: username,
-              password: password,
-            ));
             if (result == true) {
               Navigator.pushReplacement(
                 context,
@@ -136,21 +137,23 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
             } else {
-              // Show error message if login fails
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Invalid username or password'),
-                ),
-              );
+              setState(() {
+                error = 'Invalid username or password';
+              });
             }
-          });
+          } catch (e) {
+            setState(() {
+              isApiCallProcess = false;
+              error = 'Failed to login: $e';
+            });
+          }
         }
       },
       child: const Text("Login"),
     );
   }
 
-  _signup(context) {
+  Row _signup(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -170,6 +173,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _showErrorMessage() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        error,
+        style: const TextStyle(color: Colors.red),
+      ),
     );
   }
 }

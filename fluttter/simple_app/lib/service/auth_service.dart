@@ -64,4 +64,9 @@ class AuthService {
     }
     return null;
   }
+
+  static Future<bool> isLoggedIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey('login_details');
+  }
 }
