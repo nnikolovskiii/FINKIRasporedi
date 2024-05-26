@@ -86,10 +86,11 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
             if (jwtSettings != null)
             {
                 var secretKey = jwtSettings.GetValue<string>("Secret");
+                var audience = jwtSettings.GetValue<string>("Audience"); // Add this line
 
-                if (secretKey != null)
+                if (secretKey != null && audience != null) // Update this line
                 {
-                    var key = Encoding.ASCII.GetBytes(secretKey);
+                    var key = Encoding.UTF8.GetBytes(secretKey);
 
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
@@ -98,6 +99,8 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
                     new(ClaimTypes.Name, user.Id.ToString())
                         }),
                         Expires = DateTime.UtcNow.AddDays(7),
+                        Audience = audience,
+                        Issuer = audience,// Add this line
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
 
@@ -106,7 +109,7 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
                 }
                 else
                 {
-                    throw new Exception("Secret key not found in configuration.");
+                    throw new Exception("Secret key or audience not found in configuration.");
                 }
             }
             else

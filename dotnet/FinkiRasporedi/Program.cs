@@ -33,21 +33,27 @@ builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
 builder.Services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
 
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
+    var config = builder.Configuration;
+    var jwtSettings = config.GetSection("JwtSettings");
+    var secretKey = jwtSettings.GetValue<string>("Secret");
+    var audience = jwtSettings.GetValue<string>("Audience"); // Add this line
+
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "StudentSchedulerApp",
-        ValidAudience = "StudentSchedulerApp",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsASecretKeyForStudentSchedulerApp"))
+        ValidIssuer = audience,
+        ValidAudience = audience, // Update this line
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
 
@@ -71,6 +77,8 @@ var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
 
 
+var config = app.Services.GetService<IConfiguration>();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -88,8 +96,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -1,14 +1,15 @@
 ﻿using FinkiRasporedi.Models.Base;
 using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Repository.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
