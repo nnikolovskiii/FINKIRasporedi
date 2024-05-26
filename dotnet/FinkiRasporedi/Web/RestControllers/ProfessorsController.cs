@@ -2,7 +2,7 @@
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FinkiRasporedi.Controllers.Rest
+namespace FinkiRasporedi.Web.RestControllers
 {
     [Route("api/[controller]")]
     [ApiController]

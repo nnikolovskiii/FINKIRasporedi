@@ -31,7 +31,6 @@ builder.Services.AddScoped(typeof(ISemesterRepository), typeof(SemesterRepositor
 builder.Services.AddScoped(typeof(IScheduleRepository), typeof(ScheduleRepository));
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
-<<<<<<< HEAD
 builder.Services.AddScoped(typeof(IStudentRepository), typeof(StudentRepository));
 
 builder.Services.AddAuthentication(options =>
@@ -51,9 +50,8 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ThisIsASecretKeyForStudentSchedulerApp"))
     };
 });
-=======
+
 builder.Services.AddScoped(typeof(ILectureSlotRepository), typeof(LectureSlotRepository));
->>>>>>> master
 
 
 
