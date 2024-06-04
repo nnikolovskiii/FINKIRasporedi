@@ -10,5 +10,7 @@ namespace FinkiRasporedi.Repository.Interface
 
         Task<IEnumerable<Schedule>> GetDefaultSchedules();
 
+        Task<IEnumerable<Schedule>> GetStudentSchedules();
+
     }
 }

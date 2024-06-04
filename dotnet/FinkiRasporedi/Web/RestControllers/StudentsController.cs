@@ -25,5 +25,19 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
 
         }
 
+        [HttpGet("schedule")]
+        public async Task<IActionResult> GetStudentSchedules()
+        {
+            try
+            {
+                var schedules = await _studentRepository.GetStudentSchedules();
+                return Ok(schedules);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+            }
+        }
+
     }
 }
