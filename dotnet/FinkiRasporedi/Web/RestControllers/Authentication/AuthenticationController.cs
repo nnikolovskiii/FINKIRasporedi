@@ -78,6 +78,13 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
             }
         }
 
+        [HttpPost("checkUsernameAvailability")]
+        public IActionResult CheckUsernameAvailability(string username)
+        {
+            bool isAvailable = _studentRepository.CheckUsernameAvailability(username);
+            return Ok(new { isAvailable });
+        }
+
         private string GenerateJwtToken(Student user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -86,9 +93,9 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
             if (jwtSettings != null)
             {
                 var secretKey = jwtSettings.GetValue<string>("Secret");
-                var audience = jwtSettings.GetValue<string>("Audience"); // Add this line
+                var audience = jwtSettings.GetValue<string>("Audience");
 
-                if (secretKey != null && audience != null) // Update this line
+                if (secretKey != null && audience != null)
                 {
                     var key = Encoding.UTF8.GetBytes(secretKey);
 
@@ -100,7 +107,7 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
                         }),
                         Expires = DateTime.UtcNow.AddDays(7),
                         Audience = audience,
-                        Issuer = audience,// Add this line
+                        Issuer = audience,
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
 

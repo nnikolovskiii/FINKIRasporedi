@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class RoomsController : ControllerBase
     {
         private readonly IRoomRepository _roomRepository;
@@ -40,7 +40,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Rooms/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutRoom(string id, Room Room)
         {
@@ -49,7 +48,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Rooms
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Room>> PostRoom(Room Room)
         {

@@ -10,7 +10,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -43,7 +42,7 @@ builder.Services.AddAuthentication(options =>
     var config = builder.Configuration;
     var jwtSettings = config.GetSection("JwtSettings");
     var secretKey = jwtSettings.GetValue<string>("Secret");
-    var audience = jwtSettings.GetValue<string>("Audience"); // Add this line
+    var audience = jwtSettings.GetValue<string>("Audience");
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -52,7 +51,7 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = audience,
-        ValidAudience = audience, // Update this line
+        ValidAudience = audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
@@ -66,7 +65,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAnyOrigin", builder =>
     {
         builder
-            .AllowAnyOrigin() // You can replace this with specific origins if needed
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -80,7 +79,6 @@ app.UseCors("AllowAnyOrigin");
 var config = app.Services.GetService<IConfiguration>();
 
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -88,7 +86,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

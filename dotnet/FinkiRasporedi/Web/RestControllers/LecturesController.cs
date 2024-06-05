@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class LecturesController : ControllerBase
     {
         private readonly ILectureRepository _lectureRepository;
@@ -45,7 +45,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Lectures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutLecture(int id, Lecture Lecture)
         {
@@ -54,7 +53,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Lectures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Lecture>> PostLecture(Lecture Lecture)
         {

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SubjectsController : ControllerBase
     {
         private readonly ISubjectRepository _subjectRepository;
@@ -40,7 +40,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Subjects/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSubject(string id, Subject subject)
         {
@@ -49,7 +48,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Subjects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Subject>> PostSubject(Subject Subject)
         {

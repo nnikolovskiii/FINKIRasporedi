@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class SemestersController : ControllerBase
     {
         private readonly ISemesterRepository _semesterRepository;
@@ -40,7 +40,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Semesters/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSemester(string id, Semester semester)
         {
@@ -49,7 +48,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Semesters
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Semester>> PostSemester(Semester semester)
         {
