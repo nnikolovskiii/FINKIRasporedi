@@ -1,4 +1,5 @@
-﻿using FinkiRasporedi.Models.Identity;
+﻿using FinkiRasporedi.Models.Base;
+using FinkiRasporedi.Models.Identity;
 
 namespace FinkiRasporedi.Repository.Interface
 {
@@ -6,5 +7,10 @@ namespace FinkiRasporedi.Repository.Interface
     {
         Task<Student> RegisterAsync(StudentRegistrationModel registrationModel);
         Task<Student> LoginAsync(string username, string password);
+
+        Task<IEnumerable<Schedule>> GetDefaultSchedules();
+
+        Task<IEnumerable<Schedule>> GetStudentSchedules();
+
     }
 }
