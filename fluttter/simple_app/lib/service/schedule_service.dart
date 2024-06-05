@@ -5,7 +5,7 @@ import '../domain/models/lecture_slots.dart';
 import '../domain/models/schedule.dart';
 
 class ScheduleService {
-  final String baseUrl = 'http://localhost:5012/api';
+  final String baseUrl = 'http://ec2-44-223-27-4.compute-1.amazonaws.com/api';
 
   Future<List<Schedule>> getSchedulesWithPagination(
       {int page = 0, int size = 0}) async {
