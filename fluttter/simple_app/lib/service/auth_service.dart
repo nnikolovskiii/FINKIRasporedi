@@ -39,7 +39,6 @@ class AuthService {
   }
 
   static Future<void> logout() async {
-    // Perform logout logic, clear stored user data
     await _clearLoginDetails();
   }
 
@@ -68,5 +67,16 @@ class AuthService {
   static Future<bool> isLoggedIn() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.containsKey('login_details');
+  }
+
+  static Future<bool> isUsernameAvailable(String username) async {
+    final response = await http.post(Uri.parse('$baseUrl/CheckUsernameAvailability?username=$username'));
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      return data['isAvailable'];
+    } else {
+      throw Exception('Failed to check username availability');
+    }
   }
 }

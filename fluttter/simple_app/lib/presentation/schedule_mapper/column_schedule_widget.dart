@@ -44,7 +44,7 @@ class ColumnScheduleWidget extends StatelessWidget {
             num: num
         ));
 
-        double interval = lectures[j].timeTo - lectures[j].timeFrom;
+        int interval = lectures[j].timeTo - lectures[j].timeFrom;
         i = i + (interval as int) - 1;
         j++;
       } else {

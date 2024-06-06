@@ -18,6 +18,8 @@ class _SignUpState extends State<SignupPage> {
   String password = '';
   String confirmPassword = '';
   String error = '';
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +85,7 @@ class _SignUpState extends State<SignupPage> {
                         filled: true,
                         prefixIcon: const Icon(Icons.email),
                       ),
-                      validator: (val) => validatePassword(val),
+                      validator: (val) => validateEmail(val),
                       onChanged: (val) {
                         setState(() => email = val);
                       },
@@ -99,8 +101,20 @@ class _SignUpState extends State<SignupPage> {
                         fillColor: Colors.purple.withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
                       ),
-                      obscureText: true,
+                      obscureText: _obscurePassword,
                       validator: (val) => validatePassword(val),
                       onChanged: (val) {
                         setState(() => password = val);
@@ -117,8 +131,21 @@ class _SignUpState extends State<SignupPage> {
                         fillColor: Colors.purple.withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirmPassword
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
+                            });
+                          },
+                        ),
                       ),
-                      obscureText: true,
+                      obscureText: _obscureConfirmPassword,
                       validator: (val) =>
                           val != password ? 'Passwords do not match' : null,
                       onChanged: (val) {

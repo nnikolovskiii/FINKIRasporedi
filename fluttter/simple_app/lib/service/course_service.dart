@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../domain/models/course.dart';
 
 class CourseService {
-  final String baseUrl = 'http://localhost:5012/api';
+  final String baseUrl = 'http://ec2-44-223-27-4.compute-1.amazonaws.com/api';
 
   Future<List<Course>> getCoursesWithPagination({int page = 1, int size = 5}) async {
     final response = await http.get(
