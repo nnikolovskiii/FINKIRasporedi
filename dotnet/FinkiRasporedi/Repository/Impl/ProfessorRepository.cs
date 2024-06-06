@@ -39,8 +39,6 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
-
-
         public async Task<Professor> DeleteAsync(string id)
         {
             var professor = await GetByIdAsync(id);

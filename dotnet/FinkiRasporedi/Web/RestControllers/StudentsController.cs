@@ -1,5 +1,4 @@
-﻿using FinkiRasporedi.Models.Identity;
-using FinkiRasporedi.Repository.Interface;
+﻿using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Controllers.Rest.Authentication
@@ -9,34 +8,10 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
     public class StudentsController : ControllerBase
     {
         private readonly IStudentRepository _studentRepository;
-        private readonly IConfiguration _configuration;
 
-        public StudentsController(IStudentRepository studentRepository, IConfiguration configuration)
+        public StudentsController(IStudentRepository studentRepository)
         {
             _studentRepository = studentRepository;
-            _configuration = configuration;
-        }
-
-        [HttpGet("default")]
-        public async Task<IActionResult> GetDefaultSchedules(StudentRegistrationModel model)
-        {
-            var schedules = await _studentRepository.GetDefaultSchedules();
-            return Ok(schedules);
-
-        }
-
-        [HttpGet("schedule")]
-        public async Task<IActionResult> GetStudentSchedules()
-        {
-            try
-            {
-                var schedules = await _studentRepository.GetStudentSchedules();
-                return Ok(schedules);
-            }
-            catch (Exception ex)
-            {
-                return Unauthorized();
-            }
         }
 
     }

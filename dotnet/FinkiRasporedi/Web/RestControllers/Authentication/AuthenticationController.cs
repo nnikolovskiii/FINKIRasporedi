@@ -78,13 +78,6 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
             }
         }
 
-        [HttpPost("checkUsernameAvailability")]
-        public IActionResult CheckUsernameAvailability(string username)
-        {
-            bool isAvailable = _studentRepository.CheckUsernameAvailability(username);
-            return Ok(new { isAvailable });
-        }
-
         private string GenerateJwtToken(Student user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
