@@ -159,7 +159,6 @@ class _SignUpState extends State<SignupPage> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        // If the form is valid, attempt sign-up
                         _attemptSignUp();
                       }
                     },
@@ -297,6 +296,8 @@ class _SignUpState extends State<SignupPage> {
       setState(() {
         error = 'Registration failed: $e';
       });
+
+      print(e);
     }
   }
 }

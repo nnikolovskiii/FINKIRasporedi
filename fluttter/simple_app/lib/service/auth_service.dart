@@ -27,7 +27,7 @@ class AuthService {
     }
   }
 
-  static Future<RegisterResponseModel> register(
+  static Future<String> register(
       RegisterRequestModel model) async {
     final response = await http.post(Uri.parse('$baseUrl/register'),
         headers: <String, String>{
@@ -35,7 +35,7 @@ class AuthService {
         },
         body: jsonEncode(model.toJson()));
 
-    return registerResponseJson(response.body);
+    return response.body;
   }
 
   static Future<void> logout() async {

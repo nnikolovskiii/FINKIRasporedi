@@ -1,11 +1,57 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../domain/models/lecture_slots.dart';
 import '../domain/models/schedule.dart';
 
 class ScheduleService {
-  final String baseUrl = 'http://ec2-44-223-27-4.compute-1.amazonaws.com/api';
+    final String baseUrl = 'https://localhost:7069/api';
+
+  Future<List<Schedule>> getDefaultSchedulesWithPagination(
+      {int page = 0, int size = 0}) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/Students/default'),
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      var list = jsonData.map((json) => Schedule.fromJson(json)).toList();
+      return list;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+    Future<List<Schedule>> getStudentSchedules() async {
+      final prefs = await SharedPreferences.getInstance();
+      final loginDetails = prefs.getString('login_details');
+      String token;
+      if (loginDetails!= null) {
+        token = jsonDecode(loginDetails)["token"];
+      } else {
+        throw Exception('Token does not exist. Please log in again.');
+      }
+
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      };
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/Students/schedule'),
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> jsonData = jsonDecode(response.body);
+        var list = jsonData.map((json) => Schedule.fromJson(json)).toList();
+        return list;
+      } else {
+        throw Exception('You are not logged in.');
+      }
+    }
+
 
   Future<List<Schedule>> getSchedulesWithPagination(
       {int page = 0, int size = 0}) async {

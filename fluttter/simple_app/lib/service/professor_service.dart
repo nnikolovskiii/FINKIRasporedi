@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../domain/models/professor.dart';
 
 class ProfessorService {
-  final String baseUrl = 'http://ec2-44-223-27-4.compute-1.amazonaws.com/api';
+  final String baseUrl = 'https://localhost:7069/api';
 
   Future<List<Professor>> getProfessorsWithPagination(
       {int page = 1, int size = 5}) async {

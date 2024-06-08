@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/auth/login.dart';
+import 'package:simple_app/presentation/screens/schedules_screen.dart';
 import '../presentation/screens/list/schedule_list_screen.dart';
 
 void main() async {
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const ScheduleListScreen(),
+      home: SchedulesScreen(),
       routes: {
-        '/home': (context) => const ScheduleListScreen(),
+        '/home': (context) => SchedulesScreen(),
         '/login': (context) => const LoginPage(),
       },
     );

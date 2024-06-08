@@ -43,6 +43,7 @@ dependencies:
   dots_indicator: ^2.1.1
   cupertino_icons: ^1.0.2
   loading_animation_widget: ^1.2.0+4
+  toggle_switch: ^2.3.0
 
 
 dev_dependencies:

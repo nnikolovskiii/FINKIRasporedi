@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:simple_app/domain/models/schedule.dart';
+import 'package:simple_app/presentation/screens/schedules_screen.dart';
 
 import '../../../service/schedule_service.dart';
 import '../list/schedule_list_screen.dart';
@@ -170,7 +171,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     widget.scheduleService.addSchedule(schedule);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const ScheduleListScreen()),
+                      MaterialPageRoute(builder: (context) =>  SchedulesScreen()),
                     );
                   }
                 },

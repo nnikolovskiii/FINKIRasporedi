@@ -4,7 +4,7 @@ import 'dart:convert';
 
 
 class LectureSlotService {
-  final String baseUrl = 'http://ec2-44-223-27-4.compute-1.amazonaws.com/api';
+  final String baseUrl = 'https://localhost:7069/api';
 
   Future<LectureSlot> updateLectureSlot(int lectureSlotId, LectureSlot lectureSlot) async {
     final response = await http.put(

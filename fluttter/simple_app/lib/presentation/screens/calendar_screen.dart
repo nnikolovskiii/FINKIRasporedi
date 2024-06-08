@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:simple_app/presentation/screens/schedules_screen.dart';
 import 'package:simple_app/presentation/screens/swipe_screen.dart';
 import 'package:simple_app/presentation/theme/app_theme.dart';
 import 'package:simple_app/service/schedule_service.dart';
@@ -54,7 +55,7 @@ class _CalendarAppState extends State<CalendarScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ScheduleListScreen(),
+                  builder: (context) => SchedulesScreen(),
                 ),
               );
             },
@@ -105,7 +106,7 @@ class _CalendarAppState extends State<CalendarScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                    builder: (context) => const ScheduleListScreen(),
+                    builder: (context) => SchedulesScreen(),
 
                 ),
                 );
