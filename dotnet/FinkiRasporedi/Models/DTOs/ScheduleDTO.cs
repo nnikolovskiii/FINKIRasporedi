@@ -1,17 +1,12 @@
 ﻿using FinkiRasporedi.Models.Domain;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
-namespace FinkiRasporedi.Models.Base
+namespace FinkiRasporedi.Models.Dtos
 {
-    public class Schedule
+    public class ScheduleDTO
     {
-        [Key]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual List<LectureSlot>? Lectures { get; set; }
-        [JsonIgnore]
-        public virtual String StudentId { get; set; }
     }
 }

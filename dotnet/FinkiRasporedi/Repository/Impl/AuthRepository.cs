@@ -67,8 +67,14 @@ namespace FinkiRasporedi.Repository.Impl
                ?.LastOrDefault();
         }
 
-        public string ValidateTokenAndGetUserId(string token)
+        public string ValidateTokenAndGetUserId()
         {
+            var token = this.GetTokenFromHeader();
+            if (token == null)
+            {
+                throw new UnauthorizedAccessException("Invalid token");
+            }
+
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings.GetValue<string>("Secret");
             var audience = jwtSettings.GetValue<string>("Audience");
@@ -88,6 +94,12 @@ namespace FinkiRasporedi.Repository.Impl
 
             var userId = principal.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Name)?.Value;
             return userId;
+        }
+
+        public bool ValidateTokenAndCompareUser(string userId)
+        {
+            String tokenUserId = this.ValidateTokenAndGetUserId();
+            return tokenUserId == userId;
         }
 
 

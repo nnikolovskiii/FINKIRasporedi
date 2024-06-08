@@ -11,7 +11,7 @@ class ScheduleService {
   Future<List<Schedule>> getDefaultSchedulesWithPagination(
       {int page = 0, int size = 0}) async {
     final response = await http.get(
-      Uri.parse('$baseUrl/Students/default'),
+      Uri.parse('$baseUrl/Schedules/default'),
     );
 
     if (response.statusCode == 200) {
@@ -24,23 +24,9 @@ class ScheduleService {
   }
 
     Future<List<Schedule>> getStudentSchedules() async {
-      final prefs = await SharedPreferences.getInstance();
-      final loginDetails = prefs.getString('login_details');
-      String token;
-      if (loginDetails!= null) {
-        token = jsonDecode(loginDetails)["token"];
-      } else {
-        throw Exception('Token does not exist. Please log in again.');
-      }
-
-      final headers = {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json'
-      };
-
       final response = await http.get(
-        Uri.parse('$baseUrl/Students/schedule'),
-        headers: headers,
+        Uri.parse('$baseUrl/Schedules/student'),
+        headers: await _getAuthorizationHeaders(),
       );
 
       if (response.statusCode == 200) {
@@ -57,6 +43,7 @@ class ScheduleService {
       {int page = 0, int size = 0}) async {
     final response = await http.get(
       Uri.parse('$baseUrl/Schedules?page=$page&size=$size'),
+      headers: await _getAuthorizationHeaders(),
     );
 
     if (response.statusCode == 200) {
@@ -71,6 +58,7 @@ class ScheduleService {
   Future<Schedule> getSchedule(int id) async {
     final response = await http.get(
       Uri.parse('$baseUrl/Schedules/$id'),
+      headers: await _getAuthorizationHeaders(),
     );
 
     if (response.statusCode == 200) {
@@ -85,9 +73,7 @@ class ScheduleService {
   Future<Schedule> addLecture(int id, LectureSlot lectureSlot) async {
     final response = await http.post(
       Uri.parse('$baseUrl/Schedules/addLecture/$id'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthorizationHeaders(),
       body: jsonEncode(lectureSlot.toJson()),
     );
 
@@ -103,9 +89,7 @@ class ScheduleService {
   Future<Schedule> removeLecture(int id, int lectureId) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/Schedules/removeLecture/$id'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthorizationHeaders(),
       body: jsonEncode(lectureId),
     );
 
@@ -121,9 +105,7 @@ class ScheduleService {
   Future<Schedule> addSchedule(Schedule schedule) async {
     final response = await http.post(
       Uri.parse('$baseUrl/Schedules'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
+      headers: await _getAuthorizationHeaders(),
       body: jsonEncode(schedule.toJson()),
     );
 
@@ -139,6 +121,7 @@ class ScheduleService {
   Future<Schedule> deleteSchedule(int id) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/Schedules/$id'),
+      headers: await _getAuthorizationHeaders(),
     );
 
     if (response.statusCode == 200) {
@@ -150,6 +133,19 @@ class ScheduleService {
     }
   }
 
+    Future<Map<String, String>> _getAuthorizationHeaders() async {
+      final prefs = await SharedPreferences.getInstance();
+      final loginDetails = prefs.getString('login_details');
+      if (loginDetails == null) {
+        throw Exception('Token does not exist. Please log in again.');
+      }
 
+      final token = jsonDecode(loginDetails)["token"];
+      final headers = {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json'
+      };
+      return headers;
+    }
 
 }

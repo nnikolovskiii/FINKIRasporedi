@@ -6,8 +6,10 @@ namespace FinkiRasporedi.Repository.Interface
     {
         Task<Student> RegisterAsync(StudentRegistrationModel registrationModel);
         Task<Student> LoginAsync(string username, string password);
-        string ValidateTokenAndGetUserId(string token);
+        string ValidateTokenAndGetUserId();
 
         string GetTokenFromHeader();
+
+        bool ValidateTokenAndCompareUser(string userId);
     }
 }

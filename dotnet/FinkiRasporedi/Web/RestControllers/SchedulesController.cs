@@ -1,14 +1,17 @@
 ﻿using FinkiRasporedi.Models.Base;
 using FinkiRasporedi.Models.Domain;
+using FinkiRasporedi.Models.Dtos;
 using FinkiRasporedi.Repository.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    /*    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    */
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
@@ -45,7 +48,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Schedules/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSchedule(int id, Schedule Schedule)
         {
@@ -54,11 +56,15 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Schedules
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Schedule>> PostSchedule(Schedule Schedule)
+        public async Task<ActionResult<Schedule>> PostSchedule(ScheduleDTO scheduleDto)
         {
-            var updatedSchedule = await _scheduleRepository.AddAsync(Schedule);
+            Schedule schedule = new Schedule();
+            schedule.Id = scheduleDto.Id;
+            schedule.Lectures = scheduleDto.Lectures;
+            schedule.Description = scheduleDto.Description;
+            schedule.Name = scheduleDto.Name;
+            var updatedSchedule = await _scheduleRepository.AddAsync(schedule);
             return Ok(updatedSchedule);
         }
 
@@ -87,6 +93,7 @@ namespace FinkiRasporedi.Web.RestControllers
             return Ok(updatedSchedule);
         }
 
+        [AllowAnonymous]
         [HttpGet("default")]
         public async Task<IActionResult> GetDefaultSchedules()
         {

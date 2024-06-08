@@ -34,6 +34,9 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Schedule> AddAsync(Schedule entity)
         {
+            String user_id = _authRepository.ValidateTokenAndGetUserId();
+            entity.StudentId = user_id;
+
             _context.Schedules?.Add(entity);
             try
             {
@@ -57,6 +60,12 @@ namespace FinkiRasporedi.Repository
         public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot)
         {
             Schedule schedule = await GetByIdAsync(id);
+
+            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
             if (lectureSlot.Lecture != null)
             {
                 int lectureId = lectureSlot.Lecture.Id;
@@ -80,6 +89,12 @@ namespace FinkiRasporedi.Repository
             LectureSlot lectureSlot = await _lectureSlotRepository.GetByIdAsync(lectureSlotId);
             await _lectureSlotRepository.DeleteAsync(lectureSlotId);
             Schedule schedule = await GetByIdAsync(id);
+
+            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
             schedule.Lectures.Remove(lectureSlot);
             _context.Entry(schedule).State = EntityState.Modified;
             await _context.SaveChangesAsync();
@@ -89,6 +104,12 @@ namespace FinkiRasporedi.Repository
         public async Task<Schedule> DeleteAsync(int id)
         {
             var schedule = await GetByIdAsync(id);
+
+            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
             _schedules.Remove(schedule);
             await _context.SaveChangesAsync();
             return schedule;
@@ -96,12 +117,18 @@ namespace FinkiRasporedi.Repository
 
         public async Task<IEnumerable<Schedule>> GetAllAsync()
         {
+            throw new Exception("EndpointNotAccessable");
             return await _schedules.ToListAsync();
         }
 
         public async Task<Schedule> GetByIdAsync(int id)
         {
             var schedule = await _schedules.FindAsync(id);
+
+            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
 
             if (schedule == null)
             {
@@ -114,6 +141,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<IEnumerable<Schedule>> GetPageAsync(int page, int pageSize)
         {
+            throw new Exception("EndpointNotAccessable");
             if (page < 1)
             {
                 throw new ArgumentException("Page number must be greater than or equal to 1.");
@@ -135,12 +163,18 @@ namespace FinkiRasporedi.Repository
 
         public async Task<int> GetTotalCountAsync()
         {
+            throw new Exception("EndpointNotAccessable");
             return await _schedules.CountAsync();
         }
 
 
         public async Task<Schedule> UpdateAsync(int id, Schedule entity)
         {
+            if (!_authRepository.ValidateTokenAndCompareUser(entity.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
             if (id != entity.Id)
             {
                 throw new BadRequestIdException();
@@ -187,13 +221,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<IEnumerable<Schedule>> GetStudentSchedules()
         {
-            var token = _authRepository.GetTokenFromHeader();
-            if (token == null)
-            {
-                throw new UnauthorizedAccessException("Invalid token");
-            }
-
-            var userId = _authRepository.ValidateTokenAndGetUserId(token);
+            var userId = _authRepository.ValidateTokenAndGetUserId();
             if (userId == null)
             {
                 throw new UnauthorizedAccessException("Invalid token");
