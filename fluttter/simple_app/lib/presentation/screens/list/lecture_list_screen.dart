@@ -99,7 +99,7 @@ class _LectureListScreenState extends State<LectureListScreen> {
                       padding: const EdgeInsets.fromLTRB(0,2,0,5),
                       //color: const Color(0xFFc4cfe2), // Set background color for the title text
                       child: Text(
-                        '${DayWidget.daysMap[lecture.day]}',
+                        '${DayWidget.fullDaysMap[lecture.day]}',
                         style: const TextStyle(
                           color: Color(0xFF19448e),
                           //fontStyle: FontStyle.italic,

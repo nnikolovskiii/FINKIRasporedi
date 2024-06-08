@@ -41,6 +41,7 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Schedules/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Schedule>> GetSchedule(int id)
         {
             var schedule = await _scheduleRepository.GetByIdAsync(id);

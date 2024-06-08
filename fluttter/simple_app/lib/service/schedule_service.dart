@@ -55,20 +55,28 @@ class ScheduleService {
     }
   }
 
-  Future<Schedule> getSchedule(int id) async {
-    final response = await http.get(
-      Uri.parse('$baseUrl/Schedules/$id'),
-      headers: await _getAuthorizationHeaders(),
-    );
+    Future<Schedule> getSchedule(int id) async {
+      final headers = await _getAuthorizationHeaders();
+      final response;
+      if (headers.isEmpty) {
+        response = await http.get(
+          Uri.parse('$baseUrl/Schedules/$id'),
+        );
+      }else{
+        response = await http.get(
+          Uri.parse('$baseUrl/Schedules/$id'),
+          headers: headers,
+        );
+      }
 
-    if (response.statusCode == 200) {
-      final dynamic jsonData = jsonDecode(response.body);
-      var schedule = Schedule.fromJson(jsonData);
-      return schedule;
-    } else {
-      throw Exception('Failed to fetch data');
+      if (response.statusCode == 200) {
+        final dynamic jsonData = jsonDecode(response.body);
+        var schedule = Schedule.fromJson(jsonData);
+        return schedule;
+      } else {
+        throw Exception('Failed to fetch data');
+      }
     }
-  }
 
   Future<Schedule> addLecture(int id, LectureSlot lectureSlot) async {
     final response = await http.post(
@@ -133,11 +141,13 @@ class ScheduleService {
     }
   }
 
+
     Future<Map<String, String>> _getAuthorizationHeaders() async {
       final prefs = await SharedPreferences.getInstance();
       final loginDetails = prefs.getString('login_details');
       if (loginDetails == null) {
-        throw Exception('Token does not exist. Please log in again.');
+        // Return an empty map if login details do not exist
+        return {};
       }
 
       final token = jsonDecode(loginDetails)["token"];
@@ -147,5 +157,6 @@ class ScheduleService {
       };
       return headers;
     }
+
 
 }

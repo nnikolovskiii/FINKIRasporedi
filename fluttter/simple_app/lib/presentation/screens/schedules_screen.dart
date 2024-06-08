@@ -9,12 +9,22 @@ import 'calendar_screen.dart';
 import '../../domain/models/schedule.dart';
 
 class SchedulesScreen extends StatefulWidget {
+  final int initialIndex;
+
+  const SchedulesScreen({Key? key, this.initialIndex = 0}) : super(key: key);
+
   @override
   _SchedulesScreenState createState() => _SchedulesScreenState();
 }
 
 class _SchedulesScreenState extends State<SchedulesScreen> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   void _onToggle(int index) {
     setState(() {
@@ -46,25 +56,36 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
                   icon: const Icon(Icons.account_circle_sharp),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
+                      MaterialPageRoute(builder: (context) => const LoginPage()),
                     );
                   },
                 );
               } else {
                 return Row(
                   children: [
-                    Text(
-                      snapshot.data!['username'],
-                      style: const TextStyle(color: Color(0xFF123499)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF123499).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.account_circle, color: Color(0xFF123499)),
+                          const SizedBox(width: 5),
+                          Text(
+                            snapshot.data!['username'],
+                            style: const TextStyle(color: Color(0xFF123499), fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.logout),
                       onPressed: () {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                          MaterialPageRoute(builder: (context) => const LoginPage()),
                         );
                       },
                     ),
@@ -104,7 +125,8 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
           Expanded(child: ScheduleListScreen(defaultValue: _selectedIndex == 0)),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: _selectedIndex == 1
+          ? FloatingActionButton(
         onPressed: () async {
           await Navigator.push(
             context,
@@ -112,7 +134,8 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
           );
         },
         child: const Icon(Icons.add),
-      ),
+      )
+          : null,
     );
   }
 

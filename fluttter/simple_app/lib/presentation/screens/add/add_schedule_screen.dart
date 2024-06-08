@@ -163,15 +163,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               //  ),
               const SizedBox(height: 30.0),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     String name = _nameEditingController.text;
                     String notes = _notesEditingController.text;
                     Schedule schedule = Schedule(name: name, description: notes);
-                    widget.scheduleService.addSchedule(schedule);
+                    await widget.scheduleService.addSchedule(schedule);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  SchedulesScreen()),
+                      MaterialPageRoute(builder: (context) =>  SchedulesScreen(initialIndex: 1,)),
                     );
                   }
                 },

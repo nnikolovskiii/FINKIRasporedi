@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SchedulesScreen(),
+                  builder: (context) => SchedulesScreen(initialIndex: 1,),
                 ),
               );
             } else {

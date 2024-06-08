@@ -125,7 +125,7 @@ namespace FinkiRasporedi.Repository
         {
             var schedule = await _schedules.FindAsync(id);
 
-            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            if (schedule.StudentId != "FINKI" && !_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
             {
                 throw new Exception("TokenValidationError");
             }

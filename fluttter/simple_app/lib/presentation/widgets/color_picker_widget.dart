@@ -7,21 +7,20 @@ import '../../service/lecture_slot_service.dart';
 import '../../service/schedule_service.dart';
 import '../screens/calendar_screen.dart';
 
-
-
 class ColorPickerScreen extends StatefulWidget {
   final Schedule schedule;
   final LectureSlot lectureSlot;
   final bool update;
-  final ScheduleService scheduleService =
-  ScheduleService();
-  final LectureSlotService lectureSlotService =
-  LectureSlotService();
+  final ScheduleService scheduleService = ScheduleService();
+  final LectureSlotService lectureSlotService = LectureSlotService();
   final String? color;
 
-  ColorPickerScreen({super.key, 
+  ColorPickerScreen({
+    super.key,
     required this.schedule,
-    required this.lectureSlot, required this.update, this.color,
+    required this.lectureSlot,
+    required this.update,
+    this.color,
   });
 
   @override
@@ -29,13 +28,15 @@ class ColorPickerScreen extends StatefulWidget {
 }
 
 class _ColorPickerScreenState extends State<ColorPickerScreen> {
-  late Color selectedColor; // Initial color
+  late Color selectedColor;
   TextEditingController hexController = TextEditingController();
-
+  bool isHexValid = true;
 
   @override
   void initState() {
-    selectedColor = HexColor.fromHex(widget.color??"#808080");
+    super.initState();
+    selectedColor = HexColor.fromHex(widget.color ?? "#808080");
+    hexController.text = selectedColor.toHex().toUpperCase();
   }
 
   @override
@@ -45,8 +46,15 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
         title: const Text('Color Picker'),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.check),
+            onPressed: _useSelectedColor,
+          ),
+        ],
       ),
       body: ListView(
+        padding: const EdgeInsets.all(16.0),
         children: [
           Center(
             child: ColorPicker(
@@ -55,34 +63,42 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                 setState(() {
                   selectedColor = color;
                   hexController.text = color.toHex().toUpperCase();
+                  isHexValid = true;
                 });
               },
-              showLabel: true,
+              showLabel: false,
               enableAlpha: false,
-
             ),
           ),
           const SizedBox(height: 16.0),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: TextFormField(
               controller: hexController,
               decoration: InputDecoration(
                 labelText: 'Enter Hex Color',
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.check),
-                  onPressed: () {
-                    _updateColorFromHex();
-                  },
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  borderSide: BorderSide(
+                    color: isHexValid ? Colors.black : Colors.red,
+                  ),
                 ),
+                errorText: isHexValid ? null : 'Invalid hex color',
               ),
+              onFieldSubmitted: (value) {
+                _updateColorFromHex();
+              },
+              onChanged: (value) {
+                _updateColorFromHex();
+              },
             ),
           ),
+          const SizedBox(height: 16.0),
           Container(
             padding: const EdgeInsets.all(16.0),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: Colors.blue,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
+              borderRadius: BorderRadius.circular(20.0),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -110,43 +126,6 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    widget.lectureSlot.hexColor = selectedColor.toHex().toString();
-
-                    if (widget.update){
-                      await widget.lectureSlotService
-                          .updateLectureSlot(
-                          widget.lectureSlot.id ?? 0, widget.lectureSlot);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CalendarScreen(widget.schedule.id ?? 0),
-                        ),
-                      );
-                    }else {
-                      await widget.scheduleService
-                          .addLecture(
-                          widget.schedule.id ?? 0, widget.lectureSlot);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              CalendarScreen(widget.schedule.id ?? 0),
-                        ),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                  child: const Text('Use Color'),
-                ),
               ],
             ),
           ),
@@ -160,8 +139,32 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
     if (RegExp(r'^#?[0-9A-Fa-f]{6}$').hasMatch(hexCode)) {
       setState(() {
         selectedColor = HexColor.fromHex(hexCode);
+        isHexValid = true;
+      });
+    } else {
+      setState(() {
+        isHexValid = false;
       });
     }
+  }
+
+  void _useSelectedColor() async {
+    widget.lectureSlot.hexColor = selectedColor.toHex().toString();
+
+    if (widget.update) {
+      await widget.lectureSlotService.updateLectureSlot(
+          widget.lectureSlot.id ?? 0, widget.lectureSlot);
+    } else {
+      await widget.scheduleService.addLecture(
+          widget.schedule.id ?? 0, widget.lectureSlot);
+    }
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CalendarScreen(widget.schedule.id ?? 0),
+      ),
+    );
   }
 }
 
