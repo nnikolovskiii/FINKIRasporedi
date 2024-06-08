@@ -52,8 +52,8 @@ namespace FinkiRasporedi.Repository.Data
                        .UsingEntity(j => j.ToTable("ScheduleLectures"));
             modelBuilder.Entity<Student>()
                .HasMany(s => s.Schedules)
-               .WithMany()
-               .UsingEntity(j => j.ToTable("StudentSchedules"));
+               .WithOne()
+               .HasForeignKey(s => s.StudentId);
             modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Professor)
                .WithMany();

@@ -3,6 +3,7 @@ using System;
 using FinkiRasporedi.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240608192008_AddStudentToSchedule")]
+    partial class AddStudentToSchedule
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Courses", (string)null);
+                    b.ToTable("Courses");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Lecture", b =>
@@ -101,7 +104,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Professors", (string)null);
+                    b.ToTable("Professors");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Room", b =>
@@ -111,7 +114,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasKey("Name");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Schedule", b =>
@@ -136,7 +139,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("Schedules", (string)null);
+                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Base.Semester", b =>
@@ -152,7 +155,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasKey("Code");
 
-                    b.ToTable("Semesters", (string)null);
+                    b.ToTable("Semesters");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Domain.CourseProfessor", b =>
@@ -167,7 +170,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasIndex("ProfessorId");
 
-                    b.ToTable("CourseProfessors", (string)null);
+                    b.ToTable("CourseProfessors");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Domain.LectureSlot", b =>
@@ -218,7 +221,7 @@ namespace FinkiRasporedi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("FinkiRasporedi.Models.Identity.Student", b =>

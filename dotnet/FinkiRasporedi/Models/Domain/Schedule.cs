@@ -10,5 +10,6 @@ namespace FinkiRasporedi.Models.Base
         public string Name { get; set; }
         public string Description { get; set; }
         public virtual List<LectureSlot>? Lectures { get; set; }
+        public virtual String StudentId { get; set; }
     }
 }
