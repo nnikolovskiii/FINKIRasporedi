@@ -1,6 +1,7 @@
 ﻿using FinkiRasporedi.Models.Base;
 using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
+using FinkiRasporedi.Models.Identity;
 using FinkiRasporedi.Repository.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -13,14 +14,22 @@ namespace FinkiRasporedi.Repository
         private readonly ApplicationDbContext _context;
         private readonly ILectureRepository _lectureRepository;
         private readonly ILectureSlotRepository _lectureSlotRepository;
+        private readonly DbSet<Student> _students;
+        private readonly IAuthRepository _authRepository;
 
-        public ScheduleRepository(ApplicationDbContext context,
-            ILectureRepository lectureRepository, ILectureSlotRepository lectureSlotRepository)
+
+        public ScheduleRepository(
+            ApplicationDbContext context,
+            ILectureRepository lectureRepository, ILectureSlotRepository lectureSlotRepository,
+            IAuthRepository authRepository
+        )
         {
             _schedules = context.Set<Schedule>();
             _context = context;
             _lectureRepository = lectureRepository;
             _lectureSlotRepository = lectureSlotRepository;
+            _students = context.Set<Student>(); ;
+            _authRepository = authRepository;
         }
 
         public async Task<Schedule> AddAsync(Schedule entity)
@@ -161,6 +170,43 @@ namespace FinkiRasporedi.Repository
         private bool ScheduleExists(int id)
         {
             return (_schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+
+        public async Task<IEnumerable<Schedule>> GetDefaultSchedules()
+        {
+            Student? default_user = await _students.FindAsync("FINKI");
+
+            if (default_user != null)
+            {
+                return default_user.Schedules;
+            }
+
+            return Enumerable.Empty<Schedule>();
+        }
+
+        public async Task<IEnumerable<Schedule>> GetStudentSchedules()
+        {
+            var token = _authRepository.GetTokenFromHeader();
+            if (token == null)
+            {
+                throw new UnauthorizedAccessException("Invalid token");
+            }
+
+            var userId = _authRepository.ValidateTokenAndGetUserId(token);
+            if (userId == null)
+            {
+                throw new UnauthorizedAccessException("Invalid token");
+            }
+
+            var stuent = await _students.FindAsync(userId);
+
+            if (stuent != null)
+            {
+                return stuent.Schedules;
+            }
+
+            return Enumerable.Empty<Schedule>();
         }
     }
 }

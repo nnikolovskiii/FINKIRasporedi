@@ -1,20 +1,21 @@
 ﻿using FinkiRasporedi.Models.Base;
 using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Repository.Interface;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinkiRasporedi.Web.RestControllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    /*    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    */
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
-
-        public SchedulesController(IScheduleRepository ScheduleRepository)
+        private readonly IAuthRepository _studentRepository;
+        public SchedulesController(
+            IScheduleRepository ScheduleRepository
+        )
         {
             _scheduleRepository = ScheduleRepository;
         }
@@ -84,6 +85,28 @@ namespace FinkiRasporedi.Web.RestControllers
         {
             var updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
             return Ok(updatedSchedule);
+        }
+
+        [HttpGet("default")]
+        public async Task<IActionResult> GetDefaultSchedules()
+        {
+            var schedules = await _scheduleRepository.GetDefaultSchedules();
+            return Ok(schedules);
+
+        }
+
+        [HttpGet("student")]
+        public async Task<IActionResult> GetStudentSchedules()
+        {
+            try
+            {
+                var schedules = await _scheduleRepository.GetStudentSchedules();
+                return Ok(schedules);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized();
+            }
         }
     }
 }

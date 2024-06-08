@@ -13,10 +13,10 @@ namespace FinkiRasporedi.Controllers.Rest.Authentication
     [Route("api/auth")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IStudentRepository _studentRepository;
+        private readonly IAuthRepository _studentRepository;
         private readonly IConfiguration _configuration;
 
-        public AuthenticationController(IStudentRepository studentRepository, IConfiguration configuration)
+        public AuthenticationController(IAuthRepository studentRepository, IConfiguration configuration)
         {
             _studentRepository = studentRepository;
             _configuration = configuration;
