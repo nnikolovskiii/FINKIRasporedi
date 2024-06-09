@@ -37,7 +37,7 @@ namespace FinkiRasporedi.Repository
             String user_id = _authRepository.ValidateTokenAndGetUserId();
             entity.StudentId = user_id;
 
-            _context.Schedules?.Add(entity);
+            _context.schedules?.Add(entity);
             try
             {
                 await _context.SaveChangesAsync();

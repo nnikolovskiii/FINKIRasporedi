@@ -19,7 +19,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Semester> AddAsync(Semester entity)
         {
-            _context.Semesters?.Add(entity);
+            _context.semesters?.Add(entity);
             try
             {
                 await _context.SaveChangesAsync();

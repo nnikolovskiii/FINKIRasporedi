@@ -9,7 +9,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["FinkiRasporedi/FinkiRasporedi.csproj", "FinkiRasporedi/"]
 RUN dotnet restore "FinkiRasporedi/FinkiRasporedi.csproj"
-COPY . .
+COPY FinkiRasporedi/. ./FinkiRasporedi/
 WORKDIR "/src/FinkiRasporedi"
 RUN dotnet build "FinkiRasporedi.csproj" -c Release -o /app/build
 

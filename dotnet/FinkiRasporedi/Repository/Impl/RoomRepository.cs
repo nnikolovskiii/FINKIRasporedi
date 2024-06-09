@@ -19,7 +19,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Room> AddAsync(Room entity)
         {
-            _context.Rooms?.Add(entity);
+            _context.rooms?.Add(entity);
             try
             {
                 await _context.SaveChangesAsync();

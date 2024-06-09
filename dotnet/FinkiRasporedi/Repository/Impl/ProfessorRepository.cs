@@ -19,7 +19,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Professor> AddAsync(Professor entity)
         {
-            _context.Professors?.Add(entity);
+            _context.professors?.Add(entity);
             try
             {
                 await _context.SaveChangesAsync();

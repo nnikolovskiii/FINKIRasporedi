@@ -19,7 +19,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<Lecture> AddAsync(Lecture entity)
         {
-            _context.Lectures?.Add(entity);
+            _context.lectures?.Add(entity);
             try
             {
                 await _context.SaveChangesAsync();

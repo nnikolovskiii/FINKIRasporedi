@@ -117,7 +117,7 @@ namespace FinkiRasporedi.Repository
 
         public async Task<List<Professor>> GetProfessorsForCourseAsync(string courseId)
         {
-            var query = await _context.CourseProfessors
+            var query = await _context.courseprofessors
                 .Where(courseProfessor => courseProfessor.Course.Id == courseId)
                 .Select(courseProfessor => courseProfessor.Professor)
                 .ToListAsync();
