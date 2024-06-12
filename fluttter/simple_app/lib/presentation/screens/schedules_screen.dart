@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:simple_app/service/auth_service.dart';
-import 'package:simple_app/service/schedule_service.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'auth/login.dart';
 import 'add/add_schedule_screen.dart';
-import 'calendar_screen.dart';
-import '../../domain/models/schedule.dart';
 
 class SchedulesScreen extends StatefulWidget {
   final int initialIndex;
@@ -50,7 +46,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
             future: AuthService.getLoggedInUser(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError || snapshot.data == null) {
                 return IconButton(
                   icon: const Icon(Icons.account_circle_sharp),
@@ -115,7 +111,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
               selectedColor: Colors.white,
               fillColor: Colors.blue,
               color: Colors.black,
-              constraints: BoxConstraints(minHeight: 40, minWidth: 150),
+              constraints: const BoxConstraints(minHeight: 40, minWidth: 150),
               children: const [
                 Text('Finki Schedules'),
                 Text('My Schedules'),

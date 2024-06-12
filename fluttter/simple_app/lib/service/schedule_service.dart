@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../domain/models/lecture_slots.dart';
 import '../domain/models/schedule.dart';
 
 class ScheduleService {
-    final String baseUrl = 'https://localhost:7069/api';
+  static final String baseUrl = dotenv.env['API_URL'] ?? (throw Exception('API_URL environment variable not found'));
 
   Future<List<Schedule>> getDefaultSchedulesWithPagination(
       {int page = 0, int size = 0}) async {
@@ -57,7 +58,7 @@ class ScheduleService {
 
     Future<Schedule> getSchedule(int id) async {
       final headers = await _getAuthorizationHeaders();
-      final response;
+      final http.Response response;
       if (headers.isEmpty) {
         response = await http.get(
           Uri.parse('$baseUrl/Schedules/$id'),

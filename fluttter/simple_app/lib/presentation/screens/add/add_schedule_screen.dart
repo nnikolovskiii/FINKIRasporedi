@@ -4,7 +4,6 @@ import 'package:simple_app/domain/models/schedule.dart';
 import 'package:simple_app/presentation/screens/schedules_screen.dart';
 
 import '../../../service/schedule_service.dart';
-import '../list/schedule_list_screen.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   final ScheduleService scheduleService =
@@ -171,7 +170,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     await widget.scheduleService.addSchedule(schedule);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  SchedulesScreen(initialIndex: 1,)),
+                      MaterialPageRoute(builder: (context) =>  const SchedulesScreen(initialIndex: 1,)),
                     );
                   }
                 },

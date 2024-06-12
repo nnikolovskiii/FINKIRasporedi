@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/service/auth_service.dart';
 import 'package:simple_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../auth/login.dart';
-import '../add/add_schedule_screen.dart';
 import '../calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
 

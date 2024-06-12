@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NotLoggedInMessageScreen extends StatelessWidget {
+  const NotLoggedInMessageScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,13 +10,13 @@ class NotLoggedInMessageScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'You are not logged in to display your schedules',
               style: TextStyle(fontSize: 18, color: Colors.grey),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
-              child: Text('Login'),
+              child: const Text('Login'),
               onPressed: () {
                 // Navigate to the login screen or perform login logic here
                 Navigator.pushNamed(context, '/login');

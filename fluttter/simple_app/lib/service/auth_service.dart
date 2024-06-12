@@ -4,15 +4,15 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/domain/models/login_request_model.dart';
 import 'package:simple_app/domain/models/register_request_model.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import '../domain/models/login_response_model.dart';
-import '../domain/models/register_response_model.dart';
 
 class AuthService {
-  static const String baseUrl = 'https://localhost:7069/api/auth';
+  static final String baseUrl = dotenv.env['API_URL'] ?? (throw Exception('API_URL environment variable not found'));
 
   static Future<bool> login(LoginRequestModel model) async {
-    final response = await http.post(Uri.parse('$baseUrl/login'),
+    final response = await http.post(Uri.parse('$baseUrl/auth/login'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -29,7 +29,7 @@ class AuthService {
 
   static Future<String> register(
       RegisterRequestModel model) async {
-    final response = await http.post(Uri.parse('$baseUrl/register'),
+    final response = await http.post(Uri.parse('$baseUrl/auth/register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

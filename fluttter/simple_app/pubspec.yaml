@@ -36,7 +36,7 @@ dependencies:
   filter_list: ^1.0.2
   provider: ^5.0.0
   auto_size_text: ^3.0.0
-  flutter_colorpicker: ^0.5.0
+  flutter_colorpicker: 1.1.0
   carousel_slider: ^4.0.0
   flutter_spinkit:
   shared_preferences:
@@ -44,6 +44,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   loading_animation_widget: ^1.2.0+4
   toggle_switch: ^2.3.0
+  flutter_dotenv: ^5.0.2
 
 
 dev_dependencies:
@@ -93,6 +94,7 @@ flutter:
     - resources/images/bgImg.jpg
     - resources/images/io.png
     - resources/images/info.png
+    - .env
 
   # To add assets to your application, add an assets section, like this:
   # assets:

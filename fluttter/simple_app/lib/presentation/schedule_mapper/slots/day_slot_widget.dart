@@ -19,7 +19,7 @@ class DayWidget extends StatelessWidget {
     4: "Пет"
   };
 
-  DayWidget({super.key, required this.day, this.num = 6});
+  const DayWidget({super.key, required this.day, this.num = 6});
 
   @override
   Widget build(BuildContext context) {

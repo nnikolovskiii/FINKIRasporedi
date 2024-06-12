@@ -37,7 +37,7 @@ class ColumnScheduleWidget extends StatelessWidget {
     }
     lectureWidgets.add(HorizontalDividerWidget(hasColor: true,num: num));
     for (int i = 8; i < 20; i++) {
-      if (j < lectures.length && i == lectures[j].timeFrom as int) {
+      if (j < lectures.length && i == lectures[j].timeFrom) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
           segmented: segmented, schedule: schedule,
@@ -45,7 +45,7 @@ class ColumnScheduleWidget extends StatelessWidget {
         ));
 
         int interval = lectures[j].timeTo - lectures[j].timeFrom;
-        i = i + (interval as int) - 1;
+        i = i + (interval) - 1;
         j++;
       } else {
         lectureWidgets.add(EmptyTimeSlotWidget(segmented: segmented, num: num));

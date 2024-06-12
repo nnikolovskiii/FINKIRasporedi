@@ -162,14 +162,14 @@ class _SignUpState extends State<SignupPage> {
                         _attemptSignUp();
                       }
                     },
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(fontSize: 20),
-                    ),
                     style: ElevatedButton.styleFrom(
                       shape: const StadiumBorder(),
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       backgroundColor: Colors.purple,
+                    ),
+                    child: const Text(
+                      "Sign up",
+                      style: TextStyle(fontSize: 20),
                     ),
                   ),
                 ),

@@ -1,10 +1,11 @@
 import '../domain/models/lecture_slots.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 class LectureSlotService {
-  final String baseUrl = 'https://localhost:7069/api';
+  static final String baseUrl = dotenv.env['API_URL'] ?? (throw Exception('API_URL environment variable not found'));
 
   Future<LectureSlot> updateLectureSlot(int lectureSlotId, LectureSlot lectureSlot) async {
     final response = await http.put(

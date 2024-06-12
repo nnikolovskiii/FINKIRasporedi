@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/auth/login.dart';
 import 'package:simple_app/presentation/screens/schedules_screen.dart';
-import '../presentation/screens/list/schedule_list_screen.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -19,9 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SchedulesScreen(),
+      home: const SchedulesScreen(),
       routes: {
-        '/home': (context) => SchedulesScreen(),
+        '/home': (context) => const SchedulesScreen(),
         '/login': (context) => const LoginPage(),
       },
     );
