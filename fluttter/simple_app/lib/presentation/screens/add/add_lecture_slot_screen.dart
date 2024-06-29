@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../widgets/color_picker_widget.dart';
@@ -27,12 +26,12 @@ bool isOverlapping(Schedule schedule, LectureSlot lec, {LectureSlot? currentLect
 
 class FieldScreen extends StatefulWidget {
   final Schedule schedule;
-  final LectureSlot? lectureSlot; // Nullable LectureSlot parameter
+  final LectureSlot? lectureSlot;
 
   const FieldScreen({
     super.key,
     required this.schedule,
-    this.lectureSlot, // Optional parameter
+    this.lectureSlot,
   });
 
   @override
@@ -41,14 +40,14 @@ class FieldScreen extends StatefulWidget {
 
 class _FieldScreenState extends State<FieldScreen> {
   final TextEditingController nameController = TextEditingController();
-  int selectedDayIndex = 0; // Default selection is Monday
-  int selectedTimeFrom = 8; // Default selection is 8 hours
-  int selectedTimeTo = 8; // Default selection is 8 hours
+  final _formKey = GlobalKey<FormState>();
+  int selectedDayIndex = 0;
+  int selectedTimeFrom = 8;
+  int selectedTimeTo = 9;
 
   @override
   void initState() {
     super.initState();
-    // If lectureSlot is not null, set initial values based on lectureSlot
     if (widget.lectureSlot != null) {
       nameController.text = widget.lectureSlot!.name ?? "";
       selectedDayIndex = widget.lectureSlot!.day;
@@ -59,7 +58,7 @@ class _FieldScreenState extends State<FieldScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<int> hours = List<int>.generate(13, (index) => index + 8); // List of hours from 8 to 20
+    List<int> hours = List<int>.generate(13, (index) => index + 8);
 
     return MaterialApp(
       home: Scaffold(
@@ -68,269 +67,241 @@ class _FieldScreenState extends State<FieldScreen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(
-                    hintText: "Име",
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (widget.lectureSlot == null || (widget.lectureSlot != null && widget.lectureSlot!.name != null && widget.lectureSlot!.name!.isNotEmpty)) ...[
+                  TextFormField(
+                    controller: nameController,
+                    decoration: InputDecoration(
+                        hintText: "Име",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none
+                        ),
+                        fillColor: const Color(0xFF123499).withOpacity(0.1),
+                        filled: true,
+                        prefixIcon: const Icon(Icons.drive_file_rename_outline)
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Името е задолжително';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                ],
+                DropdownButtonFormField<int>(
+                  value: selectedDayIndex,
+                  onChanged: (int? newIndex) {
+                    setState(() {
+                      selectedDayIndex = newIndex!;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Day",
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none
+                      borderRadius: BorderRadius.circular(18),
+                      borderSide: BorderSide.none,
                     ),
                     fillColor: const Color(0xFF123499).withOpacity(0.1),
                     filled: true,
-                    prefixIcon: const Icon(Icons.drive_file_rename_outline)),
-              ),
-              const SizedBox(height: 20),
-
-              DropdownButtonFormField<int>(
-                value: selectedDayIndex,
-                onChanged: (int? newIndex) {
-                  setState(() {
-                    selectedDayIndex = newIndex!;
-                  });
-                },
-                decoration: InputDecoration(
-                  hintText: "Day",
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide.none,
+                    prefixIcon: const Icon(Icons.calendar_today),
                   ),
-                  fillColor: const Color(0xFF123499).withOpacity(0.1),
-                  filled: true,
-                  prefixIcon: const Icon(Icons.calendar_today),
+                  items: const [
+                    DropdownMenuItem<int>(value: 0, child: Text('Понеделник')),
+                    DropdownMenuItem<int>(value: 1, child: Text('Вторник')),
+                    DropdownMenuItem<int>(value: 2, child: Text('Среда')),
+                    DropdownMenuItem<int>(value: 3, child: Text('Четврток')),
+                    DropdownMenuItem<int>(value: 4, child: Text('Петок')),
+                  ],
                 ),
-                items: const [
-                  DropdownMenuItem<int>(
-                    value: 0,
-                    child: Text('Понеделник'),
-                  ),
-                  DropdownMenuItem<int>(
-                    value: 1,
-                    child: Text('Вторник'),
-                  ),
-                  DropdownMenuItem<int>(
-                    value: 2,
-                    child: Text('Среда'),
-                  ),
-                  DropdownMenuItem<int>(
-                    value: 3,
-                    child: Text('Четврток'),
-                  ),
-                  DropdownMenuItem<int>(
-                    value: 4,
-                    child: Text('Петок'),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        DropdownButtonFormField<int>(
-                          value: selectedTimeFrom,
-                          onChanged: (int? newValue) {
-                            setState(() {
-                              selectedTimeFrom = newValue!;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'Од (часот)',
-                            hintText: "Од ",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none,
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          DropdownButtonFormField<int>(
+                            value: selectedTimeFrom,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                selectedTimeFrom = newValue!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'Од (часот)',
+                              hintText: "Од ",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide.none,
+                              ),
+                              fillColor: const Color(0xFF123499).withOpacity(0.1),
+                              filled: true,
+                              prefixIcon: const Icon(Icons.access_time),
                             ),
-                            fillColor: const Color(0xFF123499).withOpacity(0.1),
-                            filled: true,
-                            prefixIcon: const Icon(Icons.access_time),
+                            items: hours.map((hour) {
+                              return DropdownMenuItem<int>(
+                                value: hour,
+                                child: Text(hour.toString()),
+                              );
+                            }).toList(),
                           ),
-                          items: hours.map((hour) {
-                            return DropdownMenuItem<int>(
-                              value: hour,
-                              child: Text(hour.toString()),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        DropdownButtonFormField<int>(
-                          value: selectedTimeTo,
-                          onChanged: (int? newValue) {
-                            setState(() {
-                              selectedTimeTo = newValue!;
-                            });
-                          },
-                          decoration: InputDecoration(
-                            labelText: 'До (часот)',
-                            hintText: "до",
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none,
+                    const SizedBox(width: 20),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          DropdownButtonFormField<int>(
+                            value: selectedTimeTo,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                selectedTimeTo = newValue!;
+                              });
+                            },
+                            decoration: InputDecoration(
+                              labelText: 'До (часот)',
+                              hintText: "до",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide.none,
+                              ),
+                              fillColor: const Color(0xFF123499).withOpacity(0.1),
+                              filled: true,
+                              prefixIcon: const Icon(Icons.access_time),
                             ),
-                            fillColor: const Color(0xFF123499).withOpacity(0.1),
-                            filled: true,
-                            prefixIcon: const Icon(Icons.access_time),
+                            items: hours.map((hour) {
+                              return DropdownMenuItem<int>(
+                                value: hour,
+                                child: Text(hour.toString()),
+                              );
+                            }).toList(),
+                            validator: (value) {
+                              if (value == null || value <= selectedTimeFrom) {
+                                return 'Времето до мора да биде поголемо од времето од';
+                              }
+                              return null;
+                            },
                           ),
-                          items: hours.map((hour) {
-                            return DropdownMenuItem<int>(
-                              value: hour,
-                              child: Text(hour.toString()),
-                            );
-                          }).toList(),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
+                          const SizedBox(height: 10),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            String name = nameController.text;
+                            print('Selected Day Index: $selectedDayIndex');
+                            print('Time From: $selectedTimeFrom');
+                            print('Time To: $selectedTimeTo');
 
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        String name = nameController.text;
-                        print('Selected Day Index: $selectedDayIndex');
-                        print('Time From: $selectedTimeFrom');
-                        print('Time To: $selectedTimeTo');
+                            if (widget.lectureSlot == null) {
+                              LectureSlot newLectureSlot = LectureSlot(
+                                name: name,
+                                day: selectedDayIndex,
+                                timeFrom: selectedTimeFrom,
+                                timeTo: selectedTimeTo,
+                              );
 
-                        if (widget.lectureSlot == null) {
-                          // Create a new LectureSlot object
-                          LectureSlot newLectureSlot = LectureSlot(
-                            name: name,
-                            day: selectedDayIndex,
-                            timeFrom: selectedTimeFrom,
-                            timeTo: selectedTimeTo,
-                          );
-
-                          if (isOverlapping(widget.schedule, newLectureSlot)) {
-                            // Show pop-up indicating overlap
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Overlap Warning'),
-                                  content: const Text(
-                                      'The selected lecture overlaps with an existing one.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context); // Close the dialog
-                                      },
-                                      child: const Text('OK'),
-                                    ),
-                                  ],
+                              if (isOverlapping(widget.schedule, newLectureSlot)) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Overlap Warning'),
+                                      content: const Text('The selected lecture overlaps with an existing one.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          } else {
-                            // Navigate to ColorPickerScreen for saving new lecture slot
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ColorPickerScreen(
-                                  schedule: widget.schedule,
-                                  lectureSlot: newLectureSlot,
-                                  update: false,
-                                ),
-                              ),
-                            );
-                          }
-                        } else {
-                          // Modify existing LectureSlot object
-                          widget.lectureSlot!.name = name;
-                          widget.lectureSlot!.day = selectedDayIndex;
-                          widget.lectureSlot!.timeFrom = selectedTimeFrom;
-                          widget.lectureSlot!.timeTo = selectedTimeTo;
-
-                          if (isOverlapping(widget.schedule, widget.lectureSlot!, currentLecture: widget.lectureSlot)) {
-                            // Show pop-up indicating overlap
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text('Overlap Warning'),
-                                  content: const Text(
-                                      'The selected lecture overlaps with an existing one.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.pop(context); // Close the dialog
-                                      },
-                                      child: const Text('OK'),
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ColorPickerScreen(
+                                      schedule: widget.schedule,
+                                      lectureSlot: newLectureSlot,
+                                      update: false,
                                     ),
-                                  ],
+                                  ),
+                                ).then((result) {
+                                  if (result == true) {
+                                    Navigator.pop(context, true);
+                                  }
+                                });
+                              }
+                            } else {
+                              widget.lectureSlot!.name = name;
+                              widget.lectureSlot!.day = selectedDayIndex;
+                              widget.lectureSlot!.timeFrom = selectedTimeFrom;
+                              widget.lectureSlot!.timeTo = selectedTimeTo;
+
+                              if (isOverlapping(widget.schedule, widget.lectureSlot!, currentLecture: widget.lectureSlot)) {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Overlap Warning'),
+                                      content: const Text('The selected lecture overlaps with an existing one.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    );
+                                  },
                                 );
-                              },
-                            );
-                          } else {
-                            // Navigate back
-                            Navigator.pop(context);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ColorPickerScreen(
+                                      schedule: widget.schedule,
+                                      lectureSlot: widget.lectureSlot!,
+                                      update: true,
+                                      color: widget.lectureSlot!.hexColor, // Pass the color
+                                    ),
+                                  ),
+                                ).then((result) {
+                                  if (result == true) {
+                                    Navigator.pop(context, true);
+                                  }
+                                });
+                              }
+                            }
                           }
-                        }
-                      },
-                      child: const Text('Save'),
+                        },
+                        child: const Text('Save'),
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 20),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Navigate to ColorPickerScreen for color change
-                        if (widget.lectureSlot == null) {
-                          // Create a new LectureSlot object
-                          LectureSlot newLectureSlot = LectureSlot(
-                            name: nameController.text,
-                            day: selectedDayIndex,
-                            timeFrom: selectedTimeFrom,
-                            timeTo: selectedTimeTo,
-                          );
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ColorPickerScreen(
-                                schedule: widget.schedule,
-                                lectureSlot: newLectureSlot,
-                                update: false,
-                              ),
-                            ),
-                          );
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ColorPickerScreen(
-                                schedule: widget.schedule,
-                                lectureSlot: widget.lectureSlot!,
-                                update: true,
-                                color: widget.lectureSlot!.hexColor,
-                              ),
-                            ),
-                          );
-                        }
-                      },
-                      child: const Text('Change Color'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

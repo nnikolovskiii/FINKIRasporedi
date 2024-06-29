@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/presentation/screens/schedules_screen.dart';
-import 'package:simple_app/presentation/screens/swipe_screen.dart';
+import 'package:simple_app/presentation/screens/horizontal_swipe_screen.dart';
 import 'package:simple_app/presentation/theme/app_theme.dart';
 import 'package:simple_app/service/schedule_service.dart';
 
 import '../../domain/models/schedule.dart';
+import '../../domain/providers/schedule_provider.dart';
 import '../widgets/ActionButton.dart';
 import '../widgets/ExpandableFab.dart';
 import 'add/add_lecture_slot_screen.dart';
 import 'list/course_list_screen.dart';
-
-void main() {
-  runApp(const MaterialApp(
-    home: CalendarScreen(1),
-  ));
-}
 
 class CalendarScreen extends StatefulWidget {
   final int scheduleId;
@@ -45,12 +41,15 @@ class _CalendarAppState extends State<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+
     return MaterialApp(
       theme: brightTheme,
       home: Scaffold(
         appBar: AppBar(
           title: GestureDetector(
             onTap: () {
+              Provider.of<ScheduleProvider>(context, listen: false).setIsDefault(true);
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -71,53 +70,49 @@ class _CalendarAppState extends State<CalendarScreen> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-
             Expanded(
               child: scheduleFuture != null
                   ? Center(
-                child: HorizontalSwipeScreen(schedule: scheduleFuture!, segmented: false),
-
-                // child: ScheduleWidget(
-                //   schedule: scheduleFuture!,
-                //   segmented: false,
-                // ),
-
+                child: HorizontalSwipeScreen(
+                  schedule: scheduleFuture!,
+                  segmented: false,
+                ),
               )
                   : Center(
                 child: Padding(
                   padding: const EdgeInsets.all(80.0),
                   child: LoadingAnimationWidget.prograssiveDots(
-                    // leftDotColor: Color(0xFF01579B),
-                    // rightDotColor: Colors.orange,
                     size: 80,
                     color: Colors.blue.shade800,
                   ),
                 ),
-              ), // Loading indicator
+              ),
             ),
           ],
         ),
-        floatingActionButton: ExpandableFab(
+        floatingActionButton: isDefault
+            ? null
+            : ExpandableFab(
           distance: 112,
           children: [
             ActionButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
+                  context,
+                  MaterialPageRoute(
                     builder: (context) => const SchedulesScreen(),
-
-                ),
+                  ),
                 );
               },
               icon: const Icon(Icons.save),
-             // label: "Зачувај",
             ),
-
             Row(
               children: [
-                const Text("Custom" , style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF0A2472)),),
-                const SizedBox(width: 5,),
+                const Text(
+                  "Custom",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF0A2472)),
+                ),
+                const SizedBox(width: 5),
                 ActionButton(
                   onPressed: () {
                     Navigator.push(
@@ -126,19 +121,11 @@ class _CalendarAppState extends State<CalendarScreen> {
                         builder: (context) => FieldScreen(schedule: scheduleFuture!),
                       ),
                     );
-                    // ScaffoldMessenger.of(context).showSnackBar(
-                    //   const SnackBar(
-                    //     content: Text('Распоредот е зачуван'),
-                    //     duration: Duration(seconds: 2),
-                    //   ),
-                    // );
                   },
                   icon: const Icon(Icons.dashboard_customize),
-                  //label: "Custom",
                 ),
               ],
             ),
-
             ActionButton(
               onPressed: () {
                 Navigator.push(
@@ -148,15 +135,10 @@ class _CalendarAppState extends State<CalendarScreen> {
                   ),
                 );
               },
-             // label: "Постоечки",
               icon: const Icon(Icons.add_circle_outlined),
-
             ),
-
           ],
         ),
-
-
       ),
     );
   }

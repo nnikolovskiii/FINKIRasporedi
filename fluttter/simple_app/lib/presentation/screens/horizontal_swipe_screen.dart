@@ -25,15 +25,14 @@ class HorizontalSwipeScreen extends StatefulWidget {
 class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
   late final PageController controller;
   double currentPage = 0;
-  late int num;
-  bool showAllDays = false;
+  int num = 5; // Set default value for num
+  bool showAllDays = true;
 
   @override
   void initState() {
     super.initState();
     controller = PageController(initialPage: 0);
     controller.addListener(_onPageChanged);
-    num = 1;
   }
 
   @override
@@ -44,11 +43,9 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
   }
 
   void _onPageChanged() {
-    if (currentPage < (5 - num)) {
-      setState(() {
-        currentPage = controller.page ?? 0;
-      });
-    }
+    setState(() {
+      currentPage = controller.page ?? 0;
+    });
   }
 
   void _onDotTapped(double position) {
@@ -71,7 +68,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
-          } else if (details.delta.dx < 0 && currentPage < (5 - num)) {
+          } else if (details.delta.dx < 0 && currentPage < (5 - num).toDouble()) {
             controller.nextPage(
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
@@ -87,7 +84,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
                 if (!showAllDays)
                   DotsIndicator(
                     dotsCount: 5 - num + 1,
-                    position: currentPage.toDouble(),
+                    position: currentPage,
                     decorator: const DotsDecorator(
                       color: Colors.grey,
                       activeColor: Colors.blueAccent,
@@ -152,7 +149,7 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
     List<Widget> days = [];
     List<List<LectureSlot>> list = getListLectureSlots();
 
-    for (int i = 0; i < 5 - num + 1; i += 1) {
+    for (int i = 0; i < 5 - num + 1; i++) {
       days.add(Column(
         children: [
           Row(

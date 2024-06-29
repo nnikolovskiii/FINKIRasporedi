@@ -23,26 +23,29 @@ class _SignUpState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          height: MediaQuery.of(context).size.height - 50,
-          width: double.infinity,
-          child: Form(
-            // Form widget
-            key: _formKey, // Assigning the form key
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Column(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 500, // Max width for larger screens
+              ),
+              child: Form(
+                key: _formKey, // Assigning the form key
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     const SizedBox(height: 60.0),
-                    const Text(
-                      "Sign up",
+                    Text(
+                      "Регистрирај се",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 24, // Scalable font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -50,21 +53,22 @@ class _SignUpState extends State<SignupPage> {
                       height: 20,
                     ),
                     Text(
-                      "Create your account",
-                      style: TextStyle(fontSize: 15, color: Colors.grey[700]),
-                    )
-                  ],
-                ),
-                Column(
-                  children: <Widget>[
+                      "Креирај го твојот профил",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16, // Scalable font size
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Username",
+                        hintText: "Корисничко име",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.person),
                       ),
@@ -76,12 +80,12 @@ class _SignUpState extends State<SignupPage> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Email",
+                        hintText: "е-пошта",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.email),
                       ),
@@ -93,19 +97,17 @@ class _SignUpState extends State<SignupPage> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Password",
+                        hintText: "Лозинка",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
@@ -123,105 +125,103 @@ class _SignUpState extends State<SignupPage> {
                     const SizedBox(height: 20),
                     TextFormField(
                       decoration: InputDecoration(
-                        hintText: "Confirm Password",
+                        hintText: "Потврди лозинка",
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Colors.purple.withOpacity(0.1),
+                        fillColor: Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureConfirmPassword
-                                ? Icons.visibility
-                                : Icons.visibility_off,
+                            _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscureConfirmPassword =
-                                  !_obscureConfirmPassword;
+                              _obscureConfirmPassword = !_obscureConfirmPassword;
                             });
                           },
                         ),
                       ),
                       obscureText: _obscureConfirmPassword,
                       validator: (val) =>
-                          val != password ? 'Passwords do not match' : null,
+                      val != password ? 'Лозинките не се совпаѓаат' : null,
                       onChanged: (val) {
                         setState(() => confirmPassword = val);
                       },
                     ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          _attemptSignUp();
+                        }
+                      },
+                      child: Text(
+                        "Регистрирај се",
+                        style: TextStyle(
+                          fontSize: 18, // Scalable font size
+                          color: Colors.white,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: Color(0xFF123499),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      height: 45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                          color: Color(0xFF123499),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 1,
+                            offset: const Offset(0, 1), // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginPage(),
+                            ),
+                          );
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            const Text("Имате корисничка сметка?"),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginPage(),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                "Логирај се",
+                                style: TextStyle(color: Color(0xFF123499)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
-                Container(
-                  padding: const EdgeInsets.only(top: 3, left: 3),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        _attemptSignUp();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      backgroundColor: Colors.purple,
-                    ),
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: 45,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    border: Border.all(
-                      color: Colors.purple,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.white.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 1,
-                        offset:
-                            const Offset(0, 1), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const LoginPage(),
-                        ),
-                      );
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        const Text("Already have an account?"),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Login",
-                            style: TextStyle(color: Colors.purple),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -232,45 +232,45 @@ class _SignUpState extends State<SignupPage> {
   String? validateEmail(String? value) {
     const emailPattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
     if (value == null || value.isEmpty) {
-      return 'Enter an email';
+      return 'Внесете е-пошта';
     }
     if (!RegExp(emailPattern).hasMatch(value)) {
-      return 'Enter a valid email';
+      return 'Внесете валидна е-пошта';
     }
     return null;
   }
 
   String? validateUsername(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Enter a username';
+      return 'Внесете корисничко име';
     }
     if (value.length < 3) {
-      return 'Username must be at least 3 characters long';
+      return 'Корисничкото име мора да е барем 3 карактери';
     }
     if (!RegExp(r'^[a-zA-Z0-9]+$').hasMatch(value)) {
-      return 'Username must not contain special characters';
+      return 'Корисчничкото име не може да содржи специјални знаци';
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Enter a password';
+      return 'Внесете лозинка';
     }
     if (value.length < 6) {
-      return 'Password must be at least 6 characters long';
+      return 'Лозинката мора да е барем 6 карактери';
     }
     if (!RegExp(r'(?=.*?[A-Z])').hasMatch(value)) {
-      return 'Password must contain at least one uppercase letter';
+      return 'Лозинката мора да содржи барем една голема буква';
     }
     if (!RegExp(r'(?=.*?[a-z])').hasMatch(value)) {
-      return 'Password must contain at least one lowercase letter';
+      return 'Лозинката мора да содржи барем една мала буква';
     }
     if (!RegExp(r'(?=.*?[0-9])').hasMatch(value)) {
-      return 'Password must contain at least one digit';
+      return 'Лозинката мора да содржи барем една бројка';
     }
     if (!RegExp(r'(?=.*?[!@#\$&*~])').hasMatch(value)) {
-      return 'Password must contain at least one special character';
+      return 'Лозинката мора да содржи барем еден специјален знак';
     }
     return null;
   }

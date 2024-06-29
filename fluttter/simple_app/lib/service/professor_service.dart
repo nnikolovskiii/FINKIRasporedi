@@ -1,13 +1,14 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import '../domain/configs/app_config.dart';
 
 import '../domain/models/professor.dart';
 
 class ProfessorService {
-  static final String baseUrl = dotenv.env['API_URL'] ?? (throw Exception('API_URL environment variable not found'));
-
+  static final String baseUrl = AppConfig.apiUrl;
   Future<List<Professor>> getProfessorsWithPagination(
       {int page = 1, int size = 5}) async {
     final response = await http.get(

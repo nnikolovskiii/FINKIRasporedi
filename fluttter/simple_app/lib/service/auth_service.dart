@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simple_app/domain/models/login_request_model.dart';
 import 'package:simple_app/domain/models/register_request_model.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import '../domain/configs/app_config.dart';
 import '../domain/models/login_response_model.dart';
 
 class AuthService {
-  static final String baseUrl = dotenv.env['API_URL'] ?? (throw Exception('API_URL environment variable not found'));
+  static final String baseUrl = AppConfig.apiUrl;
 
   static Future<bool> login(LoginRequestModel model) async {
     final response = await http.post(Uri.parse('$baseUrl/auth/login'),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:simple_app/domain/models/login_request_model.dart';
 import 'package:simple_app/presentation/screens/auth/signup.dart';
+import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:simple_app/presentation/screens/schedules_screen.dart';
 import 'package:simple_app/service/auth_service.dart';
 
@@ -47,26 +48,34 @@ class _LoginPageState extends State<LoginPage> {
     return const Column(
       children: [
         Text(
-          "Welcome Back",
+          "Добредојдовте",
           style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
         ),
-        Text("Enter your credential to login"),
+        Text("Внесете ги вашите податоци за да се логирате "),
       ],
     );
   }
 
   Column _inputField(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
+      crossAxisAlignment: CrossAxisAlignment.center ,
       children: [
         TextFormField(
-          decoration: const InputDecoration(
-            hintText: "Username",
-            prefixIcon: Icon(Icons.person),
+          decoration: InputDecoration(
+            hintText: "Корисничко име",
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
+            fillColor: Color(0xFF123499).withOpacity(0.1),
+            filled: true,
+            prefixIcon: const Icon(Icons.person),
           ),
+          // fillColor:Color(0xFF123499).withOpacity(0.1),
+          // filled: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your username';
+              return 'Ве молиме внесете го вашето корисничко име';
             }
             return null;
           },
@@ -74,13 +83,19 @@ class _LoginPageState extends State<LoginPage> {
             setState(() => username = val);
           },
         ),
-        const SizedBox(height: 5),
+        // const SizedBox(height: 5),
         if (error.isNotEmpty) _showErrorMessage(),
         const SizedBox(height: 10),
         TextFormField(
           decoration: InputDecoration(
-            hintText: "Password",
+            hintText: "Лозинка",
             prefixIcon: const Icon(Icons.lock),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
+            fillColor:Color(0xFF123499).withOpacity(0.1),
+            filled: true,
             suffixIcon: IconButton(
               onPressed: () {
                 setState(() {
@@ -95,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
           obscureText: hidePassword,
           validator: (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter your password';
+              return 'Ве молиме внесете ја вашата лозинка';
             }
             return null;
           },
@@ -133,23 +148,23 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SchedulesScreen(initialIndex: 1,),
+                  builder: (context) => SchedulesScreen(initialIndex: 0,),
                 ),
               );
             } else {
               setState(() {
-                error = 'Invalid username or password';
+                error = 'Невалидно корисничко име или лозинка';
               });
             }
           } catch (e) {
             setState(() {
               isApiCallProcess = false;
-              error = 'Failed to login: $e';
+              error = 'Неуспешно логирање: $e';
             });
           }
         }
       },
-      child: const Text("Login"),
+      child: const Text("Логирај се"),
     );
   }
 
@@ -157,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Don't have an account? "),
+        const Text("Немате корисничка сметка? "),
         TextButton(
           onPressed: () {
             Navigator.pushReplacement(
@@ -168,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
             );
           },
           child: const Text(
-            "Sign Up",
+            "Регистрирај се",
             style: TextStyle(color: Colors.blue),
           ),
         ),

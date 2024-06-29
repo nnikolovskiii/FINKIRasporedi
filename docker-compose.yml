@@ -36,12 +36,11 @@ services:
     build:
       context: ./fluttter/simple_app
       dockerfile: Dockerfile
+      args:
+        - API_URL=http://localhost:7069/api
     environment:
-      - API_URL=http://backend:7069/api
+      - API_URL=${API_URL}
     depends_on:
       - backend
     ports:
       - "8080:8080"
-
-    
-

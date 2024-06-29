@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:simple_app/service/auth_service.dart';
+import '../../domain/providers/schedule_provider.dart';
 import 'auth/login.dart';
 import 'add/add_schedule_screen.dart';
 
@@ -25,11 +27,14 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   void _onToggle(int index) {
     setState(() {
       _selectedIndex = index;
+      Provider.of<ScheduleProvider>(context, listen: false).setIsDefault(index == 0);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -118,10 +123,10 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
               ],
             ),
           ),
-          Expanded(child: ScheduleListScreen(defaultValue: _selectedIndex == 0)),
+          Expanded(child: ScheduleListScreen()),
         ],
       ),
-      floatingActionButton: _selectedIndex == 1
+      floatingActionButton: !isDefault
           ? FloatingActionButton(
         onPressed: () async {
           await Navigator.push(

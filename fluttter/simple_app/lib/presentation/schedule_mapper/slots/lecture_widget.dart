@@ -1,14 +1,14 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 import 'package:simple_app/presentation/screens/add/add_lecture_slot_screen.dart';
 import 'package:simple_app/service/lecture_slot_service.dart';
 
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
+import '../../../domain/providers/schedule_provider.dart';
 import '../../../service/schedule_service.dart';
 import '../../screens/calendar_screen.dart';
-
 
 class LectureWidget extends StatelessWidget {
   int num;
@@ -22,7 +22,7 @@ class LectureWidget extends StatelessWidget {
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
     for (double i = 0; i < interval; i++) {
-      emptyWidgets.add(TransparentTimeSlotWidget(num: num,));
+      emptyWidgets.add(TransparentTimeSlotWidget(num: num));
     }
 
     return emptyWidgets;
@@ -33,12 +33,14 @@ class LectureWidget extends StatelessWidget {
   LectureWidget({
     super.key,
     required this.lecture,
-    required this.segmented, required this.schedule, this.num = 6,
+    required this.segmented,
+    required this.schedule,
+    this.num = 6,
   });
 
   double getHeight(LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return 50 * interval + 8*(interval-1);
+    return 50 * interval + 8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -53,14 +55,16 @@ class LectureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
     return GestureDetector(
-          onLongPress: () {
+      onLongPress: isDefault
+          ? null
+          : () {
         // Show a dialog or perform any action for deleting the lecture
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-
             title: Text(lecture.name ?? lecture.lecture!.course.subject.name),
             content: const Text('What actions do you want to perform?'),
             actions: [
@@ -70,8 +74,7 @@ class LectureWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          CalendarScreen(schedule.id ?? 0),
+                      builder: (context) => CalendarScreen(schedule.id ?? 0),
                     ),
                   ); // Close the dialog
                 },
@@ -82,26 +85,25 @@ class LectureWidget extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          FieldScreen(schedule: schedule, lectureSlot: lecture),
+                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
                     ),
                   ); // Close the dialog
                 },
                 child: const Text('Update'),
               ),
-              TextButton(
-                onPressed: () async {
-                  await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          CalendarScreen(schedule.id ?? 0),
-                    ),
-                  ); // Close the dialog
-                },
-                child: const Text('Reset'),
-              ),
+              if (lecture.lecture != null)
+                TextButton(
+                  onPressed: () async {
+                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CalendarScreen(schedule.id ?? 0),
+                      ),
+                    ); // Close the dialog
+                  },
+                  child: const Text('Reset'),
+                ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the dialog
@@ -126,7 +128,7 @@ class LectureWidget extends StatelessWidget {
             ),
             child: Container(
               height: getHeight(lecture),
-              width:  (width-90)/num,
+              width: (width - 90) / num,
               decoration: BoxDecoration(
                 color: hexToColor(lecture.hexColor ?? "#888888"),
                 borderRadius: BorderRadius.circular(10.0),
@@ -135,8 +137,7 @@ class LectureWidget extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildConditionalWidget()
-                  ,
+                  children: _buildConditionalWidget(),
                 ),
               ),
             ),
@@ -154,7 +155,7 @@ class LectureWidget extends StatelessWidget {
               ),
             ),
         ],
-      )
+      ),
     );
   }
 
@@ -200,8 +201,6 @@ class LectureWidget extends StatelessWidget {
     return widgets;
   }
 
-
-
   Color hexToColor(String hexColor) {
     // Remove the # character if present
     if (hexColor.startsWith('#')) {
@@ -212,5 +211,4 @@ class LectureWidget extends StatelessWidget {
     // Create a color object from the hex value
     return Color(hexValue).withOpacity(1.0);
   }
-
 }

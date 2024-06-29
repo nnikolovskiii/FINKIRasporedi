@@ -45,8 +45,15 @@ COPY . .
 # Step 11: Get Flutter dependencies
 RUN flutter pub get
 
-# Step 12: Expose port 8080
+# Step 12: Build argument and environment variable for API URL
+ARG API_URL
+ENV API_URL=${API_URL}
+
+# Step 13: Replace config.json with build-time API_URL
+RUN sed -i "s|default_value|${API_URL}|g" config.json
+
+# Step 14: Expose port 8080
 EXPOSE 8080
 
-# Step 13: Entry point
+# Step 15: Entry point
 CMD ["flutter", "run", "--release", "-d", "web-server", "--web-port", "8080", "--web-hostname", "0.0.0.0"]

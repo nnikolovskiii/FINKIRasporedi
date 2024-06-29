@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import '../../../domain/providers/schedule_provider.dart';
 import '../auth/login.dart';
 import '../calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
 
-// Schedule List Screen
 class ScheduleListScreen extends StatefulWidget {
-  final bool defaultValue;
-
-  const ScheduleListScreen({Key? key, required this.defaultValue}) : super(key: key);
+  const ScheduleListScreen({Key? key}) : super(key: key);
 
   @override
   _ScheduleListScreenState createState() => _ScheduleListScreenState();
@@ -27,15 +26,12 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   @override
   void didUpdateWidget(ScheduleListScreen oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.defaultValue != oldWidget.defaultValue) {
-      setState(() {
-        futureSchedules = fetchSchedules();
-      });
-    }
+    futureSchedules = fetchSchedules();
   }
 
   Future<List<Schedule>> fetchSchedules() async {
-    if (widget.defaultValue) {
+    final isDefault = Provider.of<ScheduleProvider>(context, listen: false).isDefault;
+    if (isDefault) {
       return await ScheduleService().getDefaultSchedulesWithPagination();
     } else {
       try {
@@ -109,7 +105,6 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   }
 }
 
-// Schedule Item Widget
 class ScheduleItem extends StatelessWidget {
   final Schedule schedule;
   final String theme;

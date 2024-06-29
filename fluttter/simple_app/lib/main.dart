@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:simple_app/presentation/screens/auth/login.dart';
 import 'package:simple_app/presentation/screens/schedules_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+
+import 'domain/configs/app_config.dart';
+import 'domain/providers/schedule_provider.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
+  await AppConfig.forEnvironment();
+
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ScheduleProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
