@@ -11,18 +11,17 @@ import 'slots/lecture_widget.dart';
 class ColumnScheduleWidget extends StatelessWidget {
   final int day;
   final List<LectureSlot> lectures;
-  final bool segmented;
+  final bool allDays;
   final Schedule schedule;
   bool dayBool;
-  int num;
 
   ColumnScheduleWidget({
     super.key,
     required this.lectures,
     required this.day,
-    required this.segmented,
+    required this.allDays,
     required this.schedule,
-    this.dayBool = true,  this.num = 6,
+    this.dayBool = true
   });
 
   defineColumn() {
@@ -31,28 +30,25 @@ class ColumnScheduleWidget extends StatelessWidget {
     int j = 0;
     if (dayBool) {
       lectureWidgets.add(DayWidget(
-        num: num,
-        day: day,
+        day: day, allDays: allDays,
       ));
     }
-    lectureWidgets.add(HorizontalDividerWidget(hasColor: true,num: num));
+    lectureWidgets.add(HorizontalDividerWidget(hasColor: true, allDays: allDays, time: false,));
     for (int i = 8; i < 20; i++) {
       if (j < lectures.length && i == lectures[j].timeFrom) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
-          segmented: segmented, schedule: schedule,
-            num: num
+          allDays: allDays, schedule: schedule,
         ));
 
         int interval = lectures[j].timeTo - lectures[j].timeFrom;
         i = i + (interval) - 1;
         j++;
       } else {
-        lectureWidgets.add(EmptyTimeSlotWidget(segmented: segmented, num: num));
+        lectureWidgets.add(EmptyTimeSlotWidget(allDays: allDays));
       }
-      if (i != 19) {
-        lectureWidgets.add(HorizontalDividerWidget(hasColor: true,num: num));
-      }
+
+      lectureWidgets.add(HorizontalDividerWidget(hasColor: true, allDays: allDays, time: false,));
     }
     return lectureWidgets;
   }

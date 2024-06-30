@@ -12,7 +12,7 @@ class VerticalDividerWidget extends StatelessWidget {
 
     child:Container(
       width: 2.0, // Adjust the width as needed
-      height: 52*numCells+6*numCells, // Set height to fill available vertical space
+      height: 52.2*numCells+6*numCells, // Set height to fill available vertical space
       color: color, // Set the color of the vertical line
     ));
   }

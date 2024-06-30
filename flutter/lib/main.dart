@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/domain/configs/calendar_config.dart';
 import 'package:flutter_app/presentation/screens/auth/login.dart';
 import 'package:flutter_app/presentation/screens/schedules_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,6 +12,7 @@ import 'domain/providers/schedule_provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AppConfig.forEnvironment();
+  await CalendarConfig.forCalendar();
 
   runApp(
     ChangeNotifierProvider(

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 
-class EmptyTimeSlotWidget extends StatelessWidget {
-  final bool segmented;
-  int num;
+import '../../../domain/configs/calendar_config.dart';
 
-  EmptyTimeSlotWidget({super.key, required this.segmented, this.num = 6});
+class EmptyTimeSlotWidget extends StatelessWidget {
+  final bool allDays;
+
+  EmptyTimeSlotWidget({super.key, required this.allDays});
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +16,10 @@ class EmptyTimeSlotWidget extends StatelessWidget {
       children: [
         SizedBox(
           height: 50,
-          width:  (width-90)/num,
-
+          width: allDays
+              ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
+              : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
         ),
-        if (segmented) // Only include TransparentTimeSlotWidget if segmented is true
-           Positioned(
-            top: 0,
-            left: 0,
-            child: TransparentTimeSlotWidget(num: num,),
-          ),
       ],
     );
   }
