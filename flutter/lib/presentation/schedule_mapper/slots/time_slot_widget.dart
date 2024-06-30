@@ -1,76 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
-import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
+
+import '../../../domain/configs/calendar_config.dart';
 
 class TimeSlotWidget extends StatelessWidget {
-  final int startTimeHour;
-  final int endTimeHour;
-  final int intervalMinutes;
-  int num;
-  bool dayBool;
+  final String time;
+  final bool allDays;
 
   TimeSlotWidget({
     Key? key,
-    required this.startTimeHour,
-    required this.endTimeHour,
-    this.intervalMinutes = 45,
-    this.dayBool = true, this.num = 6
+    required this.time,
+    required this.allDays,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
-    List<Widget> timeSlots = generateTimeSlots(width);
-
-    return Center(
-      child: Container(
-        child: Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...timeSlots
-            ]),
+    return Container(
+      height: 50,
+      width: allDays
+          ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.timeNumAllDays
+          : (width - CalendarConfig.offsetOneDay) * CalendarConfig.timeNumOneDay,
+      alignment: Alignment.center,
+      child: Text(
+        time,
+        style: const TextStyle(
+          fontWeight: FontWeight.normal,
+        ),
       ),
     );
-  }
-
-  List<Widget> generateTimeSlots(double width) {
-    List<String> timeSlots = [];
-    List<Widget> widgets = [];
-    if(dayBool){
-      widgets.add(TransparentTimeSlotWidget(num: num,));
-    }
-
-    for (int i = startTimeHour; i < endTimeHour; i++) {
-      String startHour = i.toString().padLeft(2, '0');
-      String startMinute = '00';
-      int endHour = i + 1;
-      String endMinute = '00';
-
-      String timeSlot =
-          '$startHour:$startMinute - ${endHour.toString().padLeft(2, '0')}:$endMinute';
-      timeSlots.add(timeSlot);
-    }
-
-    widgets.add(HorizontalDividerWidget(hasColor: true, num: num));
-    for (int i = 0; i < timeSlots.length; i++){
-      widgets.add(Container(
-        height: 50,
-        width:  (width-90)/num,
-        alignment: Alignment.center,
-        child: Text(
-          timeSlots[i],
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ));
-      if (i != timeSlots.length -1) {
-        widgets.add(HorizontalDividerWidget(hasColor: true, num:num));
-      }
-    }
-
-      return widgets;
   }
 }

@@ -5,24 +5,22 @@ import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_
 import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 import '../schedule_mapper/column_schedule_widget.dart';
-import '../schedule_mapper/slots/time_slot_widget.dart';
+import '../schedule_mapper/time_column_widget.dart';
 import '../schedule_mapper/slots/vertical_divider_widget.dart';
 
-class HorizontalSwipeScreen extends StatefulWidget {
+class CalendarContentScreen extends StatefulWidget {
   final Schedule schedule;
-  final bool segmented;
 
-  const HorizontalSwipeScreen({
+  const CalendarContentScreen({
     Key? key,
     required this.schedule,
-    required this.segmented,
   }) : super(key: key);
 
   @override
   _HorizontalSwipeScreenState createState() => _HorizontalSwipeScreenState();
 }
 
-class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
+class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
   late final PageController controller;
   double currentPage = 0;
   int num = 5; // Set default value for num
@@ -162,11 +160,11 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TimeSlotWidget(
+                  TimeColumnWidget(
                     startTimeHour: 8,
                     endTimeHour: 20,
-                    dayBool: false,
-                    num: num + 1,
+                    dayBool: false, 
+                    allDays: showAllDays,
                   ),
                   VerticalDividerWidget(
                     numCells: 12,
@@ -190,10 +188,8 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
       widgets.add(ColumnScheduleWidget(
         lectures: list[i],
         day: i,
-        segmented: false,
         schedule: widget.schedule,
-        dayBool: false,
-        num: num + 1,
+        dayBool: false, allDays: showAllDays,
       ));
       if (i < toIndex - 1) {
         widgets.add(VerticalDividerWidget(
@@ -207,13 +203,13 @@ class _HorizontalSwipeScreenState extends State<HorizontalSwipeScreen> {
 
   List<Widget> getDaysLabels(int fromIndex, int toIndex) {
     List<Widget> widgets = [];
-    widgets.add(TransparentTimeSlotWidget(num: num + 1));
+    widgets.add(TransparentTimeSlotWidget(allDays: showAllDays,));
     widgets.add(const VerticalDividerWidget(
       numCells: 1,
       color: Colors.transparent,
     ));
     for (int i = fromIndex; i < 5 && i < toIndex; i++) {
-      widgets.add(DayWidget(day: i, num: num + 1));
+      widgets.add(DayWidget(day: i, allDays: showAllDays,));
       if (i < toIndex - 1) {
         widgets.add(const VerticalDividerWidget(
           numCells: 1,

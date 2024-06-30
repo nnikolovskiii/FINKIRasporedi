@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/domain/configs/calendar_config.dart';
 
 class DayWidget extends StatelessWidget {
+  final bool allDays;
   final int day;
-  final int num;
+
   static const Map<int, String> fullDaysMap = {
     0: "Понделник",
     1: "Вторник",
@@ -19,12 +21,14 @@ class DayWidget extends StatelessWidget {
     4: "Пет"
   };
 
-  const DayWidget({super.key, required this.day, this.num = 6});
+  const DayWidget({super.key, required this.day, required this.allDays});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    double itemWidth = (width - 90) / num;
+    double itemWidth = allDays
+        ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
+        : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay;
 
     bool useShortNames = itemWidth < 60;
     String dayName = useShortNames ? shortDaysMap[day]! : fullDaysMap[day]!;

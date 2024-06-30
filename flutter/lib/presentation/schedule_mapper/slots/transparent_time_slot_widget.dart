@@ -1,33 +1,25 @@
 import 'package:flutter/material.dart';
 
-class TransparentTimeSlotWidget extends StatefulWidget {
-  int num;
-  TransparentTimeSlotWidget({Key? key, this.num = 6}) : super(key: key);
+import '../../../domain/configs/calendar_config.dart';
 
-  @override
-  _TransparentTimeSlotWidgetState createState() =>
-      _TransparentTimeSlotWidgetState();
-}
 
-class _TransparentTimeSlotWidgetState extends State<TransparentTimeSlotWidget> {
-  bool isHovered = false;
+class TransparentTimeSlotWidget extends StatelessWidget {
+  bool allDays;
+
+  TransparentTimeSlotWidget({
+    Key? key,
+    required this.allDays
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return MouseRegion(
-      onEnter: (event) {
-        setState(() => isHovered = true);
-        // Get the position and print it
-        final RenderBox renderBox = context.findRenderObject() as RenderBox;
-        final offset = renderBox.localToGlobal(Offset.zero);
-        print("Widget position: $offset");
-      },
-      onExit: (_) => setState(() => isHovered = false),
-      child: SizedBox(
-        height: 50,
-        width:  (width-90)/widget.num,
-      ),
+    return Container(
+      height: 50,
+      width:  allDays
+          ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.timeNumAllDays
+          : (width - CalendarConfig.offsetOneDay) * CalendarConfig.timeNumOneDay,
+      alignment: Alignment.center,
     );
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_
 import 'package:flutter_app/presentation/screens/add/add_lecture_slot_screen.dart';
 import 'package:flutter_app/service/lecture_slot_service.dart';
 
+import '../../../domain/configs/calendar_config.dart';
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
@@ -11,32 +12,29 @@ import '../../../service/schedule_service.dart';
 import '../../screens/calendar_screen.dart';
 
 class LectureWidget extends StatelessWidget {
-  int num;
   final ScheduleService scheduleService = ScheduleService();
   final LectureSlotService lectureSlotService = LectureSlotService();
   final Schedule schedule;
-  final bool segmented;
+  final bool allDays;
+  final LectureSlot lecture;
+
+  LectureWidget({
+    super.key,
+    required this.lecture,
+    required this.allDays,
+    required this.schedule,
+  });
 
   List<TransparentTimeSlotWidget> getEmptyTimeSlots(LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
     for (double i = 0; i < interval; i++) {
-      emptyWidgets.add(TransparentTimeSlotWidget(num: num));
+      emptyWidgets.add(TransparentTimeSlotWidget(allDays: allDays,));
     }
 
     return emptyWidgets;
   }
-
-  final LectureSlot lecture;
-
-  LectureWidget({
-    super.key,
-    required this.lecture,
-    required this.segmented,
-    required this.schedule,
-    this.num = 6,
-  });
 
   double getHeight(LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
@@ -117,18 +115,11 @@ class LectureWidget extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              // border: Border(
-              //   top: BorderSide(
-              //     color: Colors.grey,
-              //     width: 2.0,
-              //   ),
-              //
-              // ),
-            ),
             child: Container(
               height: getHeight(lecture),
-              width: (width - 90) / num,
+              width: allDays
+                  ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
+                  : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
               decoration: BoxDecoration(
                 color: hexToColor(lecture.hexColor ?? "#888888"),
                 borderRadius: BorderRadius.circular(10.0),
@@ -142,18 +133,6 @@ class LectureWidget extends StatelessWidget {
               ),
             ),
           ),
-          if (segmented)
-            Positioned(
-              top: 0,
-              left: 0,
-              child: Flex(
-                direction: Axis.vertical,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...getEmptyTimeSlots(lecture),
-                ],
-              ),
-            ),
         ],
       ),
     );
