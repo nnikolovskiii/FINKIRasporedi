@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/screens/auth/login.dart';
-import 'package:simple_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/presentation/screens/auth/login.dart';
+import 'package:flutter_app/presentation/screens/schedules_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 

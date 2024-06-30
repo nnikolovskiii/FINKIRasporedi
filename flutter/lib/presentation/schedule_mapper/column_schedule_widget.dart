@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/empty_time_slot_widget.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/empty_time_slot_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
 
 import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';

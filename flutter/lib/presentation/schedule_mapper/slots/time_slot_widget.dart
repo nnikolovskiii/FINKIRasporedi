@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/horizontal_divider_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 
 class TimeSlotWidget extends StatelessWidget {
   final int startTimeHour;

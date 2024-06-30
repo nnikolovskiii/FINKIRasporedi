@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/screens/list/professor_list_screen.dart';
-import 'package:simple_app/service/course_service.dart';
-import 'package:simple_app/domain/models/course.dart';
+import 'package:flutter_app/presentation/screens/list/professor_list_screen.dart';
+import 'package:flutter_app/service/course_service.dart';
+import 'package:flutter_app/domain/models/course.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/models/schedule.dart';
 import '../../widgets/search_bar_widget.dart';

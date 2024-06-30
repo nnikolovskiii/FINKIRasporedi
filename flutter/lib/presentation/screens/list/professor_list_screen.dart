@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/domain/models/professor.dart';
-import 'package:simple_app/domain/models/schedule.dart';
-import 'package:simple_app/service/professor_service.dart';
-import 'package:simple_app/service/course_service.dart';
+import 'package:flutter_app/domain/models/professor.dart';
+import 'package:flutter_app/domain/models/schedule.dart';
+import 'package:flutter_app/service/professor_service.dart';
+import 'package:flutter_app/service/course_service.dart';
 
 import '../../widgets/search_bar_widget.dart';
 import 'lecture_list_screen.dart';

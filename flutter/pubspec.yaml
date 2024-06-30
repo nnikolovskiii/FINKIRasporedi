@@ -1,4 +1,4 @@
-name: flutter
+name: flutter_app
 description: Frontend for the service Finki Schedules.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -46,7 +46,6 @@ dependencies:
   toggle_switch: ^2.3.0
   flutter_dotenv: ^5.0.2
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -65,8 +64,6 @@ dev_dependencies:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
-
 
 # The following section is specific to Flutter packages.
 flutter:

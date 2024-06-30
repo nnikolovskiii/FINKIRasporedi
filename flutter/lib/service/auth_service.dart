@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simple_app/domain/models/login_request_model.dart';
-import 'package:simple_app/domain/models/register_request_model.dart';
+import 'package:flutter_app/domain/models/login_request_model.dart';
+import 'package:flutter_app/domain/models/register_request_model.dart';
 
 import '../domain/configs/app_config.dart';
 import '../domain/models/login_response_model.dart';

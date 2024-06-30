@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/time_slot_widget.dart';
-import 'package:simple_app/presentation/schedule_mapper/slots/vertical_divider_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/time_slot_widget.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/vertical_divider_widget.dart';
 
 import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';

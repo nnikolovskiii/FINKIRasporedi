@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_app/domain/models/lecture.dart';
-import 'package:simple_app/service/lecture_service.dart';
+import 'package:flutter_app/domain/models/lecture.dart';
+import 'package:flutter_app/service/lecture_service.dart';
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../service/schedule_service.dart';

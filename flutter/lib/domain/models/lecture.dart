@@ -1,6 +1,6 @@
-import 'package:simple_app/domain/models/course.dart';
-import 'package:simple_app/domain/models/professor.dart';
-import 'package:simple_app/domain/models/room.dart';
+import 'package:flutter_app/domain/models/course.dart';
+import 'package:flutter_app/domain/models/professor.dart';
+import 'package:flutter_app/domain/models/room.dart';
 
 
 class Lecture {

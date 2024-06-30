@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:simple_app/domain/models/lecture_slots.dart';
+import 'package:flutter_app/domain/models/lecture_slots.dart';
 
 import '../../domain/models/schedule.dart';
 import '../../service/lecture_slot_service.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:simple_app/domain/models/schedule.dart';
-import 'package:simple_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/domain/models/schedule.dart';
+import 'package:flutter_app/presentation/screens/schedules_screen.dart';
 
 import '../../../service/schedule_service.dart';
 

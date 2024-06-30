@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_app/presentation/screens/schedules_screen.dart';
-import 'package:simple_app/presentation/screens/horizontal_swipe_screen.dart';
-import 'package:simple_app/presentation/theme/app_theme.dart';
-import 'package:simple_app/service/schedule_service.dart';
+import 'package:flutter_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/presentation/screens/horizontal_swipe_screen.dart';
+import 'package:flutter_app/presentation/theme/app_theme.dart';
+import 'package:flutter_app/service/schedule_service.dart';
 
 import '../../domain/models/schedule.dart';
 import '../../domain/providers/schedule_provider.dart';
