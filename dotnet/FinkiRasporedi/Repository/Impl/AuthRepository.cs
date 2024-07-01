@@ -33,6 +33,17 @@ namespace FinkiRasporedi.Repository.Impl
 
         public async Task<Student> RegisterAsync(StudentRegistrationModel registrationModel)
         {
+            var existingUser = await _userManager.FindByNameAsync(registrationModel.Username);
+            if (existingUser != null)
+            {
+                throw new ArgumentException("Регистрацијата е неуспешна. Постои корисник со тоа кориснисчо име.");
+
+            }
+
+            if (registrationModel.Password.Length < 5)
+            {
+                throw new ArgumentException("Регистрацијата е неуспешна. Лозинката мора да има барем 5 карактери.");
+            }
             var student = new Student { UserName = registrationModel.Username, Email = registrationModel.Email };
             var result = await _userManager.CreateAsync(student, registrationModel.Password);
             if (result.Succeeded)
@@ -41,7 +52,7 @@ namespace FinkiRasporedi.Repository.Impl
             }
             else
             {
-                throw new Exception("Failed to register student.");
+                throw new Exception("Регистрацијата е неуспешна.");
             }
         }
 
