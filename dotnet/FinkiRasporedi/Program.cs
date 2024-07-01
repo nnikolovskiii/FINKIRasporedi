@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -87,10 +88,28 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddSwaggerGen(c =>
+c.SwaggerDoc("v1", new OpenApiInfo
+{
+    Title = "rasporedi.finki API",
+    Version = "v1",
+    Description = "Team project",
+    Contact = new OpenApiContact
+    {
+        Name = "Example Contact",
+        Email = "example@example.com",
+        Url = new Uri("https://example.com/contact")
+    }
+}));
+
 
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
-
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+});
 
 var config = app.Services.GetService<IConfiguration>();
 
