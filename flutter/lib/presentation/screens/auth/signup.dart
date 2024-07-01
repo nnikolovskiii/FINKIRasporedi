@@ -26,13 +26,27 @@ class _SignUpState extends State<SignupPage> {
     var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Најавување"),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LoginPage(),
+              ),
+            );
+          },
+        ),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                maxWidth: 500, // Max width for larger screens
+                maxWidth: 600, // Max width for larger screens
               ),
               child: Form(
                 key: _formKey, // Assigning the form key
@@ -40,12 +54,12 @@ class _SignUpState extends State<SignupPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    const SizedBox(height: 60.0),
-                    Text(
+                    const SizedBox(height: 20.0),
+                    const Text(
                       "Регистрирај се",
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 24, // Scalable font size
+                        fontSize: 40, // Scalable font size
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -68,7 +82,7 @@ class _SignUpState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Color(0xFF123499).withOpacity(0.1),
+                        fillColor: const Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.person),
                       ),
@@ -85,7 +99,7 @@ class _SignUpState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Color(0xFF123499).withOpacity(0.1),
+                        fillColor: const Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.email),
                       ),
@@ -102,7 +116,7 @@ class _SignUpState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Color(0xFF123499).withOpacity(0.1),
+                        fillColor: const Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
@@ -130,7 +144,7 @@ class _SignUpState extends State<SignupPage> {
                           borderRadius: BorderRadius.circular(18),
                           borderSide: BorderSide.none,
                         ),
-                        fillColor: Color(0xFF123499).withOpacity(0.1),
+                        fillColor: const Color(0xFF123499).withOpacity(0.1),
                         filled: true,
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
@@ -155,7 +169,7 @@ class _SignUpState extends State<SignupPage> {
                     if (error.isNotEmpty)
                       Text(
                         error,
-                        style: TextStyle(color: Colors.red, fontSize: 14),
+                        style: const TextStyle(color: Colors.red, fontSize: 14),
                       ),
                     const SizedBox(height: 20),
                     ElevatedButton(
@@ -164,7 +178,7 @@ class _SignUpState extends State<SignupPage> {
                           _attemptSignUp();
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "Регистрирај се",
                         style: TextStyle(
                           fontSize: 18, // Scalable font size
@@ -174,56 +188,29 @@ class _SignUpState extends State<SignupPage> {
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
                         padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: Color(0xFF123499),
+                        backgroundColor: const Color(0xFF123499),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Container(
-                      height: 45,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(
-                          color: Color(0xFF123499),
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.5),
-                            spreadRadius: 1,
-                            blurRadius: 1,
-                            offset: const Offset(0, 1), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ),
-                          );
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            const Text("Имате корисничка сметка?"),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginPage(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                "Логирај се",
-                                style: TextStyle(color: Color(0xFF123499)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Имате корисничка сметка? "),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginPage(),
                               ),
-                            ),
-                          ],
+                            );
+                          },
+                          child: const Text(
+                            "Логирај се",
+                            style: TextStyle(color: Colors.blue),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
                 ),
@@ -268,7 +255,6 @@ class _SignUpState extends State<SignupPage> {
     }
     return null;
   }
-
 
   // Method to attempt sign-up
   void _attemptSignUp() async {

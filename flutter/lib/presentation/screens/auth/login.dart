@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/models/login_request_model.dart';
 import 'package:flutter_app/presentation/screens/auth/signup.dart';
-import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/presentation/screens/schedules_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
+import 'package:provider/provider.dart';
+
+import '../../../domain/providers/schedule_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -22,21 +24,48 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(24),
-          child: Form(
-            key: globalFormKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _header(context),
-                _inputField(context),
-                _loginButton(context),
-                _signup(context),
-              ],
+    var screenSize = MediaQuery.of(context).size;
+
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            bool isDefault = Provider.of<ScheduleProvider>(context, listen: false).isDefault;
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SchedulesScreen(initialIndex: isDefault ? 0 : 1),
+              ),
+            );
+          },
+        ),
+        title: const Text('Распореди'),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 400, // Reduced max width for better fit on smaller screens
+              ),
+              child: Form(
+                key: globalFormKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _header(context),
+                    const SizedBox(height: 20),
+                    _inputField(context),
+                    const SizedBox(height: 20),
+                    _loginButton(context),
+                    const SizedBox(height: 20),
+                    _signup(context),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -49,16 +78,16 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         Text(
           "Добредојдовте",
-          style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold), // Reduced font size
         ),
-        Text("Внесете ги вашите податоци за да се логирате "),
+        Text("Внесете ги вашите податоци за да се логирате"),
       ],
     );
   }
 
   Column _inputField(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center ,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextFormField(
           decoration: InputDecoration(
@@ -67,12 +96,10 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide.none,
             ),
-            fillColor: Color(0xFF123499).withOpacity(0.1),
+            fillColor: const Color(0xFF123499).withOpacity(0.1),
             filled: true,
             prefixIcon: const Icon(Icons.person),
           ),
-          // fillColor:Color(0xFF123499).withOpacity(0.1),
-          // filled: true,
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Ве молиме внесете го вашето корисничко име';
@@ -83,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
             setState(() => username = val);
           },
         ),
-        // const SizedBox(height: 5),
         if (error.isNotEmpty) _showErrorMessage(),
         const SizedBox(height: 10),
         TextFormField(
@@ -94,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               borderRadius: BorderRadius.circular(18),
               borderSide: BorderSide.none,
             ),
-            fillColor:Color(0xFF123499).withOpacity(0.1),
+            fillColor: const Color(0xFF123499).withOpacity(0.1),
             filled: true,
             suffixIcon: IconButton(
               onPressed: () {
@@ -148,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SchedulesScreen(initialIndex: 0,),
+                  builder: (context) => SchedulesScreen(initialIndex: 0),
                 ),
               );
             } else {
@@ -172,7 +198,9 @@ class _LoginPageState extends State<LoginPage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text("Немате корисничка сметка? "),
+        const Expanded(
+          child: Text("Немате корисничка сметка? "),
+        ),
         TextButton(
           onPressed: () {
             Navigator.pushReplacement(
