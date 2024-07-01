@@ -1,4 +1,5 @@
 using FinkiRasporedi.Models.Identity;
+using FinkiRasporedi.Models.Mailling;
 using FinkiRasporedi.Repository;
 using FinkiRasporedi.Repository.Data;
 using FinkiRasporedi.Repository.Impl;
@@ -34,6 +35,7 @@ builder.Services.AddScoped(typeof(IScheduleRepository), typeof(ScheduleRepositor
 builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
 builder.Services.AddScoped(typeof(IAuthRepository), typeof(AuthRepository));
+builder.Services.AddTransient<IMailService, MailService>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -102,7 +104,7 @@ c.SwaggerDoc("v1", new OpenApiInfo
     }
 }));
 
-
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
 app.UseSwagger();
