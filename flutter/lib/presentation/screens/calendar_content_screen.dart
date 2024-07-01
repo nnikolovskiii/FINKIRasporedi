@@ -102,7 +102,7 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
                     });
                   },
                   child: Text(
-                    showAllDays ? 'Show One Day' : 'Show All Days',
+                    showAllDays ? 'Еден ден' : 'Сите денови',
                     style: const TextStyle(color: Colors.black),
                   ),
                 ),

@@ -3,6 +3,6 @@
   "offset_all_days": 60,
   "time_ratio_all_days": 1,
   "cal_ratio_all_days": 11,
-  "time_ratio_one_day": 1,
-  "cal_ratio_one_day": 5
+  "time_ratio_one_day": 2,
+  "cal_ratio_one_day": 4
 }
