@@ -4,6 +4,7 @@ using FinkiRasporedi.Repository.Data;
 using FinkiRasporedi.Repository.Impl;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -33,6 +34,20 @@ builder.Services.AddScoped(typeof(IRoomRepository), typeof(RoomRepository));
 builder.Services.AddScoped(typeof(ILectureRepository), typeof(LectureRepository));
 builder.Services.AddScoped(typeof(IAuthRepository), typeof(AuthRepository));
 
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequiredLength = 5;
+    options.Password.RequiredUniqueChars = 0;
+
+    options.User.AllowedUserNameCharacters =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    options.Password.RequiredLength = 5;
+    options.User.RequireUniqueEmail = false;
+});
 
 builder.Services.AddAuthentication(options =>
 {
@@ -43,7 +58,7 @@ builder.Services.AddAuthentication(options =>
     var config = builder.Configuration;
     var jwtSettings = config.GetSection("JwtSettings");
     var secretKey = jwtSettings.GetValue<string>("Secret");
-    var audience = jwtSettings.GetValue<string>("Audience"); // Add this line
+    var audience = jwtSettings.GetValue<string>("Audience");
 
     options.TokenValidationParameters = new TokenValidationParameters
     {
@@ -52,7 +67,7 @@ builder.Services.AddAuthentication(options =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = audience,
-        ValidAudience = audience, // Update this line
+        ValidAudience = audience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
     };
 });
