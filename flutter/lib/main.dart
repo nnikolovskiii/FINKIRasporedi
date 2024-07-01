@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/configs/calendar_config.dart';
 import 'package:flutter_app/presentation/screens/auth/login.dart';
 import 'package:flutter_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/presentation/widgets/video_splash_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'domain/configs/app_config.dart';
 import 'domain/providers/schedule_provider.dart';
+
 
 
 void main() async {
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SchedulesScreen(),
+      home: SchedulesScreen(), // Use SplashScreen as the initial screen
       routes: {
         '/home': (context) => const SchedulesScreen(),
         '/login': (context) => const LoginPage(),

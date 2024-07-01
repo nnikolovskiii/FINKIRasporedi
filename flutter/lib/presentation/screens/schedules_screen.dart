@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/presentation/screens/prof_schedules.dart';
+import 'package:flutter_app/presentation/screens/rooms_schdules.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
 import 'auth/login.dart';
 import 'add/add_schedule_screen.dart';
+import 'list_cards.dart';  // Import CardListScreen
 
 class SchedulesScreen extends StatefulWidget {
   final int initialIndex;
@@ -34,6 +37,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
   @override
   Widget build(BuildContext context) {
     final isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+    final name = Provider.of<ScheduleProvider>(context).name;
 
     return Scaffold(
       appBar: AppBar(
@@ -118,12 +122,14 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
               color: Colors.black,
               constraints: const BoxConstraints(minHeight: 40, minWidth: 150),
               children: const [
-                Text('Finki Schedules'),
-                Text('My Schedules'),
+                Text('ФИНКИ распореди'),
+                Text('Мои распореди'),
               ],
             ),
           ),
-          Expanded(child: ScheduleListScreen()),
+          Expanded(
+            child: (_selectedIndex == 0) ? _getSelectedWidget(name) : ScheduleListScreen(),
+          ),
         ],
       ),
       floatingActionButton: !isDefault
@@ -173,5 +179,19 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
         );
       },
     );
+  }
+
+
+  Widget _getSelectedWidget(String name) {
+    switch (name) {
+      case "Смер":
+        return ScheduleListScreen();
+      case "Професор":
+        return ProfessorScreen();
+      case "Просторија":
+        return RoomScreen();
+      default:
+        return CardListWidget();
+    }
   }
 }
