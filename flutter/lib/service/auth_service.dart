@@ -27,7 +27,7 @@ class AuthService {
     }
   }
 
-  static Future<String> register(
+  static Future<bool> register(
       RegisterRequestModel model) async {
     final response = await http.post(Uri.parse('$baseUrl/auth/register'),
         headers: <String, String>{
@@ -35,7 +35,11 @@ class AuthService {
         },
         body: jsonEncode(model.toJson()));
 
-    return response.body;
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw Exception("Корисничкото име е веќе зафатено!");
+    }
   }
 
   static Future<void> logout() async {
