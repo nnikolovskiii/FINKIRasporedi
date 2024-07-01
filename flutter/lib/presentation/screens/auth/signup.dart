@@ -152,6 +152,12 @@ class _SignUpState extends State<SignupPage> {
                       },
                     ),
                     const SizedBox(height: 20),
+                    if (error.isNotEmpty)
+                      Text(
+                        error,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                      ),
+                    const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
@@ -257,23 +263,12 @@ class _SignUpState extends State<SignupPage> {
     if (value == null || value.isEmpty) {
       return 'Внесете лозинка';
     }
-    if (value.length < 6) {
-      return 'Лозинката мора да е барем 6 карактери';
-    }
-    if (!RegExp(r'(?=.*?[A-Z])').hasMatch(value)) {
-      return 'Лозинката мора да содржи барем една голема буква';
-    }
-    if (!RegExp(r'(?=.*?[a-z])').hasMatch(value)) {
-      return 'Лозинката мора да содржи барем една мала буква';
-    }
-    if (!RegExp(r'(?=.*?[0-9])').hasMatch(value)) {
-      return 'Лозинката мора да содржи барем една бројка';
-    }
-    if (!RegExp(r'(?=.*?[!@#\$&*~])').hasMatch(value)) {
-      return 'Лозинката мора да содржи барем еден специјален знак';
+    if (value.length < 5) {
+      return 'Лозинката мора да е барем 5 карактери';
     }
     return null;
   }
+
 
   // Method to attempt sign-up
   void _attemptSignUp() async {
@@ -294,7 +289,7 @@ class _SignUpState extends State<SignupPage> {
       );
     } catch (e) {
       setState(() {
-        error = 'Registration failed: $e';
+        error = 'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
       });
 
       print(e);
