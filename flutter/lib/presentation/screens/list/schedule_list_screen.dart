@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/presentation/screens/utils/not_logged_in_message_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -59,24 +60,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
           );
         } else if (snapshot.hasError) {
           if (snapshot.error.toString().contains('not_logged_in')) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text('You must be logged in to see your schedules.'),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const LoginPage()),
-                      );
-                    },
-                    child: const Text('Log In'),
-                  ),
-                ],
-              ),
-            );
+            return NotLoggedInMessageScreen();
           } else {
             return Center(
               child: Text('Error: ${snapshot.error}'),
