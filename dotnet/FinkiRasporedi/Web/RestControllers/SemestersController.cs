@@ -55,6 +55,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // POST: api/Semesters
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Semester>> PostSemester(Semester semester)
         {
             var updatedSemester = await _semesterRepository.AddAsync(semester);
