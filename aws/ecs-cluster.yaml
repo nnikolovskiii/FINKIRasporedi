@@ -1,0 +1,12 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ECSCluster:
+    Type: 'AWS::ECS::Cluster'
+    Properties:
+      ClusterName: finki-rasporedi-ecs-cluster
+
+Outputs:
+  ClusterName:
+    Description: "The name of the ECS cluster"
+    Value: !Ref ECSCluster
+
