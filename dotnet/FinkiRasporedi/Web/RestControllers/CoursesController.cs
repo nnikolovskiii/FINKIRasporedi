@@ -41,8 +41,18 @@ namespace FinkiRasporedi.Web.RestControllers
             return Ok(courses);
         }
 
+        // GET: api/Courses/AllProfessors/5
+        [HttpGet("AllProfessors/{id}")]
+        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessorsByCourse(string id)
+        {
+            var professors = await _courseRepository.GetProfessorsForCourseAsync(id);
+            return Ok(professors);
+        }
+
         // GET: api/Courses/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Course>> GetCourse(string id)
         {
             var course = await _courseRepository.GetByIdAsync(id);
@@ -50,8 +60,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Courses/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutCourse(string id, Course course)
         {
             var updatedCourse = await _courseRepository.UpdateAsync(id, course);
@@ -59,8 +70,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Courses
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Course>> PostCourse(Course course)
         {
             var updatedCourse = await _courseRepository.AddAsync(course);
@@ -69,19 +81,12 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Courses/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteCourse(string id)
         {
             await _courseRepository.DeleteAsync(id);
             return NoContent();
         }
-
-        [HttpGet("AllProfessors/{id}")]
-        public async Task<ActionResult<IEnumerable<Professor>>> GetProfessorsByCourse(string id)
-        {
-            var professors = await _courseRepository.GetProfessorsForCourseAsync(id);
-            return Ok(professors);
-        }
-
-
     }
 }
