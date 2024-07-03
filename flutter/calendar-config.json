@@ -1,6 +1,6 @@
 {
   "offset_one_day": 15,
-  "offset_all_days": 60,
+  "offset_all_days": 80,
   "time_ratio_all_days": 1,
   "cal_ratio_all_days": 11,
   "time_ratio_one_day": 2,

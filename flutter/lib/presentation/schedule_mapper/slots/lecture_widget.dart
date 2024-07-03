@@ -50,6 +50,11 @@ class LectureWidget extends StatelessWidget {
     return Color(hexValue | 0xFF000000);
   }
 
+  bool isDarkColor(Color color) {
+    double brightness = (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
+    return brightness < 128;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -57,6 +62,9 @@ class LectureWidget extends StatelessWidget {
 
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+
+    Color backgroundColor = hexToColor(lecture.hexColor ?? "#888888");
+    bool darkText = isDarkColor(backgroundColor);
 
     return GestureDetector(
       onLongPress: isDefault
@@ -75,6 +83,8 @@ class LectureWidget extends StatelessWidget {
                       lecture.name ?? lecture.lecture!.course.subject.name,
                       textScaleFactor: textScaleFactor,
                       style: Theme.of(context).textTheme.headlineMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
                   ),
                   Align(
@@ -186,10 +196,10 @@ class LectureWidget extends StatelessWidget {
                                 ),
                               ); // Close the dialog
                             },
-                              child: const Text(
-                                'Ресетирај',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            child: const Text(
+                              'Ресетирај',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
                     ],
@@ -209,14 +219,14 @@ class LectureWidget extends StatelessWidget {
                   ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
                   : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
               decoration: BoxDecoration(
-                color: hexToColor(lecture.hexColor ?? "#888888"),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildConditionalWidget(),
+                  children: _buildConditionalWidget(darkText),
                 ),
               ),
             ),
@@ -226,45 +236,70 @@ class LectureWidget extends StatelessWidget {
     );
   }
 
-
-
-  List<Widget> _buildConditionalWidget() {
+  List<Widget> _buildConditionalWidget(bool darkText) {
     List<Widget> widgets = [];
 
+    TextStyle textStyle = TextStyle(
+      color: darkText ? Colors.black : Colors.white,
+      fontFamily: 'Lato',
+      fontSize: 14,
+    );
+
     if (lecture.lecture != null) {
-      widgets.add(Text(
-        lecture.lecture!.room.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontFamily: 'Lato',
+      widgets.add(
+        Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text(
+                  lecture.lecture!.room.name,
+                  style: textStyle,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+                child: Text(
+                  lecture.lecture!.course.subject.name,
+                  style: textStyle.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text(
+                  lecture.lecture!.professor.name,
+                  style: textStyle,
+                ),
+              ),
+            ),
+          ],
         ),
-      ));
-
-      widgets.add(Text(
-        lecture.lecture!.course.subject.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Lato',
-          color: Colors.black,
-        ),
-      ));
-
-      widgets.add(Text(
-        lecture.lecture!.professor.name,
-        style: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Lato',
-        ),
-      ));
+      );
     } else {
-      widgets.add(Text(
-        lecture.name ?? "",
-        style: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Lato',
+      widgets.add(
+        Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+            child: Text(
+              lecture.name ?? "",
+              style: textStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+          ),
         ),
-      ));
+      );
     }
 
     return widgets;

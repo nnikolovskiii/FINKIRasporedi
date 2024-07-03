@@ -44,6 +44,7 @@ class _CalendarAppState extends State<CalendarScreen> {
     final isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           titleSpacing: 0, // Remove default spacing

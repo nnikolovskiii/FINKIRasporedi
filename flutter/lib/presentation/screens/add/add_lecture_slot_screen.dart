@@ -208,7 +208,10 @@ class _FieldScreenState extends State<FieldScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          String name = nameController.text;
+                          String? name = nameController.text;
+                          if (name == ""){
+                            name = null;
+                          }
                           print('Selected Day Index: $selectedDayIndex');
                           print('Time From: $selectedTimeFrom');
                           print('Time To: $selectedTimeTo');
