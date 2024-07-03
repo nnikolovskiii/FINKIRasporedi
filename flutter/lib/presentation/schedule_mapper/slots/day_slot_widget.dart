@@ -26,6 +26,7 @@ class DayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height - 176.4;
     double itemWidth = allDays
         ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
         : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay;
@@ -36,7 +37,7 @@ class DayWidget extends StatelessWidget {
     double fontSize = useShortNames ? 14 : 16;
 
     return SizedBox(
-      height: 50,
+      height: (height * 1/13) - CalendarConfig.heightOffset,
       width: itemWidth,
       child: Center(
         child: Text(

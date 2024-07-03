@@ -36,9 +36,9 @@ class LectureWidget extends StatelessWidget {
     return emptyWidgets;
   }
 
-  double getHeight(LectureSlot lecture) {
+  double getHeight(double height, LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return 50 * interval + 8 * (interval - 1);
+    return ((height * 1/13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -53,6 +53,8 @@ class LectureWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height - 176.4;
+
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
@@ -202,7 +204,7 @@ class LectureWidget extends StatelessWidget {
         children: [
           Container(
             child: Container(
-              height: getHeight(lecture),
+              height: getHeight(height, lecture),
               width: allDays
                   ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
                   : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,

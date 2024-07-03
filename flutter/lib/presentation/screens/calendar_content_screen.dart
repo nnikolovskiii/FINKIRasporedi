@@ -76,37 +76,40 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (!showAllDays)
-                  DotsIndicator(
-                    dotsCount: 5 - num + 1,
-                    position: currentPage,
-                    decorator: const DotsDecorator(
-                      color: Colors.grey,
-                      activeColor: Colors.blueAccent,
+            SizedBox(
+              height: 50, // Set the fixed height here
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  if (!showAllDays)
+                    DotsIndicator(
+                      dotsCount: 5 - num + 1,
+                      position: currentPage,
+                      decorator: const DotsDecorator(
+                        color: Colors.grey,
+                        activeColor: Colors.blueAccent,
+                      ),
+                      onTap: _onDotTapped,
                     ),
-                    onTap: _onDotTapped,
+                  const SizedBox(width: 20),
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        showAllDays = !showAllDays;
+                        num = showAllDays ? 5 : 1;
+                        if (showAllDays) {
+                          controller.jumpToPage(0);
+                          currentPage = 0;
+                        }
+                      });
+                    },
+                    child: Text(
+                      showAllDays ? 'Еден ден' : 'Сите денови',
+                      style: const TextStyle(color: Colors.black),
+                    ),
                   ),
-                const SizedBox(width: 20),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      showAllDays = !showAllDays;
-                      num = showAllDays ? 5 : 1;
-                      if (showAllDays) {
-                        controller.jumpToPage(0);
-                        currentPage = 0;
-                      }
-                    });
-                  },
-                  child: Text(
-                    showAllDays ? 'Еден ден' : 'Сите денови',
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
             Expanded(
               child: PageView(
@@ -155,24 +158,21 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
             children: getDaysLabels(i, i + num),
           ),
           Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TimeColumnWidget(
-                    startTimeHour: 8,
-                    endTimeHour: 20,
-                    dayBool: false, 
-                    allDays: showAllDays,
-                  ),
-                  VerticalDividerWidget(
-                    numCells: 12,
-                    color: Colors.grey.shade300,
-                  ),
-                  ...getDays(i, i + num, list)
-                ],
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TimeColumnWidget(
+                  startTimeHour: 8,
+                  endTimeHour: 20,
+                  dayBool: false,
+                  allDays: showAllDays,
+                ),
+                VerticalDividerWidget(
+                  numCells: 12,
+                  color: Colors.grey.shade300, edge: false,
+                ),
+                ...getDays(i, i + num, list)
+              ],
             ),
           ),
         ],
@@ -185,16 +185,19 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
   List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list) {
     List<Widget> widgets = [];
     for (int i = fromIndex; i < 5 && i < toIndex; i++) {
-      widgets.add(ColumnScheduleWidget(
-        lectures: list[i],
-        day: i,
-        schedule: widget.schedule,
-        dayBool: false, allDays: showAllDays,
+      widgets.add(Expanded(
+        child: ColumnScheduleWidget(
+          lectures: list[i],
+          day: i,
+          schedule: widget.schedule,
+          dayBool: false,
+          allDays: showAllDays,
+        ),
       ));
       if (i < toIndex - 1) {
         widgets.add(VerticalDividerWidget(
           numCells: 12,
-          color: Colors.grey.shade300,
+          color: Colors.grey.shade300, edge: false,
         ));
       }
     }
@@ -207,6 +210,7 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
     widgets.add(const VerticalDividerWidget(
       numCells: 1,
       color: Colors.transparent,
+      edge: true
     ));
     for (int i = fromIndex; i < 5 && i < toIndex; i++) {
       widgets.add(DayWidget(day: i, allDays: showAllDays,));
@@ -214,6 +218,7 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
         widgets.add(const VerticalDividerWidget(
           numCells: 1,
           color: Colors.transparent,
+            edge: true
         ));
       }
     }
