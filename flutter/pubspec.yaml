@@ -97,6 +97,7 @@ flutter:
     - resources/images/welcome2.png
     - resources/images/Innovation.gif
     - resources/images/Creativity.gif
+    - resources/images/ideas.gif
     - resources/animation.mp4
 
   # To add assets to your application, add an assets section, like this:

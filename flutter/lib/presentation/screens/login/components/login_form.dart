@@ -42,7 +42,7 @@ class LoginForm extends StatelessWidget {
                       color: Color(0xff253338)
                   ),
                 ),
-                 SizedBox(height: 5),
+                 const SizedBox(height: 5),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Determine the image width based on the screen width
@@ -59,9 +59,9 @@ class LoginForm extends StatelessWidget {
                   },
                 ),
                 const RoundedInput(icon: Icons.mail, hint: 'Username',color:  Color(0xff253338)  , textColor: Colors.white70,),
-                const RoundedPasswordInput(hint: 'Password',color: Colors.white, textColor: Color(0xff275085),),
-                SizedBox(height: 10),
-                RoundedButton(title: 'LOGIN', color:Colors.blue , textColor: Colors.white,),
+                const RoundedPasswordInput(hint: 'Password',color: Color(0xff253338), textColor: Colors.white70,),
+                const SizedBox(height: 10),
+                const RoundedButton(title: 'LOGIN', color:Color(0xFF608dc6) , textColor: Colors.white,),
                 SizedBox(height: 10),
               ],
             ),

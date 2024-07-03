@@ -49,14 +49,13 @@ class RegisterForm extends StatelessWidget {
                   const SizedBox(height: 5),
                   LayoutBuilder(
                     builder: (context, constraints) {
-                      // Determine the image width based on the screen width
                       double imageWidth = constraints.maxWidth < 600
                           ? constraints.maxWidth * 0.5 // For mobile
                           : constraints.maxWidth * 0.2; // For web
                       return SizedBox(
                         width: imageWidth,
                         child: Image.asset(
-                          'resources/images/Innovation.gif',
+                          'resources/images/ideas.gif',
                           fit: BoxFit.contain,
                         ),
                       );

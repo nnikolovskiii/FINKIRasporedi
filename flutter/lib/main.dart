@@ -36,9 +36,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(), // Use SplashScreen as the initial screen
+      home: SchedulesScreen(), // Use SplashScreen as the initial screen
       routes: {
-        '/home': (context) =>  LoginScreen(),
+        '/home': (context) =>  SchedulesScreen(),
         '/login': (context) => const LoginPage(),
       },
     );
