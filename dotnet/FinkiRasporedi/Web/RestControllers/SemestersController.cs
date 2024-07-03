@@ -17,6 +17,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Semesters
         [HttpGet]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<IEnumerable<Semester>>> GetSemesters(int page, int size)
         {
             IEnumerable<Semester> semesters;
@@ -33,6 +35,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Semesters/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Semester>> GetSemester(string id)
         {
             var semester = await _semesterRepository.GetByIdAsync(id);
@@ -40,8 +44,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Semesters/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutSemester(string id, Semester semester)
         {
             var updatedSemester = await _semesterRepository.UpdateAsync(id, semester);
@@ -49,7 +54,6 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Semesters
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Semester>> PostSemester(Semester semester)
         {
@@ -59,6 +63,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Semesters/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteSemester(string id)
         {
             await _semesterRepository.DeleteAsync(id);

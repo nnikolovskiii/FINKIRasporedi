@@ -11,11 +11,10 @@ namespace FinkiRasporedi.Web.RestControllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
-        private readonly IAuthRepository _studentRepository;
+
         public SchedulesController(
             IScheduleRepository ScheduleRepository
         )
@@ -94,6 +93,7 @@ namespace FinkiRasporedi.Web.RestControllers
             return Ok(updatedSchedule);
         }
 
+        // GET: api/Schedules/default
         [AllowAnonymous]
         [HttpGet("default")]
         public async Task<IActionResult> GetDefaultSchedules()
@@ -103,6 +103,7 @@ namespace FinkiRasporedi.Web.RestControllers
 
         }
 
+        // GET: api/Schedules/student
         [HttpGet("student")]
         public async Task<IActionResult> GetStudentSchedules()
         {
