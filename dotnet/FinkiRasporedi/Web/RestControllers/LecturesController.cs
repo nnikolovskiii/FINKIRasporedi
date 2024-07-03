@@ -38,6 +38,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Lectures/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Lecture>> GetLecture(int id)
         {
             var lecture = await _lectureRepository.GetByIdAsync(id);
@@ -45,8 +47,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Lectures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutLecture(int id, Lecture Lecture)
         {
             var updatedLecture = await _lectureRepository.UpdateAsync(id, Lecture);
@@ -54,8 +57,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Lectures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Lecture>> PostLecture(Lecture Lecture)
         {
             var updatedLecture = await _lectureRepository.AddAsync(Lecture);
@@ -64,11 +68,12 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Lectures/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteLecture(int id)
         {
             await _lectureRepository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }

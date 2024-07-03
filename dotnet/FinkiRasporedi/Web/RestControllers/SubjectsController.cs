@@ -17,6 +17,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Subjects
         [HttpGet]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<IEnumerable<Subject>>> GetSubjects(int page, int size)
         {
             IEnumerable<Subject> subjects;
@@ -33,6 +35,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Subjects/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Subject>> GetSubject(string id)
         {
             var subject = await _subjectRepository.GetByIdAsync(id);
@@ -40,8 +44,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Subjects/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutSubject(string id, Subject subject)
         {
             var updatedSubject = await _subjectRepository.UpdateAsync(id, subject);
@@ -49,8 +54,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Subjects
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Subject>> PostSubject(Subject Subject)
         {
             var updatedSubject = await _subjectRepository.AddAsync(Subject);
@@ -59,6 +65,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Subjects/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteSubjectAsync(string id)
         {
             await _subjectRepository.DeleteAsync(id);

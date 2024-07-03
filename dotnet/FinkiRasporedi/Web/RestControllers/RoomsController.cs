@@ -17,6 +17,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Rooms
         [HttpGet]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int page, int size)
         {
             IEnumerable<Room> rooms;
@@ -33,6 +35,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Rooms/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Room>> GetRoom(string id)
         {
             var room = await _roomRepository.GetByIdAsync(id);
@@ -40,8 +44,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Rooms/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutRoom(string id, Room Room)
         {
             var updatedRoom = await _roomRepository.UpdateAsync(id, Room);
@@ -49,8 +54,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Rooms
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Room>> PostRoom(Room Room)
         {
             var updatedRoom = await _roomRepository.AddAsync(Room);
@@ -59,11 +65,12 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Rooms/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteRoom(string id)
         {
             await _roomRepository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }

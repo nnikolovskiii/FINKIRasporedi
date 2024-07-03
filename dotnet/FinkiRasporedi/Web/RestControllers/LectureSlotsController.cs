@@ -15,8 +15,26 @@ namespace FinkiRasporedi.Web.RestControllers
             _lectureSlotRepository = LectureRepository;
         }
 
+        // PUT: api/Lectures/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutLecture(int id, LectureSlot Lecture)
+        {
+            var updatedLecture = await _lectureSlotRepository.UpdateAsync(id, Lecture);
+            return Ok(updatedLecture);
+        }
+
+        // PUT: api/Lectures/reset/5
+        [HttpPut("reset/{id}")]
+        public async Task<IActionResult> ResetLecture(int id)
+        {
+            var updatedLecture = await _lectureSlotRepository.ResetAsync(id);
+            return Ok(updatedLecture);
+        }
+
         // GET: api/Lectures
         [HttpGet]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<IEnumerable<LectureSlot>>> GetLectures(int page, int size)
         {
             IEnumerable<LectureSlot> lectures;
@@ -33,32 +51,18 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Lectures/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<LectureSlot>> GetLecture(int id)
         {
             var lecture = await _lectureSlotRepository.GetByIdAsync(id);
             return Ok(lecture);
         }
 
-        // PUT: api/Lectures/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutLecture(int id, LectureSlot Lecture)
-        {
-            var updatedLecture = await _lectureSlotRepository.UpdateAsync(id, Lecture);
-            return Ok(updatedLecture);
-        }
-
-
-        [HttpPut("reset/{id}")]
-        public async Task<IActionResult> ResetLecture(int id)
-        {
-            var updatedLecture = await _lectureSlotRepository.ResetAsync(id);
-            return Ok(updatedLecture);
-        }
-
         // POST: api/Lectures
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<LectureSlot>> PostLecture(LectureSlot Lecture)
         {
             var updatedLecture = await _lectureSlotRepository.AddAsync(Lecture);
@@ -67,11 +71,12 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Lectures/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteLecture(int id)
         {
             await _lectureSlotRepository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }
