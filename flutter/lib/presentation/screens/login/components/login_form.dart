@@ -4,7 +4,7 @@ import '../login_components/rounded_button.dart';
 import '../login_components/rounded_input.dart';
 import '../login_components/rounded_password_input.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({
     Key? key,
     required this.isLogin,
@@ -19,21 +19,32 @@ class LoginForm extends StatelessWidget {
   final double defaultLoginSize;
 
   @override
+  _LoginFormState createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  bool isApiCallProcess = false;
+  bool hidePassword = true;
+  final GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  String username = '';
+  String password = '';
+  String error = '';
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      opacity: isLogin ? 1.0 : 0.0,
-      duration: animationDuration * 4,
+      opacity: widget.isLogin ? 1.0 : 0.0,
+      duration: widget.animationDuration * 4,
       child: Align(
         alignment: Alignment.center,
         child: Container(
-          width: size.width,
-          height: defaultLoginSize,
+          width: widget.size.width,
+          height: widget.defaultLoginSize,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 const Text(
                   'Welcome Back',
                   style: TextStyle(
@@ -42,7 +53,7 @@ class LoginForm extends StatelessWidget {
                       color: Color(0xff253338)
                   ),
                 ),
-                 const SizedBox(height: 5),
+                const SizedBox(height: 5),
                 LayoutBuilder(
                   builder: (context, constraints) {
                     // Determine the image width based on the screen width
