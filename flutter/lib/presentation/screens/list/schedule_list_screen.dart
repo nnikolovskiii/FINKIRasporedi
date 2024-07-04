@@ -7,6 +7,7 @@ import '../../../domain/providers/schedule_provider.dart';
 import '../auth/login.dart';
 import '../calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
+import '../schedules_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
   const ScheduleListScreen({Key? key}) : super(key: key);
@@ -45,46 +46,72 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Schedule>>(
-      future: futureSchedules,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(80.0),
-              child: LoadingAnimationWidget.prograssiveDots(
-                size: 80,
-                color: Colors.blue.shade800,
+    final isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+
+    return Scaffold(
+      body: Column(
+        children: [
+          if (isDefault)
+            SafeArea(
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: () {
+                    Provider.of<ScheduleProvider>(context, listen: false).setName("");
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SchedulesScreen(initialIndex: 0)),
+                    );
+                  },
+                ),
               ),
             ),
-          );
-        } else if (snapshot.hasError) {
-          if (snapshot.error.toString().contains('not_logged_in')) {
-            return NotLoggedInMessageScreen();
-          } else {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
-        } else if (snapshot.hasData) {
-          List<ScheduleItem> scheduleItems = snapshot.data!.map((schedule) {
-            return ScheduleItem(
-              schedule: schedule,
-              theme: "resources/images/bgImg.jpg",
-              bgColor: Colors.blue.shade900.withOpacity(0.8),
-              bgColor1: const Color(0xFFFFFFFF),
-            );
-          }).toList();
+          Expanded(
+            child: FutureBuilder<List<Schedule>>(
+              future: futureSchedules,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(80.0),
+                      child: LoadingAnimationWidget.prograssiveDots(
+                        size: 80,
+                        color: Colors.blue.shade800,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.hasError) {
+                  if (snapshot.error.toString().contains('not_logged_in')) {
+                    return NotLoggedInMessageScreen();
+                  } else {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                } else if (snapshot.hasData) {
+                  List<ScheduleItem> scheduleItems = snapshot.data!.map((schedule) {
+                    return ScheduleItem(
+                      schedule: schedule,
+                      theme: "resources/images/bgImg.jpg",
+                      bgColor: Colors.blue.shade900.withOpacity(0.8),
+                      bgColor1: const Color(0xFFFFFFFF),
+                    );
+                  }).toList();
 
-          return ListView(
-            children: scheduleItems,
-          );
-        } else {
-          return const Center(
-            child: Text('No data found'),
-          );
-        }
-      },
+                  return ListView(
+                    children: scheduleItems,
+                  );
+                } else {
+                  return const Center(
+                    child: Text('No data found'),
+                  );
+                }
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

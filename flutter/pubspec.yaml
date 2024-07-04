@@ -58,7 +58,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  flutter_native_splash: ^2.2.16
+#  flutter_native_splash: ^2.2.16
+  video_player: ^2.2.5
+  flutter_hooks: ^0.18.0
 
 #flutter_native_splash:
 #  color: "#FFFFFF"  # Background color
@@ -93,6 +95,12 @@ flutter:
     - resources/images/bgImg.jpg
     - resources/images/io.png
     - resources/images/info.png
+    - resources/images/welcome.jpg
+    - resources/images/welcome2.png
+    - resources/images/Innovation.gif
+    - resources/images/Creativity.gif
+    - resources/images/ideas.gif
+    - resources/animation.mp4
 
   # To add assets to your application, add an assets section, like this:
   # assets:
