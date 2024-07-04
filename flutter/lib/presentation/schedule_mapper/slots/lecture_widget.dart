@@ -36,9 +36,9 @@ class LectureWidget extends StatelessWidget {
     return emptyWidgets;
   }
 
-  double getHeight(LectureSlot lecture) {
+  double getHeight(double height, LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return 50 * interval + 8 * (interval - 1);
+    return ((height * 1/13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -50,10 +50,21 @@ class LectureWidget extends StatelessWidget {
     return Color(hexValue | 0xFF000000);
   }
 
+  bool isDarkColor(Color color) {
+    double brightness = (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
+    return brightness < 128;
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height - 176.4;
+
+    double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
+
+    Color backgroundColor = hexToColor(lecture.hexColor ?? "#888888");
+    bool darkText = isDarkColor(backgroundColor);
 
     return GestureDetector(
       onLongPress: isDefault
@@ -62,73 +73,160 @@ class LectureWidget extends StatelessWidget {
         // Show a dialog or perform any action for deleting the lecture
         showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: Text(lecture.name ?? lecture.lecture!.course.subject.name),
-            content: const Text('What actions do you want to perform?'),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CalendarScreen(schedule.id ?? 0),
+          builder: (context) {
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      lecture.name ?? lecture.lecture!.course.subject.name,
+                      textScaleFactor: textScaleFactor,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                     ),
-                  ); // Close the dialog
-                },
-                child: const Text('Delete'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
                     ),
-                  ); // Close the dialog
-                },
-                child: const Text('Update'),
+                  ),
+                ],
               ),
-              if (lecture.lecture != null)
-                TextButton(
-                  onPressed: () async {
-                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CalendarScreen(schedule.id ?? 0),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: [
+                    if (lecture.lecture != null) ...[
+                      Text(
+                        'Просторија: ${lecture.lecture!.room.name}',
+                        textScaleFactor: textScaleFactor,
+                        style: Theme.of(context).textTheme.bodyLarge,
                       ),
-                    ); // Close the dialog
-                  },
-                  child: const Text('Reset'),
+                      Text(
+                        'Професор: ${lecture.lecture!.professor.name}',
+                        textScaleFactor: textScaleFactor,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ] else
+                      Text(
+                        'Лекција: ${lecture.name}',
+                        textScaleFactor: textScaleFactor,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Изберете акција:',
+                      textScaleFactor: textScaleFactor,
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-                child: const Text('Cancel'),
               ),
-            ],
-          ),
+              actions: [
+                Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          ),
+                          onPressed: () async {
+                            await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CalendarScreen(schedule.id ?? 0),
+                              ),
+                            ); // Close the dialog
+                          },
+                          child: const Text(
+                            'Избриши',
+                            style: TextStyle(color: Colors.white),
+                          ),
+
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                              ),
+                            ); // Close the dialog
+                          },
+                          child: const Text(
+                            'Ажурирај',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      if (lecture.lecture != null)
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 5),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                            ),
+                            onPressed: () async {
+                              await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                ),
+                              ); // Close the dialog
+                            },
+                            child: const Text(
+                              'Ресетирај',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
         );
       },
       child: Stack(
         children: [
           Container(
             child: Container(
-              height: getHeight(lecture),
+              height: getHeight(height, lecture),
               width: allDays
                   ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
                   : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
               decoration: BoxDecoration(
-                color: hexToColor(lecture.hexColor ?? "#888888"),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildConditionalWidget(),
+                  children: _buildConditionalWidget(darkText),
                 ),
               ),
             ),
@@ -138,43 +236,70 @@ class LectureWidget extends StatelessWidget {
     );
   }
 
-  List<Widget> _buildConditionalWidget() {
+  List<Widget> _buildConditionalWidget(bool darkText) {
     List<Widget> widgets = [];
 
+    TextStyle textStyle = TextStyle(
+      color: darkText ? Colors.black : Colors.white,
+      fontFamily: 'Lato',
+      fontSize: 14,
+    );
+
     if (lecture.lecture != null) {
-      widgets.add(Text(
-        lecture.lecture!.room.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.black,
-          fontFamily: 'Lato',
+      widgets.add(
+        Column(
+          children: [
+            Align(
+              alignment: Alignment.topLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text(
+                  lecture.lecture!.room.name,
+                  style: textStyle,
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+                child: Text(
+                  lecture.lecture!.course.subject.name,
+                  style: textStyle.copyWith(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2.0),
+                child: Text(
+                  lecture.lecture!.professor.name,
+                  style: textStyle,
+                ),
+              ),
+            ),
+          ],
         ),
-      ));
-
-      widgets.add(Text(
-        lecture.lecture!.course.subject.name,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Lato',
-          color: Colors.black,
-        ),
-      ));
-
-      widgets.add(Text(
-        lecture.lecture!.professor.name,
-        style: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Lato',
-        ),
-      ));
+      );
     } else {
-      widgets.add(Text(
-        lecture.name ?? "",
-        style: const TextStyle(
-          color: Colors.black,
-          fontFamily: 'Lato',
+      widgets.add(
+        Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+            child: Text(
+              lecture.name ?? "",
+              style: textStyle.copyWith(
+                fontSize: 16,
+              ),
+            ),
+          ),
         ),
-      ));
+      );
     }
 
     return widgets;
