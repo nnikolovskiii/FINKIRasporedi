@@ -33,6 +33,8 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Professors/5
         [HttpGet("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Professor>> GetProfessor(string id)
         {
             var professor = await _professorRepository.GetByIdAsync(id);
@@ -40,8 +42,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // PUT: api/Professors/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> PutProfessor(string id, Professor professor)
         {
             var updatedProfessor = await _professorRepository.UpdateAsync(id, professor);
@@ -49,8 +52,9 @@ namespace FinkiRasporedi.Web.RestControllers
         }
 
         // POST: api/Professors
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<Professor>> PostProfessor(Professor professor)
         {
             var updatedProfessor = await _professorRepository.AddAsync(professor);
@@ -59,11 +63,12 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // DELETE: api/Professors/5
         [HttpDelete("{id}")]
+        [NonAction]
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<IActionResult> DeleteProfessor(string id)
         {
             await _professorRepository.DeleteAsync(id);
             return NoContent();
         }
-
     }
 }
