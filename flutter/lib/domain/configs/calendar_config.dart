@@ -12,12 +12,14 @@ class CalendarConfig {
   static late double calNumAllDays;
   static late double timeNumOneDay;
   static late double calNumOneDay;
+  static late double heightOffset;
 
   static Future<void> forCalendar() async {
     final response = await HttpRequest.getString('calendar-config.json');
     final config = json.decode(response);
     offsetAllDays = config['offset_all_days'];
     offsetOneDay = config['offset_one_day'];
+    heightOffset = config["height_offset"];
 
     calRatioAllDays = config['cal_ratio_all_days'];
     timeRatioAllDays = config['time_ratio_all_days'];
