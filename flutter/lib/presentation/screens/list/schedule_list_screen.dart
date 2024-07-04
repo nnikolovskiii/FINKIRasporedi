@@ -143,20 +143,30 @@ class ScheduleItem extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.fromLTRB(8.0, 11.0, 8.0, 15.0),
-        child: Card(
-          shape: RoundedRectangleBorder(
+        child: Container(
+          decoration: BoxDecoration(
+            color: bgColor,
             borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: Offset(0, 3), // Shadow only on the bottom side
+              ),
+            ],
           ),
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          color: bgColor,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Image.asset(
-                theme,
-                height: 110,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                child: Image.asset(
+                  theme,
+                  height: 110,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               Container(
                 padding: const EdgeInsets.all(15),
