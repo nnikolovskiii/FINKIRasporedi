@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_app/presentation/screens/schedules_screen.dart';
-import 'package:flutter_app/presentation/screens/calendar_content_screen.dart';
+import 'package:flutter_app/presentation/screens/main_screen.dart';
+import 'package:flutter_app/presentation/screens/calendar/calendar_content_screen.dart';
 import 'package:flutter_app/presentation/theme/app_theme.dart';
 import 'package:flutter_app/service/schedule_service.dart';
 
-import '../../domain/models/schedule.dart';
-import '../../domain/providers/schedule_provider.dart';
-import '../widgets/ActionButton.dart';
-import '../widgets/ExpandableFab.dart';
-import 'add/add_lecture_slot_screen.dart';
-import 'list/course_list_screen.dart';
+import '../../../domain/models/schedule.dart';
+import '../../../domain/providers/schedule_provider.dart';
+import '../../widgets/ActionButton.dart';
+import '../../widgets/ExpandableFab.dart';
+import '../add/add_lecture_slot_screen.dart';
+import '../list/course_list_screen.dart';
 
 class CalendarScreen extends StatefulWidget {
   final int scheduleId;
@@ -55,7 +55,7 @@ class _CalendarAppState extends State<CalendarScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SchedulesScreen(),
+                  builder: (context) => const MainScreen(),
                 ),
               );
             },
@@ -75,7 +75,7 @@ class _CalendarAppState extends State<CalendarScreen> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SchedulesScreen(initialIndex: isDefault ? 0 : 1),
+                  builder: (context) => MainScreen(initialIndex: isDefault ? 0 : 1),
                 ),
               );
             },
@@ -114,7 +114,7 @@ class _CalendarAppState extends State<CalendarScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const SchedulesScreen(),
+                    builder: (context) => const MainScreen(),
                   ),
                 );
               },

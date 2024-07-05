@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/presentation/screens/prof_schedules.dart';
-import 'package:flutter_app/presentation/screens/rooms_schdules.dart';
+import 'package:flutter_app/presentation/screens/calendar/professor_calendar_screen.dart';
+import 'package:flutter_app/presentation/screens/calendar/room_calendar_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
 import 'auth/login.dart';
 import 'add/add_schedule_screen.dart';
-import 'list_cards.dart';  // Import CardListScreen
+import 'list/action_list_screen.dart';  // Import CardListScreen
 
-class SchedulesScreen extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   final int initialIndex;
 
-  const SchedulesScreen({Key? key, this.initialIndex = 0}) : super(key: key);
+  const MainScreen({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   _SchedulesScreenState createState() => _SchedulesScreenState();
 }
 
-class _SchedulesScreenState extends State<SchedulesScreen> {
+class _SchedulesScreenState extends State<MainScreen> {
   late int _selectedIndex;
 
   @override
@@ -191,7 +191,7 @@ class _SchedulesScreenState extends State<SchedulesScreen> {
       case "Просторија":
         return RoomScreen();
       default:
-        return CardListWidget();
+        return ActionListScreen();
     }
   }
 }

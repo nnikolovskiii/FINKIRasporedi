@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/models/login_request_model.dart';
 import 'package:flutter_app/presentation/screens/auth/signup.dart';
-import 'package:flutter_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/presentation/screens/main_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => SchedulesScreen(initialIndex: isDefault ? 0 : 1),
+                builder: (context) => MainScreen(initialIndex: isDefault ? 0 : 1),
               ),
             );
           },
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SchedulesScreen(initialIndex: 0),
+                  builder: (context) => MainScreen(initialIndex: 0),
                 ),
               );
             } else {

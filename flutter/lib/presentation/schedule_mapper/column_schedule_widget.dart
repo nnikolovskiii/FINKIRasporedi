@@ -6,7 +6,7 @@ import 'package:flutter_app/presentation/schedule_mapper/slots/horizontal_divide
 import '../../domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 import 'slots/day_slot_widget.dart';
-import 'slots/lecture_widget.dart';
+import 'slots/lecture_slot_widget.dart';
 
 class ColumnScheduleWidget extends StatelessWidget {
   final int day;

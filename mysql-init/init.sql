@@ -1,21 +1,58 @@
-CREATE DATABASE  IF NOT EXISTS `finki_rasporedi` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `finki_rasporedi`;
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.37, for Linux (x86_64)
 --
--- Host: localhost    Database: finki_rasporedi
+-- Host: 127.0.0.1    Database: finki_rasporedi
 -- ------------------------------------------------------
--- Server version	8.0.33
+-- Server version	8.4.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `AspNetUsers`
+--
+
+DROP TABLE IF EXISTS `AspNetUsers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `AspNetUsers` (
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `UserName` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Email` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `EmailConfirmed` tinyint(1) NOT NULL,
+  `PasswordHash` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `SecurityStamp` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `PhoneNumber` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  `PhoneNumberConfirmed` tinyint(1) NOT NULL,
+  `TwoFactorEnabled` tinyint(1) NOT NULL,
+  `LockoutEnd` datetime(6) DEFAULT NULL,
+  `LockoutEnabled` tinyint(1) NOT NULL,
+  `AccessFailedCount` int NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `UserNameIndex` (`NormalizedUserName`),
+  KEY `EmailIndex` (`NormalizedEmail`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `AspNetUsers`
+--
+
+LOCK TABLES `AspNetUsers` WRITE;
+/*!40000 ALTER TABLE `AspNetUsers` DISABLE KEYS */;
+INSERT INTO `AspNetUsers` VALUES ('1b7ed073-2a3e-414d-a83b-ec27919d59ae','niksdadfsd','NIKSDADFSD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELR+rhbFG4LDfCP2OWOCiTqz7xF9A4mMbpV9a39BpafjeiIGNagm3nfgA9oWU3p9eA==','FGPCDGAHKJ4KORSFDY7VMR2BVWIKIDQ3','38e93995-faf0-4ec1-81e3-063c5ee0afce',NULL,0,0,NULL,1,0),('26476dfa-2165-4516-bd6c-be1d2fd93114','dasdsadsad','DASDSADSAD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIIuTXowim6N85C+omCSU9XWgrbLqK2QHcKS0V3er/vD5jJazcEdyCx2NLRgyOfd6w==','EDNWOZNZSLWASWSVOKN5MK5A4PLKERFE','7846d31f-bcb4-4799-96aa-329ba4c102c5',NULL,0,0,NULL,1,0),('2bf3c24f-40b2-4adf-a690-9b26f9214f02','niksdad','NIKSDAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELS3CTLjThVr5ZYjnFGQ5Wc4y3KRIBe9LY0fxzn+TG8HgJfSth6VbWszE71Eq21IHw==','YXVGSK5KZTKWY4LJLH7OEQKAO7WGQAZA','c7061edb-90cc-46d1-a126-ba5cf54ec6bb',NULL,0,0,NULL,1,0),('3cd1f39f-ccce-4896-a142-582281fe6585','adsadasd','ADSADASD','asd@sad.com','ASD@SAD.COM',0,'AQAAAAIAAYagAAAAEJeO0tS/Cry7TViq9V8B2wpeneyJo7nnGYNhiVjjAsyc4moyRRaYqbVQx9aX7t/4ag==','IR5ACYLXV5GKCCENODOME3EABGMVEBVN','d8116e7d-a142-4f69-a8eb-7c49560755f7',NULL,0,0,NULL,1,0),('3d208379-4ea4-4c2b-9988-333f3b53eeeb','anja','ANJA','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDvbixQbIA9lAGWJEOUzYUCSjY4dnqYWl+zgdZYCo8x/JCI7z3Efx0oTaB8jGGZlVA==','4NLWRET25YLX6CFPHKWAGRCNKXL6BIVI','e1faeb23-8b25-42ee-8b9e-da70bece8902',NULL,0,0,NULL,1,0),('558ac729-ab29-48cd-ac87-92234d2e2e84','ass','ASS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEBWHtNOiJpE1B0sZ/DuYzi9sUkehkXzbFnSMDsxnkOz4IFu1RWN5zEZBL0TM9UFdvQ==','24MRMH3UORWF24C2OGCJBIC652CBRLFI','61ff3826-9b3d-4ce9-8d3d-f9fd8f8ec2ed',NULL,0,0,NULL,1,0),('5c184abe-b91d-43e4-8545-d6d8a621e128','assqw','ASSQW','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDF+5QRbM9X6A3JPTM2OoVzm7rFrCH8i0Q8NGgrgoyi2hQut3vNluqWyMf+BKadQ8Q==','SVQVWWDKWGCBHWAMQYNFK66BAQLUZ4MV','6f4e47a1-3571-43cd-aa44-40fbf2b4e9a7',NULL,0,0,NULL,1,0),('5c60d642-d1fa-43ab-887b-0b476cfd32ea','niksdadf','NIKSDADF','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEN2bjxEA8WeWfVrtGXGcLjO3BCDm7Sx0HVdjrlz4A1EgcpHUa7G9lC5eKZBDk8s5XQ==','53GBWQADZIUHECDU3ETNTSHGVEDM62JU','0b6600b3-ab27-49a3-910e-097741a43b82',NULL,0,0,NULL,1,0),('6a42ddf9-9861-4e11-8c25-3d735c5207ae','assqwsdasd','ASSQWSDASD','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEC/UQUFQpjOCp1y7760DPNsGTQpHcEnj6oAAkh/UO1MjuvzHOGIWEOI8SQ2gBCAvXQ==','FGF5R32BTOC7YSASX4NKYR36Q455VHA5','f421f339-582d-4b6e-be24-8071568f4dc6',NULL,0,0,NULL,1,0),('6e2868f5-bdfb-4c5d-bde1-101fc6191c33','asdsad','ASDSAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPYu91QEHtFpuQTbJvmhwM2Im6sqo42PYzbOPEhPPRijgNiZXJEtMZCtD3VrYBj3pQ==','OCIQ2CW5HQBHKXXGYG7UYCIJGTGTM2A6','087cfc6f-2e38-4b1d-9618-bcc8f77d4aab',NULL,0,0,NULL,1,0),('a292e3ea-35e9-432a-bae1-fa127e4165ac','gsgsgsg','GSGSGSG','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEAXhZ2Y1WnxXGxrvuNk66ibqlR5DtqhApyi2o4Vcgt3yIYvvtMlaUftORFcfEsKd/g==','ZLCFZYQWZ7LE2PJFCETC3A7QSXQA6FCH','2a82fb6b-c012-46ce-adf1-8e00a943b782',NULL,0,0,NULL,1,0),('anja1','anja1','ANJA1','anja@gmail.com','ANJA@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPCSD4IXGTIxnBliL2dYjG1mtrtAbZdSuZljdliO79bVn+EVBn+khIk0pvTCcVqO/Q==','4V6B7ZFINUNCUJNFWP77KDJAJV5HKQGN','b8463160-1b28-46a1-9e4c-8ec970d615b1',NULL,0,0,NULL,1,0),('c9dcdbeb-9ea6-4609-8acd-03335368b68e','sadsa','SADSA','nik@gmailc.om','NIK@GMAILC.OM',0,'AQAAAAIAAYagAAAAEIO7dBAX/nYei1b9eA55Oryet/blaKrTm9OMZeWZA4v8a5QDmhRwWA871g+HFlUV6g==','SZEQZH5XSPLIQZJCRY6SWPNIHXLINZZT','7c13f9a0-025e-4f18-bdd1-dcfcac8727f1',NULL,0,0,NULL,1,0),('cf21147c-9a9d-4120-b5d3-c9f6c0c030d0','NIKOLA1','NIKOLA1','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAELxOueibxuacszI7DdUCEvFSqo27yvHu8z7V9HbhmJNpenHfx5pagpyihAMze7cSEA==','FJ7OH3N5WXSURMUPGFGJEHDRDTFM4FDF','c98d9a01-8a6c-43fe-8e64-d4ae80178cd5',NULL,0,0,NULL,1,0),('d7e2a41f-4a82-4c56-a792-23f7de5889e5','NIKOLA12','NIKOLA12','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEKvNLH7O9m/FYti5hhzmlElS3mpJiJY5IJ0L0Ptx2vO7zNEmLkvNv2Gkt2I8cd+9tw==','4YBR4S4Z3TKXT7O7P2XDD5JO4XLMQTCB','c892d071-6f12-4113-b7de-7f58df85ea3c',NULL,0,0,NULL,1,0),('daa7c720-d268-4d8d-ac18-ebc49c58975c','assqws','ASSQWS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEAH4dPB1SaCHfcspPFhV+8YDzyHRvwvNmVZJYmLCxp1dp56R8Ue1tqQRZdUN3UxBeQ==','CBBN55PIWXUWRWYIEJQA3VSMSBT7RNRP','f357a4d4-3fcc-46bd-9c6c-21651c5baf3d',NULL,0,0,NULL,1,0),('e0f6e0c5-ac11-491c-bede-25c415f3dfa4','dimitar128','DIMITAR128','test@example.com','TEST@EXAMPLE.COM',0,'AQAAAAIAAYagAAAAEKAA7djX6RDzygEKH5T5jgnLHnGZ/Qm/hytSTbJ+9/fSKtNuChpwky8EAdI//uloLg==','E6MCULOF6XYM2CMCSOWSGLILX5RVP6QR','cdce17e2-ef5d-4578-9eb6-26822851115a',NULL,0,0,NULL,1,0),('fd9028cd-9bcd-4d8a-9395-cb5cdae940ba','gsgsgsgasd','GSGSGSGASD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIpxHUWarNmNwxxnouGfCgy9bujqSSDfR+jIdHsMK1pHVDL0A23aZOA3yC5Xtu9qsA==','PWZOKBEFVCMYAYWOXIHXED4FA2XUX5IX','33a81b29-76d3-4bf1-b9bc-c177830cf86a',NULL,0,0,NULL,1,0),('FINKI','FINKI','FINKI','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEN3TrAmnFBy4uYK6e8LKvW9kvITaxaP9fOGa2YLfgnDNGlMc3c9EkBNdKU/G3qPo1g==','OARU7WAKCLWCIC2YETDLFTVQX7YSBJQZ','ed2928ef-dc28-4d56-8533-47be18751dd5',NULL,0,0,NULL,1,0),('nikola','nikola','NIKOLA','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEIfMISM+ocu98MZjvqUx7ucnPEUoAz0kW2ovfrl8NaIiXZnOLxh7oAtqLaUjXP4kaw==','FWQ3PDNFIV7EWGWYNFVCDGHZUMH6LY44','b57a72ea-fe2e-4095-837f-b201d6a380d3',NULL,0,0,NULL,1,0);
+/*!40000 ALTER TABLE `AspNetUsers` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `__efmigrationshistory`
@@ -175,45 +212,6 @@ LOCK TABLES `aspnetuserroles` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `AspNetUsers`
---
-
-DROP TABLE IF EXISTS `AspNetUsers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `AspNetUsers` (
-  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `UserName` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `NormalizedUserName` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `Email` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `NormalizedEmail` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `EmailConfirmed` tinyint(1) NOT NULL,
-  `PasswordHash` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `SecurityStamp` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `PhoneNumber` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
-  `PhoneNumberConfirmed` tinyint(1) NOT NULL,
-  `TwoFactorEnabled` tinyint(1) NOT NULL,
-  `LockoutEnd` datetime(6) DEFAULT NULL,
-  `LockoutEnabled` tinyint(1) NOT NULL,
-  `AccessFailedCount` int NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `UserNameIndex` (`NormalizedUserName`),
-  KEY `EmailIndex` (`NormalizedEmail`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `AspNetUsers`
---
-
-LOCK TABLES `AspNetUsers` WRITE;
-/*!40000 ALTER TABLE `AspNetUsers` DISABLE KEYS */;
-INSERT INTO `AspNetUsers` VALUES ('1b7ed073-2a3e-414d-a83b-ec27919d59ae','niksdadfsd','NIKSDADFSD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELR+rhbFG4LDfCP2OWOCiTqz7xF9A4mMbpV9a39BpafjeiIGNagm3nfgA9oWU3p9eA==','FGPCDGAHKJ4KORSFDY7VMR2BVWIKIDQ3','38e93995-faf0-4ec1-81e3-063c5ee0afce',NULL,0,0,NULL,1,0),('26476dfa-2165-4516-bd6c-be1d2fd93114','dasdsadsad','DASDSADSAD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIIuTXowim6N85C+omCSU9XWgrbLqK2QHcKS0V3er/vD5jJazcEdyCx2NLRgyOfd6w==','EDNWOZNZSLWASWSVOKN5MK5A4PLKERFE','7846d31f-bcb4-4799-96aa-329ba4c102c5',NULL,0,0,NULL,1,0),('2bf3c24f-40b2-4adf-a690-9b26f9214f02','niksdad','NIKSDAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELS3CTLjThVr5ZYjnFGQ5Wc4y3KRIBe9LY0fxzn+TG8HgJfSth6VbWszE71Eq21IHw==','YXVGSK5KZTKWY4LJLH7OEQKAO7WGQAZA','c7061edb-90cc-46d1-a126-ba5cf54ec6bb',NULL,0,0,NULL,1,0),('3cd1f39f-ccce-4896-a142-582281fe6585','adsadasd','ADSADASD','asd@sad.com','ASD@SAD.COM',0,'AQAAAAIAAYagAAAAEJeO0tS/Cry7TViq9V8B2wpeneyJo7nnGYNhiVjjAsyc4moyRRaYqbVQx9aX7t/4ag==','IR5ACYLXV5GKCCENODOME3EABGMVEBVN','d8116e7d-a142-4f69-a8eb-7c49560755f7',NULL,0,0,NULL,1,0),('3d208379-4ea4-4c2b-9988-333f3b53eeeb','anja','ANJA','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDvbixQbIA9lAGWJEOUzYUCSjY4dnqYWl+zgdZYCo8x/JCI7z3Efx0oTaB8jGGZlVA==','4NLWRET25YLX6CFPHKWAGRCNKXL6BIVI','e1faeb23-8b25-42ee-8b9e-da70bece8902',NULL,0,0,NULL,1,0),('558ac729-ab29-48cd-ac87-92234d2e2e84','ass','ASS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEBWHtNOiJpE1B0sZ/DuYzi9sUkehkXzbFnSMDsxnkOz4IFu1RWN5zEZBL0TM9UFdvQ==','24MRMH3UORWF24C2OGCJBIC652CBRLFI','61ff3826-9b3d-4ce9-8d3d-f9fd8f8ec2ed',NULL,0,0,NULL,1,0),('5c184abe-b91d-43e4-8545-d6d8a621e128','assqw','ASSQW','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDF+5QRbM9X6A3JPTM2OoVzm7rFrCH8i0Q8NGgrgoyi2hQut3vNluqWyMf+BKadQ8Q==','SVQVWWDKWGCBHWAMQYNFK66BAQLUZ4MV','6f4e47a1-3571-43cd-aa44-40fbf2b4e9a7',NULL,0,0,NULL,1,0),('5c60d642-d1fa-43ab-887b-0b476cfd32ea','niksdadf','NIKSDADF','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEN2bjxEA8WeWfVrtGXGcLjO3BCDm7Sx0HVdjrlz4A1EgcpHUa7G9lC5eKZBDk8s5XQ==','53GBWQADZIUHECDU3ETNTSHGVEDM62JU','0b6600b3-ab27-49a3-910e-097741a43b82',NULL,0,0,NULL,1,0),('6a42ddf9-9861-4e11-8c25-3d735c5207ae','assqwsdasd','ASSQWSDASD','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEC/UQUFQpjOCp1y7760DPNsGTQpHcEnj6oAAkh/UO1MjuvzHOGIWEOI8SQ2gBCAvXQ==','FGF5R32BTOC7YSASX4NKYR36Q455VHA5','f421f339-582d-4b6e-be24-8071568f4dc6',NULL,0,0,NULL,1,0),('6e2868f5-bdfb-4c5d-bde1-101fc6191c33','asdsad','ASDSAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPYu91QEHtFpuQTbJvmhwM2Im6sqo42PYzbOPEhPPRijgNiZXJEtMZCtD3VrYBj3pQ==','OCIQ2CW5HQBHKXXGYG7UYCIJGTGTM2A6','087cfc6f-2e38-4b1d-9618-bcc8f77d4aab',NULL,0,0,NULL,1,0),('a292e3ea-35e9-432a-bae1-fa127e4165ac','gsgsgsg','GSGSGSG','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEAXhZ2Y1WnxXGxrvuNk66ibqlR5DtqhApyi2o4Vcgt3yIYvvtMlaUftORFcfEsKd/g==','ZLCFZYQWZ7LE2PJFCETC3A7QSXQA6FCH','2a82fb6b-c012-46ce-adf1-8e00a943b782',NULL,0,0,NULL,1,0),('anja1','anja1','ANJA1','anja@gmail.com','ANJA@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPCSD4IXGTIxnBliL2dYjG1mtrtAbZdSuZljdliO79bVn+EVBn+khIk0pvTCcVqO/Q==','4V6B7ZFINUNCUJNFWP77KDJAJV5HKQGN','b8463160-1b28-46a1-9e4c-8ec970d615b1',NULL,0,0,NULL,1,0),('c9dcdbeb-9ea6-4609-8acd-03335368b68e','sadsa','SADSA','nik@gmailc.om','NIK@GMAILC.OM',0,'AQAAAAIAAYagAAAAEIO7dBAX/nYei1b9eA55Oryet/blaKrTm9OMZeWZA4v8a5QDmhRwWA871g+HFlUV6g==','SZEQZH5XSPLIQZJCRY6SWPNIHXLINZZT','7c13f9a0-025e-4f18-bdd1-dcfcac8727f1',NULL,0,0,NULL,1,0),('cf21147c-9a9d-4120-b5d3-c9f6c0c030d0','NIKOLA1','NIKOLA1','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAELxOueibxuacszI7DdUCEvFSqo27yvHu8z7V9HbhmJNpenHfx5pagpyihAMze7cSEA==','FJ7OH3N5WXSURMUPGFGJEHDRDTFM4FDF','c98d9a01-8a6c-43fe-8e64-d4ae80178cd5',NULL,0,0,NULL,1,0),('d7e2a41f-4a82-4c56-a792-23f7de5889e5','NIKOLA12','NIKOLA12','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEKvNLH7O9m/FYti5hhzmlElS3mpJiJY5IJ0L0Ptx2vO7zNEmLkvNv2Gkt2I8cd+9tw==','4YBR4S4Z3TKXT7O7P2XDD5JO4XLMQTCB','c892d071-6f12-4113-b7de-7f58df85ea3c',NULL,0,0,NULL,1,0),('daa7c720-d268-4d8d-ac18-ebc49c58975c','assqws','ASSQWS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEAH4dPB1SaCHfcspPFhV+8YDzyHRvwvNmVZJYmLCxp1dp56R8Ue1tqQRZdUN3UxBeQ==','CBBN55PIWXUWRWYIEJQA3VSMSBT7RNRP','f357a4d4-3fcc-46bd-9c6c-21651c5baf3d',NULL,0,0,NULL,1,0),('e0f6e0c5-ac11-491c-bede-25c415f3dfa4','dimitar128','DIMITAR128','test@example.com','TEST@EXAMPLE.COM',0,'AQAAAAIAAYagAAAAEKAA7djX6RDzygEKH5T5jgnLHnGZ/Qm/hytSTbJ+9/fSKtNuChpwky8EAdI//uloLg==','E6MCULOF6XYM2CMCSOWSGLILX5RVP6QR','cdce17e2-ef5d-4578-9eb6-26822851115a',NULL,0,0,NULL,1,0),('fd9028cd-9bcd-4d8a-9395-cb5cdae940ba','gsgsgsgasd','GSGSGSGASD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIpxHUWarNmNwxxnouGfCgy9bujqSSDfR+jIdHsMK1pHVDL0A23aZOA3yC5Xtu9qsA==','PWZOKBEFVCMYAYWOXIHXED4FA2XUX5IX','33a81b29-76d3-4bf1-b9bc-c177830cf86a',NULL,0,0,NULL,1,0),('FINKI','FINKI','FINKI','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEN3TrAmnFBy4uYK6e8LKvW9kvITaxaP9fOGa2YLfgnDNGlMc3c9EkBNdKU/G3qPo1g==','OARU7WAKCLWCIC2YETDLFTVQX7YSBJQZ','ed2928ef-dc28-4d56-8533-47be18751dd5',NULL,0,0,NULL,1,0),('nikola','nikola','NIKOLA','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEIfMISM+ocu98MZjvqUx7ucnPEUoAz0kW2ovfrl8NaIiXZnOLxh7oAtqLaUjXP4kaw==','FWQ3PDNFIV7EWGWYNFVCDGHZUMH6LY44','b57a72ea-fe2e-4095-837f-b201d6a380d3',NULL,0,0,NULL,1,0);
-/*!40000 ALTER TABLE `AspNetUsers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `aspnetusertokens`
 --
 
@@ -349,7 +347,7 @@ CREATE TABLE `lectureslots` (
   PRIMARY KEY (`Id`),
   KEY `IX_LectureSlots_LectureId` (`LectureId`),
   CONSTRAINT `FK_LectureSlots_Lectures_LectureId` FOREIGN KEY (`LectureId`) REFERENCES `lectures` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +356,7 @@ CREATE TABLE `lectureslots` (
 
 LOCK TABLES `lectureslots` WRITE;
 /*!40000 ALTER TABLE `lectureslots` DISABLE KEYS */;
-INSERT INTO `lectureslots` VALUES (3,13,NULL,NULL,NULL,NULL,NULL),(4,15,NULL,NULL,NULL,NULL,NULL),(6,44,'',3,11,12,'#0FBDBD'),(7,113,NULL,3,8,11,'#39C7A0');
+INSERT INTO `lectureslots` VALUES (3,13,NULL,NULL,NULL,NULL,NULL),(4,15,NULL,NULL,NULL,NULL,NULL),(6,44,'',3,11,12,'#0FBDBD'),(7,113,NULL,3,8,11,'#39C7A0'),(19,179,NULL,0,18,20,'#B9B9B9'),(20,182,NULL,4,12,14,'#86ABFF'),(21,NULL,'lab1',0,8,12,'#000000');
 /*!40000 ALTER TABLE `lectureslots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -434,7 +432,7 @@ CREATE TABLE `schedulelectures` (
 
 LOCK TABLES `schedulelectures` WRITE;
 /*!40000 ALTER TABLE `schedulelectures` DISABLE KEYS */;
-INSERT INTO `schedulelectures` VALUES (6,3),(7,3);
+INSERT INTO `schedulelectures` VALUES (19,1),(20,1),(21,1),(6,3),(7,3);
 /*!40000 ALTER TABLE `schedulelectures` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -512,7 +510,7 @@ CREATE TABLE `subjects` (
 
 LOCK TABLES `subjects` WRITE;
 /*!40000 ALTER TABLE `subjects` DISABLE KEYS */;
-INSERT INTO `subjects` VALUES ('administratsija.na.sistemi','Администрација на системи',3,NULL),('algoritmi.i.podatochni.strukturi','Алгоритми и податочни структури',2,NULL),('analiza.i.dizajn.na.is','Анализа и дизајн на ИС',3,NULL),('bazi.na.podatotsi','Бази на податоци',3,NULL),('biznis.i.menadzhment','Бизнис и менаџмент',1,NULL),('digitizatsija','Дигитизација',2,NULL),('diskretni.strukturi.1','Дискретни структури 1',1,NULL),('distribuirani.sistemi','Дистрибуирани системи',3,NULL),('dizajn.i.arkhitektura.na.softver','Дизајн и архитектура на софтвер',3,NULL),('dizajn.na.digitalni.kola','Дизајн на дигитални кола',1,NULL),('dizajn.na.obrazoven.softver','Дизајн на образовен софтвер',3,NULL),('ekonomija.za.ikt.inzheneri','Економија за ИКТ инженери',2,NULL),('fizika','Физика',1,NULL),('implementatsija.na.softverski.sistemi.so.sloboden.i.otvoren.kod','Имплементација на софтверски системи со слободен и отворен код',3,NULL),('informatsiska.bezbednost','Информациска безбедност',3,NULL),('inovatsii.vo.ikt','Иновации во ИКТ',3,NULL),('internet.programiranje.na.klientska.strana','Интернет програмирање на клиентска страна',2,NULL),('inzhenerska.matematika','Инженерска математика',2,NULL),('izbrani.temi.od.matematika./.diskretna.matematika','Избрани теми од математика / Дискретна математика',1,NULL),('kalkulus.1','Калкулус 1',1,NULL),('kompjuterska.elektronika','Компјутерска електроника',3,NULL),('kompjuterska.etika','Компјутерска етика',3,NULL),('kompjuterski.mrezhi','Компјутерски мрежи',2,NULL),('kompjuterski.mrezhi.i.bezbednost','Компјутерски мрежи и безбедност',2,NULL),('kompjuterski.zvuk,.muzika.i.govor','Компјутерски звук, музика и говор',2,NULL),('linearna.algebra.i.primeni','Линеарна алгебра и примени',3,NULL),('matematika.1./.kalkulus','Математика 1 / Калкулус',1,NULL),('menadzhment.informatsiski.sistemi','Менаџмент информациски системи',3,NULL),('metodologija.na.istrazhuvanjeto.vo.ikt','Методологија на истражувањето во ИКТ',3,NULL),('mikroprotsesorski.sistemi','Микропроцесорски системи',3,NULL),('mobilni.informatsiski.sistemi','Мобилни информациски системи',3,NULL),('mobilni.platformi.i.programiranje','Мобилни платформи и програмирање',3,NULL),('mrezhna.i.mobilna.forenzika','Мрежна и мобилна форензика',3,NULL),('multimedijalni.tekhnologii','Мултимедијални технологии',2,NULL),('multimediski.mrezhi','Мултимедиски мрежи',3,NULL),('multimediski.sistemi','Мултимедиски системи',3,NULL),('napreden.veb.dizajn','Напреден веб дизајн',3,NULL),('napredna.interaktsija.chovek.kompjuter','Напредна интеракција човек компјутер',3,NULL),('napredno.programiranje','Напредно програмирање',2,NULL),('obrabotka.na.prirodnite.jazitsi','Обработка на природните јазици',3,NULL),('optichki.mrezhi','Оптички мрежи',3,NULL),('osnovi.na.robotikata','Основи на роботиката',3,NULL),('osnovi.na.teorijata.na.informatsii','Основи на теоријата на информации',2,NULL),('paralelno.i.distribuirano.protsesiranje','Паралелно и дистрибуирано процесирање',3,NULL),('pedagogija','Педагогија',1,NULL),('presmetuvanje.vo.oblak','Пресметување во облак',3,NULL),('profesionalni.veshtini','Професионални вештини',1,NULL),('programiranje.na.video.igri','Програмирање на видео игри',3,NULL),('programski.paradigmi','Програмски парадигми',3,NULL),('sajber.bezbednost./.mrezhna.bezbednost','Сајбер безбедност / Мрежна безбедност',3,NULL),('shabloni.za.dizajn.na.korisnichki.interfejsi','Шаблони за дизајн на кориснички интерфејси',2,NULL),('sistemi.za.poddrshka.pri.odluchuvanjeto','Системи за поддршка при одлучувањето',2,NULL),('softver.za.vgradlivi.sistemi','Софтвер за вградливи системи',3,NULL),('strukturno.programiranje','Структурно програмирање',1,NULL),('upravuvanje.so.tekhnichka.poddrshka','Управување со техничка поддршка',3,NULL),('veb.bazirani.sistemi','Веб базирани системи',3,NULL),('veb.programiranje','Веб програмирање',3,NULL),('verojatnost.i.statistika','Веројатност и статистика',2,NULL),('voved.vo.bioinformatikata','Вовед во биоинформатиката',3,NULL),('voved.vo.kompjuterskite.nauki','Вовед во компјутерските науки',1,NULL),('voved.vo.naukata.za.podatotsi','Вовед во науката за податоци',3,NULL),('voved.vo.pametni.gradovi','Вовед во паметни градови',3,NULL);
+INSERT INTO `subjects` VALUES ('administratsija.na.sistemi','Администрација на системи',3,'АНС'),('algoritmi.i.podatochni.strukturi','Алгоритми и податочни структури',2,'АИПС'),('analiza.i.dizajn.na.is','Анализа и дизајн на ИС',3,'АДИС'),('bazi.na.podatotsi','Бази на податоци',3,'БНП'),('biznis.i.menadzhment','Бизнис и менаџмент',1,'БИС'),('digitizatsija','Дигитизација',2,'Д'),('diskretni.strukturi.1','Дискретни структури 1',1,'ДС1'),('distribuirani.sistemi','Дистрибуирани системи',3,'ДС'),('dizajn.i.arkhitektura.na.softver','Дизајн и архитектура на софтвер',3,'ДИАНС'),('dizajn.na.digitalni.kola','Дизајн на дигитални кола',1,'ДНДК'),('dizajn.na.obrazoven.softver','Дизајн на образовен софтвер',3,'ДНОС'),('ekonomija.za.ikt.inzheneri','Економија за ИКТ инженери',2,'ЕИКТ'),('fizika','Физика',1,'Ф'),('implementatsija.na.softverski.sistemi.so.sloboden.i.otvoren.kod','Имплементација на софтверски системи со слободен и отворен код',3,'ИССОК'),('informatsiska.bezbednost','Информациска безбедност',3,'ИБ'),('inovatsii.vo.ikt','Иновации во ИКТ',3,'ИИКТ'),('internet.programiranje.na.klientska.strana','Интернет програмирање на клиентска страна',2,'ИПКС'),('inzhenerska.matematika','Инженерска математика',2,'ИМ'),('izbrani.temi.od.matematika./.diskretna.matematika','Избрани теми од математика / Дискретна математика',1,'ДМ'),('kalkulus.1','Калкулус 1',1,'К1'),('kompjuterska.elektronika','Компјутерска електроника',3,'КЕ'),('kompjuterska.etika','Компјутерска етика',3,'КЕ'),('kompjuterski.mrezhi','Компјутерски мрежи',2,'КМ'),('kompjuterski.mrezhi.i.bezbednost','Компјутерски мрежи и безбедност',2,'КМИБ'),('kompjuterski.zvuk,.muzika.i.govor','Компјутерски звук, музика и говор',2,'КЗМГ'),('linearna.algebra.i.primeni','Линеарна алгебра и примени',3,'ЛАИП'),('matematika.1./.kalkulus','Математика 1 / Калкулус',1,'М1'),('menadzhment.informatsiski.sistemi','Менаџмент информациски системи',3,'МИС'),('metodologija.na.istrazhuvanjeto.vo.ikt','Методологија на истражувањето во ИКТ',3,'МИИКТ'),('mikroprotsesorski.sistemi','Микропроцесорски системи',3,'МС'),('mobilni.informatsiski.sistemi','Мобилни информациски системи',3,'МИС'),('mobilni.platformi.i.programiranje','Мобилни платформи и програмирање',3,'МПП'),('mrezhna.i.mobilna.forenzika','Мрежна и мобилна форензика',3,'ММФ'),('multimedijalni.tekhnologii','Мултимедијални технологии',2,'МТ'),('multimediski.mrezhi','Мултимедиски мрежи',3,'ММ'),('multimediski.sistemi','Мултимедиски системи',3,'МС'),('napreden.veb.dizajn','Напреден веб дизајн',3,'НВД'),('napredna.interaktsija.chovek.kompjuter','Напредна интеракција човек компјутер',3,'НИЧК'),('napredno.programiranje','Напредно програмирање',2,'НП'),('obrabotka.na.prirodnite.jazitsi','Обработка на природните јазици',3,'ОПЈ'),('optichki.mrezhi','Оптички мрежи',3,'ОМ'),('osnovi.na.robotikata','Основи на роботиката',3,'ОР'),('osnovi.na.teorijata.na.informatsii','Основи на теоријата на информации',2,'ОТИ'),('paralelno.i.distribuirano.protsesiranje','Паралелно и дистрибуирано процесирање',3,'ПИДП'),('pedagogija','Педагогија',1,'П'),('presmetuvanje.vo.oblak','Пресметување во облак',3,'ПО'),('profesionalni.veshtini','Професионални вештини',1,'ПВ'),('programiranje.na.video.igri','Програмирање на видео игри',3,'ПНВИ'),('programski.paradigmi','Програмски парадигми',3,'ПП'),('sajber.bezbednost./.mrezhna.bezbednost','Сајбер безбедност / Мрежна безбедност',3,'СБ'),('shabloni.za.dizajn.na.korisnichki.interfejsi','Шаблони за дизајн на кориснички интерфејси',2,'ШДКИ'),('sistemi.za.poddrshka.pri.odluchuvanjeto','Системи за поддршка при одлучувањето',2,'СППО'),('softver.za.vgradlivi.sistemi','Софтвер за вградливи системи',3,'СВС'),('strukturno.programiranje','Структурно програмирање',1,'СП'),('upravuvanje.so.tekhnichka.poddrshka','Управување со техничка поддршка',3,'УСТП'),('veb.bazirani.sistemi','Веб базирани системи',3,'ВБС'),('veb.programiranje','Веб програмирање',3,'ВП'),('verojatnost.i.statistika','Веројатност и статистика',2,'ВИС'),('voved.vo.bioinformatikata','Вовед во биоинформатиката',3,'ВБ'),('voved.vo.kompjuterskite.nauki','Вовед во компјутерските науки',1,'ВВКН'),('voved.vo.naukata.za.podatotsi','Вовед во науката за податоци',3,'ВВНП'),('voved.vo.pametni.gradovi','Вовед во паметни градови',3,'ВВПГ');
 /*!40000 ALTER TABLE `subjects` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -525,10 +523,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-10  1:18:24
-
--- Ensure the admin user is created with the required password, if it doesn't already exist
--- Drop the user if it exists
+-- Dump completed on 2024-07-05 11:50:41
 DROP USER 'admin'@'%';
 
 -- Create the admin user

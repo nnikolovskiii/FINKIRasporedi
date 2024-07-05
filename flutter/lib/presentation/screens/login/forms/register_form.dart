@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-import '../login_components/rounded_button.dart';
-import '../login_components/rounded_input.dart';
-import '../login_components/rounded_password_input.dart';
+import '../components/rounded_button.dart';
+import '../components/rounded_input.dart';
+import '../components/rounded_password_input.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({

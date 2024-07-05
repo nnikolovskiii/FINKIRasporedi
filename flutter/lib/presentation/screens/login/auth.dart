@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'components/cancel_button.dart';
-import 'components/login_form.dart';
-import 'components/register_form.dart';
+import 'forms/login_form.dart';
+import 'forms/register_form.dart';
 // import 'package:flutter/services.dart';
 // import 'package:presentation/screens/login/components/cancel_button.dart';
 // import 'package:flutter_app/Screens/login/components/login_form.dart';
 // import 'package:flutter_app/screens/login/components/register_form.dart';
-// import 'package:flutter_app/presentation/screens/login/login.dart';
+// import 'package:flutter_app/presentation/screens/login/auth.dart';
 // import 'package:flutter_app/constants.dart';
 
-class LoginScreen extends StatefulWidget {
+class AuthScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AuthScreenState createState() => _AuthScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStateMixin {
+class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateMixin {
 
   bool isLogin = true;
   late Animation<double> containerSize;

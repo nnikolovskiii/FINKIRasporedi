@@ -5,7 +5,7 @@ import 'package:flutter_app/domain/models/lecture_slots.dart';
 import '../../domain/models/schedule.dart';
 import '../../service/lecture_slot_service.dart';
 import '../../service/schedule_service.dart';
-import '../screens/calendar_screen.dart';
+import '../screens/calendar/calendar_screen.dart';
 
 class ColorPickerScreen extends StatefulWidget {
   final Schedule schedule;
