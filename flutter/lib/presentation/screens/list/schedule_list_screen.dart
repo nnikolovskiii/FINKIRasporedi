@@ -5,9 +5,9 @@ import 'package:flutter_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import '../auth/login.dart';
-import '../calendar_screen.dart';
+import '../calendar/calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
-import '../schedules_screen.dart';
+import '../main_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
   const ScheduleListScreen({Key? key}) : super(key: key);
@@ -61,7 +61,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                     Provider.of<ScheduleProvider>(context, listen: false).setName("");
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SchedulesScreen(initialIndex: 0)),
+                      MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
                     );
                   },
                 ),

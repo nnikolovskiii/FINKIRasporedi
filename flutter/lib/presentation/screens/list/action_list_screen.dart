@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
-import 'package:flutter_app/presentation/screens/schedules_screen.dart';
+import 'package:flutter_app/presentation/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
-import '../../domain/providers/schedule_provider.dart'; // Import ScheduleListScreen
+import '../../../domain/providers/schedule_provider.dart'; // Import ScheduleListScreen
 
-class CardListWidget extends StatelessWidget {
+class ActionListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -27,7 +27,7 @@ class CardListWidget extends StatelessWidget {
         if (title == 'Смер') {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SchedulesScreen(initialIndex: 0,)),
+            MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0,)),
           );
         } else {
           // Handle other card taps if needed

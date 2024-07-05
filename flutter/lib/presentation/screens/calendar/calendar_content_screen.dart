@@ -2,11 +2,11 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/day_slot_widget.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
-import '../../domain/models/lecture_slots.dart';
-import '../../domain/models/schedule.dart';
-import '../schedule_mapper/column_schedule_widget.dart';
-import '../schedule_mapper/time_column_widget.dart';
-import '../schedule_mapper/slots/vertical_divider_widget.dart';
+import '../../../domain/models/lecture_slots.dart';
+import '../../../domain/models/schedule.dart';
+import '../../schedule_mapper/column_schedule_widget.dart';
+import '../../schedule_mapper/time_column_widget.dart';
+import '../../schedule_mapper/slots/vertical_divider_widget.dart';
 
 class CalendarContentScreen extends StatefulWidget {
   final Schedule schedule;

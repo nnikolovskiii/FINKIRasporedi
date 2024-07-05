@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../auth/login.dart';
-import '../login/login.dart';
+import '../login/auth.dart';
 
 class NotLoggedInMessageScreen extends StatelessWidget {
   const NotLoggedInMessageScreen({super.key});
@@ -22,7 +22,7 @@ class NotLoggedInMessageScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  LoginScreen()),
+                MaterialPageRoute(builder: (context) =>  AuthScreen()),
               );
             },
             child: const Text('Логирај се'),

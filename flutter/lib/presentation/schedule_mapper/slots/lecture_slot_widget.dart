@@ -9,7 +9,7 @@ import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import '../../../service/schedule_service.dart';
-import '../../screens/calendar_screen.dart';
+import '../../screens/calendar/calendar_screen.dart';
 
 class LectureWidget extends StatelessWidget {
   final ScheduleService scheduleService = ScheduleService();

@@ -1,5 +1,5 @@
 // import 'package:flutter/material.dart';
-// import 'package:simple_app/presentation/screens/auth/login.dart';
+// import 'package:simple_app/presentation/screens/auth/auth.dart';
 // import 'package:simple_app/presentation/screens/auth/register.dart';
 // import 'package:simple_app/presentation/screens/auth/signup.dart';
 //
