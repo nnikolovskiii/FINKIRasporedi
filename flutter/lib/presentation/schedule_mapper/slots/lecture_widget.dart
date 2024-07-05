@@ -30,7 +30,7 @@ class LectureWidget extends StatelessWidget {
     List<TransparentTimeSlotWidget> emptyWidgets = [];
 
     for (double i = 0; i < interval; i++) {
-      emptyWidgets.add(TransparentTimeSlotWidget(allDays: allDays,));
+      emptyWidgets.add(TransparentTimeSlotWidget(allDays: allDays));
     }
 
     return emptyWidgets;
@@ -38,7 +38,7 @@ class LectureWidget extends StatelessWidget {
 
   double getHeight(double height, LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return ((height * 1/13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
+    return ((height * 1 / 13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -66,153 +66,299 @@ class LectureWidget extends StatelessWidget {
     Color backgroundColor = hexToColor(lecture.hexColor ?? "#888888");
     bool darkText = isDarkColor(backgroundColor);
 
-    return GestureDetector(
-      onLongPress: isDefault
-          ? null
-          : () {
-        // Show a dialog or perform any action for deleting the lecture
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      lecture.name ?? lecture.lecture!.course.subject.name,
-                      textScaleFactor: textScaleFactor,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: [
-                    if (lecture.lecture != null) ...[
-                      Text(
-                        'Просторија: ${lecture.lecture!.room.name}',
-                        textScaleFactor: textScaleFactor,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                      Text(
-                        'Професор: ${lecture.lecture!.professor.name}',
-                        textScaleFactor: textScaleFactor,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ] else
-                      Text(
-                        'Лекција: ${lecture.name}',
-                        textScaleFactor: textScaleFactor,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Изберете акција:',
-                      textScaleFactor: textScaleFactor,
-                      style: TextStyle(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          ),
-                          onPressed: () async {
-                            await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CalendarScreen(schedule.id ?? 0),
-                              ),
-                            ); // Close the dialog
-                          },
-                          child: const Text(
-                            'Избриши',
-                            style: TextStyle(color: Colors.white),
-                          ),
-
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 5),
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
-                              ),
-                            ); // Close the dialog
-                          },
-                          child: const Text(
-                            'Ажурирај',
-                            style: TextStyle(color: Colors.white),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (width > 10000) {
+          return GestureDetector(
+            onLongPress: isDefault
+                ? null
+                : () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            lecture.name ?? lecture.lecture!.course.subject.name,
+                            textScaleFactor: textScaleFactor,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
-                      ),
-                      if (lecture.lecture != null)
-                        Container(
-                          margin: EdgeInsets.symmetric(vertical: 5),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                            ),
-                            onPressed: () async {
-                              await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                ),
-                              ); // Close the dialog
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.of(context).pop();
                             },
-                            child: const Text(
-                              'Ресетирај',
-                              style: TextStyle(color: Colors.white),
-                            ),
                           ),
                         ),
+                      ],
+                    ),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: [
+                          if (lecture.lecture != null) ...[
+                            Text(
+                              'Просторија: ${lecture.lecture!.room.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              'Професор: ${lecture.lecture!.professor.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ] else
+                            Text(
+                              'Лекција: ${lecture.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Изберете акција:',
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                ),
+                                onPressed: () async {
+                                  await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                    ),
+                                  ); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Избриши',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                                    ),
+                                  ); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Ажурирај',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                            if (lecture.lecture != null)
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Theme.of(context).primaryColor,
+                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                  ),
+                                  onPressed: () async {
+                                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                      ),
+                                    ); // Close the dialog
+                                  },
+                                  child: const Text(
+                                    'Ресетирај',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ],
+                  );
+                },
+              );
+            },
+            child: Stack(
+              children: [
+                Container(
+                  child: Container(
+                    height: getHeight(height, lecture),
+                    width: allDays
+                        ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
+                        : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
+                    decoration: BoxDecoration(
+                      color: backgroundColor,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: _buildConditionalWidget(!darkText),
+                      ),
+                    ),
                   ),
                 ),
               ],
-            );
-          },
-        );
-      },
-      child: Stack(
-        children: [
-          Container(
+            ),
+          );
+        } else {
+          return GestureDetector(
+            onLongPress: isDefault
+                ? null
+                : () {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(
+                      lecture.lecture?.course.subject.name ?? lecture.name ?? "",
+                      textScaleFactor: textScaleFactor,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: [
+                          if (lecture.lecture != null) ...[
+                            Text(
+                              'Просторија: ${lecture.lecture!.room.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            Text(
+                              'Професор: ${lecture.lecture!.professor.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          ] else
+                            Text(
+                              'Лекција: ${lecture.name}',
+                              textScaleFactor: textScaleFactor,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Изберете акција:',
+                            textScaleFactor: textScaleFactor,
+                            style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              ),
+                              onPressed: () async {
+                                await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                  ),
+                                ); // Close the dialog
+                              },
+                              child: const Text(
+                                'Избриши',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            child: TextButton(
+                              style: TextButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                                  ),
+                                ); // Close the dialog
+                              },
+                              child: const Text(
+                                'Ажурирај',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                          if (lecture.lecture != null)
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                ),
+                                onPressed: () async {
+                                  await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                    ),
+                                  ); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Ресетирај',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
             child: Container(
               height: getHeight(height, lecture),
               width: allDays
@@ -222,17 +368,21 @@ class LectureWidget extends StatelessWidget {
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildConditionalWidget(darkText),
+              child: Center(
+                child: Text(
+                  lecture.lecture?.course.subject.abbreviation ?? lecture.name ?? "",
+                  style: TextStyle(
+                    color: darkText ? Colors.white : Colors.black,
+                    fontFamily: 'Lato',
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
+          );
+        }
+      },
     );
   }
 

@@ -2,7 +2,7 @@
   "offset_one_day": 15,
   "offset_all_days": 80,
   "time_ratio_all_days": 1,
-  "cal_ratio_all_days": 11,
+  "cal_ratio_all_days": 5,
   "time_ratio_one_day": 2,
   "cal_ratio_one_day": 4,
   "height_offset": 3.7
