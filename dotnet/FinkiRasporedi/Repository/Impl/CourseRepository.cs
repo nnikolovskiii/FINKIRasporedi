@@ -1,6 +1,6 @@
 ﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 

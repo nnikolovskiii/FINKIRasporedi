@@ -1,8 +1,7 @@
 ﻿using FinkiRasporedi.Models.Domain;
-using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
 using FinkiRasporedi.Models.Identity;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,13 +15,13 @@ namespace FinkiRasporedi.Repository
         private readonly ILectureSlotRepository _lectureSlotRepository;
         private readonly DbSet<Student> _students;
         private readonly IAuthRepository _authRepository;
+        private readonly IProfessorRepository _professorRepository;
 
 
         public ScheduleRepository(
             ApplicationDbContext context,
             ILectureRepository lectureRepository, ILectureSlotRepository lectureSlotRepository,
-            IAuthRepository authRepository
-        )
+            IAuthRepository authRepository, IProfessorRepository professorRepository)
         {
             _schedules = context.Set<Schedule>();
             _context = context;
@@ -30,6 +29,7 @@ namespace FinkiRasporedi.Repository
             _lectureSlotRepository = lectureSlotRepository;
             _students = context.Set<Student>(); ;
             _authRepository = authRepository;
+            _professorRepository = professorRepository;
         }
 
         public async Task<Schedule> AddAsync(Schedule entity)
@@ -37,6 +37,11 @@ namespace FinkiRasporedi.Repository
             String user_id = _authRepository.ValidateTokenAndGetUserId();
             entity.StudentId = user_id;
 
+            return await _addAsync(entity);
+        }
+        
+        private async Task<Schedule> _addAsync(Schedule entity)
+        {
             _context.schedules?.Add(entity);
             try
             {
@@ -57,11 +62,11 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
-        public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot)
+        public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot, bool validateUser)
         {
             Schedule schedule = await GetByIdAsync(id);
 
-            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            if (validateUser && !_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
             {
                 throw new Exception("TokenValidationError");
             }
@@ -235,6 +240,31 @@ namespace FinkiRasporedi.Repository
             }
 
             return Enumerable.Empty<Schedule>();
+        }
+        
+        public async Task<Professor> AddScheduleToProfessor(Professor professor)
+        {
+            List<LectureSlot> lectureSlots = new List<LectureSlot>();
+            Schedule schedule = new Schedule();
+            schedule.Name = professor.Name;
+            schedule.Description = professor.Name;
+            schedule.StudentId = "FINKI";
+            schedule.Lectures = new List<LectureSlot>();
+
+            Schedule savedSchedule = await _addAsync(schedule);
+            
+            foreach (Lecture lecture in professor.Lectures)
+            {
+                LectureSlot lectureSlot = new LectureSlot();
+                lectureSlot.Lecture = lecture;
+                await AddLectureAsync(savedSchedule.Id, lectureSlot, false);
+            }
+
+            professor.Schedule = schedule;
+
+            await _professorRepository.UpdateAsync(professor.Id, professor);
+
+            return professor;
         }
     }
 }

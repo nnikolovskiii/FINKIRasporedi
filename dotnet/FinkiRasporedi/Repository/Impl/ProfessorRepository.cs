@@ -1,6 +1,6 @@
 ﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +53,7 @@ namespace FinkiRasporedi.Repository
         {
             return await _professors.ToListAsync();
         }
+        
 
         public async Task<Professor> GetByIdAsync(string id)
         {

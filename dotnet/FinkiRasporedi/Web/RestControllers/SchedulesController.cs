@@ -13,12 +13,13 @@ namespace FinkiRasporedi.Web.RestControllers
     public class SchedulesController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepository;
+        private readonly IProfessorRepository _professorRepository;
 
         public SchedulesController(
-            IScheduleRepository ScheduleRepository
-        )
+            IScheduleRepository scheduleRepository, IProfessorRepository professorRepository)
         {
-            _scheduleRepository = ScheduleRepository;
+            _scheduleRepository = scheduleRepository;
+            _professorRepository = professorRepository;
         }
 
         // GET: api/Schedules
@@ -79,7 +80,7 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpPost("addLecture/{id}")]
         public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] LectureSlot lectureSlot)
         {
-            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureSlot);
+            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureSlot, true);
             return Ok(updatedSchedule);
         }
 
@@ -116,5 +117,20 @@ namespace FinkiRasporedi.Web.RestControllers
                 return Unauthorized();
             }
         }
+        
+        [AllowAnonymous]
+        [HttpGet("Professor/{id}")]
+        public async Task<IActionResult> GetScheduleByProfessor(string id)
+        {
+            Professor professor = await _professorRepository.GetByIdAsync(id);
+
+            if (professor.Schedule == null)
+            {
+                await _scheduleRepository.AddScheduleToProfessor(professor);
+            }
+
+            return Ok(professor.Schedule);
+        }
+        
     }
 }

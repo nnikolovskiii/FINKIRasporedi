@@ -1,10 +1,9 @@
 ﻿using FinkiRasporedi.Models.Domain;
-using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinkiRasporedi.Repository.Data
+namespace FinkiRasporedi.Data
 {
     public class ApplicationDbContext : IdentityDbContext<Student>
     {
@@ -56,7 +55,8 @@ namespace FinkiRasporedi.Repository.Data
                .HasForeignKey(s => s.StudentId);
             modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Professor)
-               .WithMany();
+               .WithMany(p=>p.Lectures)
+               .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Lecture>()
                .HasOne(s => s.Course)
                .WithMany();
@@ -88,6 +88,10 @@ namespace FinkiRasporedi.Repository.Data
                .WithMany();
             modelBuilder.Entity<CourseProfessor>()
                .HasKey("CourseId", "ProfessorId");
+            modelBuilder.Entity<Professor>()
+                .HasOne(p => p.Schedule)
+                .WithOne()
+                .HasForeignKey<Professor>(p => p.ScheduleId);
         }
     }
 }

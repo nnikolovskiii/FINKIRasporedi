@@ -1,7 +1,7 @@
 using FinkiRasporedi.Models.Identity;
 using FinkiRasporedi.Models.Mailling;
 using FinkiRasporedi.Repository;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Impl;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

@@ -6,6 +6,7 @@ namespace FinkiRasporedi.Models.Domain
 {
     public class LectureSlot
     {
+
         [Key]
         public int Id { get; set; }
 
