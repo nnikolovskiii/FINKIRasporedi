@@ -35,6 +35,34 @@ Resources:
           SourceSecurityGroupId:
             Ref: LoadBalancerSecurityGroup
 
+  ECSTaskExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "ecs-tasks.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Policies:
+        - PolicyName: "ecsTaskExecutionRolePolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "ecr:GetDownloadUrlForLayer"
+                  - "ecr:BatchGetImage"
+                  - "ecr:BatchCheckLayerAvailability"
+                  - "logs:CreateLogStream"
+                  - "logs:PutLogEvents"
+                Resource: "*"
+      Path: "/"
+      RoleName: "ecsTaskExecutionRole"
+
   ECSCluster:
     Type: AWS::ECS::Cluster
     Properties:
@@ -56,7 +84,10 @@ Resources:
       NetworkMode: awsvpc
       RequiresCompatibilities:
         - FARGATE
-      ExecutionRoleArn: 'arn:aws:iam::111122223333:role/ecsTaskExecutionRole'
+      ExecutionRoleArn:
+        Fn::GetAtt:
+          - ECSTaskExecutionRole
+          - Arn
       Family: task-definition-cfn
 
   ECSService:

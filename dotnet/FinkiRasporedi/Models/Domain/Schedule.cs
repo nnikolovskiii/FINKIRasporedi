@@ -1,5 +1,4 @@
-﻿using FinkiRasporedi.Models.Domain;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace FinkiRasporedi.Models.Domain

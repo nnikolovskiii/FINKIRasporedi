@@ -181,6 +181,7 @@ namespace FinkiRasporedi.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("StudentId")
+                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
@@ -522,7 +523,9 @@ namespace FinkiRasporedi.Migrations
                 {
                     b.HasOne("FinkiRasporedi.Models.Identity.Student", null)
                         .WithMany("Schedules")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LectureSlotSchedule", b =>
