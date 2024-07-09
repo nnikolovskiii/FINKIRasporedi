@@ -1,5 +1,4 @@
-﻿using FinkiRasporedi.Models.Base;
-using FinkiRasporedi.Models.Domain;
+﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Dtos;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;

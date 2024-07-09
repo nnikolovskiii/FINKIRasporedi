@@ -1,4 +1,4 @@
-﻿using FinkiRasporedi.Models.Base;
+﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 

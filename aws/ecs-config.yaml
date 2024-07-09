@@ -1,0 +1,159 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: The template used to create an ECS Service associated with an Application Load Balancer.
+
+Parameters:
+  SubnetIDs:
+    Type: CommaDelimitedList
+    Default: subnet-098b735d5e502d566,subnet-002b6eeebcee42f91,subnet-0cb88622e95956387
+  VpcID:
+    Type: String
+    Default: vpc-06b2ed2efcaec4baf
+
+Resources:
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow inbound traffic to the load balancer"
+      VpcId:
+        Ref: VpcID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  ECSServiceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow inbound traffic to the ECS tasks from the load balancer"
+      VpcId:
+        Ref: VpcID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 7069
+          ToPort: 7069
+          SourceSecurityGroupId:
+            Ref: LoadBalancerSecurityGroup
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: FinkiRasporediCluster
+
+  ECSTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Image: 'nnikolovskii/rasporedi-backend'
+          Name: backend-app
+          Essential: true
+          PortMappings:
+            - ContainerPort: 7069
+              HostPort: 80
+              Protocol: tcp
+      Cpu: 256
+      Memory: 512
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      ExecutionRoleArn: 'arn:aws:iam::111122223333:role/ecsTaskExecutionRole'
+      Family: task-definition-cfn
+
+  ECSService:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster:
+        Ref: ECSCluster
+      TaskDefinition:
+        Ref: ECSTaskDefinition
+      LaunchType: FARGATE
+      ServiceName: backend
+      SchedulingStrategy: REPLICA
+      DesiredCount: 3
+      LoadBalancers:
+        - ContainerName: backend-app
+          ContainerPort: 80
+          TargetGroupArn:
+            Ref: TargetGroup
+      HealthCheckGracePeriodSeconds: 20
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: ENABLED
+          SecurityGroups:
+            - Ref: ECSServiceSecurityGroup
+          Subnets:
+            Ref: SubnetIDs
+      PlatformVersion: LATEST
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: 100
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      DeploymentController:
+        Type: ECS
+      ServiceConnectConfiguration:
+        Enabled: false
+      Tags: []
+      EnableECSManagedTags: true
+    DependsOn:
+      - Listener
+
+  LoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Type: application
+      Name: alb-test
+      SecurityGroups:
+        - Ref: LoadBalancerSecurityGroup
+      Subnets:
+        Ref: SubnetIDs
+
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckPath: /
+      Name: ecs-task-m-alb
+      Port: 80
+      Protocol: HTTP
+      TargetType: ip
+      HealthCheckProtocol: HTTP
+      VpcId:
+        Ref: VpcID
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: "300"
+
+  Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn:
+            Ref: TargetGroup
+      LoadBalancerArn:
+        Ref: LoadBalancer
+      Port: 80
+      Protocol: HTTP
+
+Outputs:
+  ClusterName:
+    Description: The cluster used to create the service.
+    Value:
+      Ref: ECSCluster
+  ECSService:
+    Description: The created service.
+    Value:
+      Ref: ECSService
+  LoadBalancer:
+    Description: The created load balancer.
+    Value:
+      Ref: LoadBalancer
+  Listener:
+    Description: The created listener.
+    Value:
+      Ref: Listener
+  TargetGroup:
+    Description: The created target group.
+    Value:
+      Ref: TargetGroup

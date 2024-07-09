@@ -36,4 +36,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\Identity\Pages\_ViewStart.cshtml" />
+  </ItemGroup>
+
 </Project>

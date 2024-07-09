@@ -1,4 +1,4 @@
-﻿using FinkiRasporedi.Models.Base;
+﻿using FinkiRasporedi.Models.Domain;
 using Microsoft.AspNetCore.Identity;
 
 namespace FinkiRasporedi.Models.Identity

@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace FinkiRasporedi.Models.Base
+namespace FinkiRasporedi.Models.Domain
 {
     public class Schedule
     {
