@@ -9,6 +9,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=finki_rasporedi;User=admin;Password=ogan123;
+      - ASPNETCORE_URLS=http://+:80
     depends_on:
       - mysql
     ports:
