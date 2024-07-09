@@ -12,7 +12,8 @@ namespace FinkiRasporedi.Repository.Impl
         ILectureRepository lectureRepository,
         ILectureSlotRepository lectureSlotRepository,
         IAuthRepository authRepository,
-        IProfessorRepository professorRepository)
+        IProfessorRepository professorRepository,
+        IRoomRepository roomRepository)
         : IScheduleRepository
     {
         private readonly DbSet<Schedule> _schedules = context.Set<Schedule>();
@@ -171,11 +172,11 @@ namespace FinkiRasporedi.Repository.Impl
                 throw new UnauthorizedAccessException("Invalid token");
             }
 
-            var stuent = await _students.FindAsync(userId);
+            var student = await _students.FindAsync(userId);
 
-            if (stuent != null)
+            if (student != null)
             {
-                return stuent.Schedules;
+                return student.Schedules;
             }
 
             return [];
@@ -255,6 +256,34 @@ namespace FinkiRasporedi.Repository.Impl
             await professorRepository.UpdateAsync(professor.Id, professor);
 
             return professor;
+        }
+
+        public async Task<Room> AddScheduleToRoom(Room room)
+        {
+            Schedule schedule = new Schedule
+            {
+                Name = room.Name,
+                Description = room.Name,
+                StudentId = "FINKI",
+                Lectures = new List<LectureSlot>()
+            };
+
+            Schedule savedSchedule = await _addAsync(schedule);
+            
+            foreach (Lecture lecture in room.Lectures)
+            {
+                LectureSlot lectureSlot = new LectureSlot
+                {
+                    Lecture = lecture
+                };
+                await AddLectureAsync(savedSchedule.Id, lectureSlot, false);
+            }
+
+            room.Schedule = schedule;
+
+            await roomRepository.UpdateAsync(room.Name, room);
+
+            return room;
         }
     }
 }

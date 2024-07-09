@@ -92,6 +92,10 @@ namespace FinkiRasporedi.Data
                 .HasOne(p => p.Schedule)
                 .WithOne()
                 .HasForeignKey<Professor>(p => p.ScheduleId);
+            modelBuilder.Entity<Room>()
+                .HasOne(r => r.Schedule)
+                .WithOne()
+                .HasForeignKey<Room>(r => r.ScheduleId);
         }
     }
 }

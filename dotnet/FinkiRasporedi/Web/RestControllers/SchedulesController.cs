@@ -10,18 +10,12 @@ namespace FinkiRasporedi.Web.RestControllers
     [ApiController]
     [Route("api/[controller]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class SchedulesController : ControllerBase
+    public class SchedulesController(
+        IScheduleRepository scheduleRepository,
+        IProfessorRepository professorRepository,
+        IRoomRepository roomRepository)
+        : ControllerBase
     {
-        private readonly IScheduleRepository _scheduleRepository;
-        private readonly IProfessorRepository _professorRepository;
-
-        public SchedulesController(
-            IScheduleRepository scheduleRepository, IProfessorRepository professorRepository)
-        {
-            _scheduleRepository = scheduleRepository;
-            _professorRepository = professorRepository;
-        }
-
         // GET: api/Schedules
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Schedule>>> GetSchedules(int page, int size)
@@ -29,11 +23,11 @@ namespace FinkiRasporedi.Web.RestControllers
             IEnumerable<Schedule> schedules;
             if (page == 0 && size == 0)
             {
-                schedules = await _scheduleRepository.GetAllAsync();
+                schedules = await scheduleRepository.GetAllAsync();
             }
             else
             {
-                schedules = await _scheduleRepository.GetPageAsync(page, size);
+                schedules = await scheduleRepository.GetPageAsync(page, size);
             }
             return Ok(schedules);
         }
@@ -43,15 +37,15 @@ namespace FinkiRasporedi.Web.RestControllers
         [AllowAnonymous]
         public async Task<ActionResult<Schedule>> GetSchedule(int id)
         {
-            var schedule = await _scheduleRepository.GetByIdAsync(id);
+            var schedule = await scheduleRepository.GetByIdAsync(id);
             return Ok(schedule);
         }
 
         // PUT: api/Schedules/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchedule(int id, Schedule Schedule)
+        public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
         {
-            var updatedSchedule = await _scheduleRepository.UpdateAsync(id, Schedule);
+            var updatedSchedule = await scheduleRepository.UpdateAsync(id, schedule);
             return Ok(updatedSchedule);
         }
 
@@ -59,12 +53,14 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpPost]
         public async Task<ActionResult<Schedule>> PostSchedule(ScheduleDTO scheduleDto)
         {
-            Schedule schedule = new Schedule();
-            schedule.Id = scheduleDto.Id;
-            schedule.Lectures = scheduleDto.Lectures;
-            schedule.Description = scheduleDto.Description;
-            schedule.Name = scheduleDto.Name;
-            var updatedSchedule = await _scheduleRepository.AddAsync(schedule);
+            var schedule = new Schedule
+            {
+                Id = scheduleDto.Id,
+                Lectures = scheduleDto.Lectures,
+                Description = scheduleDto.Description,
+                Name = scheduleDto.Name
+            };
+            var updatedSchedule = await scheduleRepository.AddAsync(schedule);
             return Ok(updatedSchedule);
         }
 
@@ -72,7 +68,7 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteSchedule(int id)
         {
-            await _scheduleRepository.DeleteAsync(id);
+            await scheduleRepository.DeleteAsync(id);
             return NoContent();
         }
 
@@ -80,7 +76,7 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpPost("addLecture/{id}")]
         public async Task<ActionResult<Schedule?>> AddLecture(int id, [FromBody] LectureSlot lectureSlot)
         {
-            var updatedSchedule = await _scheduleRepository.AddLectureAsync(id, lectureSlot, true);
+            var updatedSchedule = await scheduleRepository.AddLectureAsync(id, lectureSlot, true);
             return Ok(updatedSchedule);
         }
 
@@ -89,7 +85,7 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpDelete("removeLecture/{id}")]
         public async Task<ActionResult<Schedule>> RemoveLectureAsync(int id, [FromBody] int lectureId)
         {
-            var updatedSchedule = await _scheduleRepository.RemoveLectureAsync(id, lectureId);
+            var updatedSchedule = await scheduleRepository.RemoveLectureAsync(id, lectureId);
             return Ok(updatedSchedule);
         }
 
@@ -98,7 +94,7 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpGet("default")]
         public async Task<IActionResult> GetDefaultSchedules()
         {
-            var schedules = await _scheduleRepository.GetDefaultSchedules();
+            var schedules = await scheduleRepository.GetDefaultSchedules();
             return Ok(schedules);
 
         }
@@ -109,10 +105,10 @@ namespace FinkiRasporedi.Web.RestControllers
         {
             try
             {
-                var schedules = await _scheduleRepository.GetStudentSchedules();
+                var schedules = await scheduleRepository.GetStudentSchedules();
                 return Ok(schedules);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return Unauthorized();
             }
@@ -122,15 +118,28 @@ namespace FinkiRasporedi.Web.RestControllers
         [HttpGet("Professor/{id}")]
         public async Task<IActionResult> GetScheduleByProfessor(string id)
         {
-            Professor professor = await _professorRepository.GetByIdAsync(id);
+            Professor professor = await professorRepository.GetByIdAsync(id);
 
             if (professor.Schedule == null)
             {
-                await _scheduleRepository.AddScheduleToProfessor(professor);
+                await scheduleRepository.AddScheduleToProfessor(professor);
             }
 
             return Ok(professor.Schedule);
         }
         
+        [AllowAnonymous]
+        [HttpGet("Room/{id}")]
+        public async Task<IActionResult> GetScheduleByRoom(string id)
+        {
+            Room room = await roomRepository.GetByIdAsync(id);
+
+            if (room.Schedule == null)
+            {
+                await scheduleRepository.AddScheduleToRoom(room);
+            }
+
+            return Ok(room.Schedule);
+        }
     }
 }
