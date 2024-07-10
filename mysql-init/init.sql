@@ -581,4 +581,15 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-09 22:54:34
+-- Dump completed on 2024-07-05 11:50:41
+DROP USER 'admin'@'%';
+
+-- Create the admin user
+CREATE USER 'admin'@'%' IDENTIFIED BY 'ogan123';
+
+-- Grant all privileges to the admin user for the finki_rasporedi database
+GRANT ALL PRIVILEGES ON finki_rasporedi.* TO 'admin'@'%';
+
+-- Apply the changes
+FLUSH PRIVILEGES;
+
