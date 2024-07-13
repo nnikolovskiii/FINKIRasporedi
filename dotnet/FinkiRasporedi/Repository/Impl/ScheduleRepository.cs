@@ -54,7 +54,7 @@ namespace FinkiRasporedi.Repository.Impl
                 throw new ScheduleNotFoundException(id);
             }
 
-            if (schedule.StudentId != "FINKI" && !authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            if (schedule.StudentId != "FINKI" && schedule.StudentId != "FINKI1" && !authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
             {
                 throw new Exception("TokenValidationError");
             }
@@ -236,7 +236,7 @@ namespace FinkiRasporedi.Repository.Impl
             {
                 Name = professor.Name,
                 Description = professor.Name,
-                StudentId = "FINKI",
+                StudentId = "FINKI1",
                 Lectures = new List<LectureSlot>()
             };
 
@@ -264,7 +264,7 @@ namespace FinkiRasporedi.Repository.Impl
             {
                 Name = room.Name,
                 Description = room.Name,
-                StudentId = "FINKI",
+                StudentId = "FINKI1",
                 Lectures = new List<LectureSlot>()
             };
 

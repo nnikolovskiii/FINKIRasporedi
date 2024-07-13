@@ -58,10 +58,11 @@ namespace FinkiRasporedi.Data
                .WithMany(p=>p.Lectures)
                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Lecture>()
-               .HasOne(s => s.Course)
-               .WithMany();
+                .HasOne(s => s.Room)
+                .WithMany(p=>p.Lectures)
+                .OnDelete(DeleteBehavior.Cascade);
             modelBuilder.Entity<Lecture>()
-               .HasOne(s => s.Room)
+               .HasOne(s => s.Course)
                .WithMany();
             modelBuilder.Entity<Lecture>()
                 .ToTable("lectures");
