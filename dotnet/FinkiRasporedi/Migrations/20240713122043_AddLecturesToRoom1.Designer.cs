@@ -4,6 +4,7 @@ using FinkiRasporedi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240713122043_AddLecturesToRoom1")]
+    partial class AddLecturesToRoom1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,6 +90,9 @@ namespace FinkiRasporedi.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("RoomName1")
+                        .HasColumnType("varchar(255)");
+
                     b.Property<int>("TimeFrom")
                         .HasColumnType("int");
 
@@ -100,6 +106,8 @@ namespace FinkiRasporedi.Migrations
                     b.HasIndex("ProfessorId");
 
                     b.HasIndex("RoomName");
+
+                    b.HasIndex("RoomName1");
 
                     b.ToTable("lectures", (string)null);
                 });
@@ -508,10 +516,14 @@ namespace FinkiRasporedi.Migrations
                         .IsRequired();
 
                     b.HasOne("FinkiRasporedi.Models.Domain.Room", "Room")
-                        .WithMany("Lectures")
+                        .WithMany()
                         .HasForeignKey("RoomName")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("FinkiRasporedi.Models.Domain.Room", null)
+                        .WithMany("Lectures")
+                        .HasForeignKey("RoomName1");
 
                     b.Navigation("Course");
 

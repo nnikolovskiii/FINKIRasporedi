@@ -12,9 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    env:
-      TAG: ${{ github.run_number }}
-
     steps:
     - name: Check out the repository
       uses: actions/checkout@v4
@@ -26,13 +23,13 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker backend
-      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/rasporedi-backend:${{ env.TAG }}
+      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
 
     - name: Build Docker frontend
-      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/rasporedi-frontend:${{ env.TAG }}
+      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
 
     - name: Push Docker image 1
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/rasporedi-backend:${{ env.TAG }}
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
 
     - name: Push Docker image 2
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/rasporedi-frontend:${{ env.TAG }}
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest

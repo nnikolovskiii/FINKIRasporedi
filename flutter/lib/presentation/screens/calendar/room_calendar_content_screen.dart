@@ -1,36 +1,34 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/presentation/screens/calendar/professor_calendar_screen.dart';
 import 'package:flutter_app/presentation/screens/calendar/room_calendar_screen.dart';
 import 'package:provider/provider.dart';
-import '../../../domain/models/professor.dart';
 import '../../../domain/models/room.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import 'calendar_content_screen.dart';
 
-class ProfessorCalendarContentScreen extends StatefulWidget {
+class RoomCalendarContentScreen extends StatefulWidget {
   final Schedule schedule;
-  final List<Professor> professors;
+  final List<Room> rooms;
 
-  const ProfessorCalendarContentScreen({
+  const RoomCalendarContentScreen({
     Key? key,
     required this.schedule,
-    required this.professors,
+    required this.rooms,
   }) : super(key: key);
 
   @override
-  _ProfessorCalendarContentScreenState createState() => _ProfessorCalendarContentScreenState();
+  _RoomCalendarContentScreenState createState() => _RoomCalendarContentScreenState();
 }
 
-class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarContentScreen> {
+class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
   late final PageController controller;
   late final ScrollController _scrollController;
   double currentPage = 0;
   int num = 5;
   bool showAllDays = true;
   String? selectedProfessor;
-  List<Professor> filteredProfessors = [];
+  List<Room> filteredRooms = [];
   final LayerLink _layerLink = LayerLink();
   OverlayEntry? _overlayEntry;
   final TextEditingController _searchController = TextEditingController();
@@ -41,7 +39,7 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
     controller = PageController(initialPage: 0);
     controller.addListener(_onPageChanged);
     _scrollController = ScrollController();
-    filteredProfessors = widget.professors;
+    filteredRooms = widget.rooms;
   }
 
   @override
@@ -70,8 +68,8 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
 
   void _filterProfessors(String query) {
     setState(() {
-      filteredProfessors = widget.professors
-          .where((professor) => professor.name.toLowerCase().contains(query.toLowerCase()))
+      filteredRooms = widget.rooms
+          .where((room) => room.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
       _overlayEntry?.markNeedsBuild();
     });
@@ -81,9 +79,9 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
     if (_overlayEntry != null) return;
 
     if (selectedProfessor != null) {
-      final selectedProf = widget.professors.firstWhere((prof) => prof.id == selectedProfessor);
-      filteredProfessors.removeWhere((prof) => prof.id == selectedProfessor);
-      filteredProfessors.insert(0, selectedProf);
+      final selectedProf = widget.rooms.firstWhere((room) => room.name == selectedProfessor);
+      filteredRooms.removeWhere((room) => room.name == selectedProfessor);
+      filteredRooms.insert(0, selectedProf);
     }
 
     _overlayEntry = OverlayEntry(
@@ -103,21 +101,21 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
                 child: ListView(
                   shrinkWrap: true,
                   controller: _scrollController,
-                  children: filteredProfessors.map((Professor professor) {
+                  children: filteredRooms.map((Room room) {
                     return ListTile(
-                      title: Text(professor.name),
+                      title: Text(room.name),
                       onTap: () {
                         setState(() {
-                          selectedProfessor = professor.id;
-                          _searchController.text = professor.name;
+                          selectedProfessor = room.name;
+                          _searchController.text = room.name;
                           _overlayEntry?.remove();
                           _overlayEntry = null;
                         });
-                        Provider.of<ScheduleProvider>(context, listen: false).setProfessor(professor.id);
+                        Provider.of<ScheduleProvider>(context, listen: false).setRoom(room.name);
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfessorCalendarScreen()),
+                          MaterialPageRoute(builder: (context) => RoomCalendarScreen()),
                         );
                       },
                     );
