@@ -7,9 +7,7 @@ on:
     branches: [ "production" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -33,3 +31,11 @@ jobs:
 
     - name: Push Docker image 2
       run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
+
+    - name: Set backend image output
+      id: backend
+      run: echo "::set-output name=backend_image::${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest"
+
+    - name: Set frontend image output
+      id: frontend
+      run: echo "::set-output name=frontend_image::${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest"
