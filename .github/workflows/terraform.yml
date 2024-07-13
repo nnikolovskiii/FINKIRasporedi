@@ -1,4 +1,4 @@
-name: 'Terraform and ECS Deployment'
+name: 'Terraform'
 
 on:
   workflow_run:
@@ -10,67 +10,38 @@ permissions:
   contents: read
 
 jobs:
-  deploy:
-    name: 'Deploy to ECS'
+  terraform:
+    name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
 
     steps:
-    - name: Checkout
+    - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v2
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-west-2  # Change to your desired region
+        aws-region: eu-central-1  # Change to your desired region
 
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
-
-    - name: Change to Terraform directory
-      run: cd ./aws-infra
 
     - name: Terraform Init
       run: terraform init
       working-directory: ./aws-infra
 
+    - name: Terraform Format
+      run: terraform fmt -check
+      working-directory: ./aws-infra
+
     - name: Terraform Plan
-      run: terraform plan -input=false
+      run: terraform plan -input=false -var "backend_image=${{ needs.build.outputs.backend_image }}" -var "frontend_image=${{ needs.build.outputs.frontend_image }}"
       working-directory: ./aws-infra
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/production' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false
+      run: terraform apply -auto-approve -input=false -var "backend_image=${{ needs.build.outputs.backend_image }}" -var "frontend_image=${{ needs.build.outputs.frontend_image }}"
       working-directory: ./aws-infra
-
-    - name: Get ECS Cluster and Service names
-      id: terraform_output
-      run: |
-        echo ECS_CLUSTER=$(terraform output -raw ecs_cluster_name) >> $GITHUB_ENV
-        echo ECS_SERVICE_BACKEND=$(terraform output -raw ecs_service_name_backend) >> $GITHUB_ENV
-        echo ECS_SERVICE_FRONTEND=$(terraform output -raw ecs_service_name_frontend) >> $GITHUB_ENV
-      working-directory: ./aws-infra
-
-    - name: Update ECS Backend Service
-      run: |
-        aws ecs update-service \
-          --cluster ${{ env.ECS_CLUSTER }} \
-          --service ${{ env.ECS_SERVICE_BACKEND }} \
-          --force-new-deployment
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: us-west-2
-
-    - name: Update ECS Frontend Service
-      run: |
-        aws ecs update-service \
-          --cluster ${{ env.ECS_CLUSTER }} \
-          --service ${{ env.ECS_SERVICE_FRONTEND }} \
-          --force-new-deployment
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: us-west-2

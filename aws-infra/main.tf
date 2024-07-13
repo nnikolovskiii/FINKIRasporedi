@@ -55,6 +55,15 @@ resource "aws_ecs_cluster" "finki_rasporedi_ecs_cluster" {
   name = "finki-rasporedi-cluster"
 }
 
+variable "backend_image" {
+  description = "Docker image for the backend"
+  type        = string
+}
+
+variable "frontend_image" {
+  description = "Docker image for the frontend"
+  type        = string
+}
 
 resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecsTaskExecutionRole1"
@@ -92,7 +101,7 @@ resource "aws_ecs_task_definition" "finki_rasporedi_td_backend" {
   container_definitions = jsonencode([
     {
       name      = "finki_rasporedi_td_backend",
-      image     = "nnikolovskii/aws-backend-healthy:latest",
+      image     = var.backend_image,
       essential = true,
       portMappings = [
         {
@@ -263,7 +272,7 @@ resource "aws_ecs_task_definition" "finki_rasporedi_td_frontend" {
 
   container_definitions = jsonencode([
     {
-      name      = "finki_rasporedi_td_frontend",
+      name      = var.frontend_image,
       image     = "nnikolovskii/flutter-frontend:latest",
       essential = true,
       portMappings = [
