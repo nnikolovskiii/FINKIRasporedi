@@ -366,3 +366,14 @@ resource "aws_ecs_service" "finki_rasporedi_service_frontend" {
   depends_on = [aws_lb_listener.finki_rasporedi_lbl_frontend-f]
 }
 
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.finki_rasporedi_ecs_cluster.name
+}
+
+output "ecs_service_name_backend" {
+  value = aws_ecs_service.finki_rasporedi_service.name
+}
+
+output "ecs_service_name_frontend" {
+  value = aws_ecs_service.finki_rasporedi_service_frontend.name
+}
