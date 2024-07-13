@@ -38,10 +38,10 @@ jobs:
       working-directory: ./aws-infra
 
     - name: Terraform Plan
-      run: terraform plan -input=false -var "backend_image=${{ github.event.workflow_run.outputs.backend_image }}" -var "frontend_image=${{ github.event.workflow_run.outputs.frontend_image }}"
+      run: terraform plan -input=false -var 'backend_image=nnikolovskii/aws-backend-healthy:latest' -var 'frontend_image=nnikolovskii/flutter-frontend:latest'
       working-directory: ./aws-infra
 
     - name: Terraform Apply
       if: github.ref == 'refs/heads/production' && github.event_name == 'push'
-      run: terraform apply -auto-approve -input=false -var "backend_image=${{ github.event.workflow_run.outputs.backend_image }}" -var "frontend_image=${{ github.event.workflow_run.outputs.frontend_image }}"
+      run: terraform apply -auto-approve -input=false -var 'backend_image=nnikolovskii/aws-backend-healthy:latest' -var 'frontend_image=nnikolovskii/flutter-frontend:latest'
       working-directory: ./aws-infra

@@ -95,8 +95,8 @@ resource "aws_ecs_task_definition" "finki_rasporedi_td_backend" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
-  cpu                      = "256"
-  memory                   = "512"
+  cpu                      = "1024"
+  memory                   = "3072"
 
   container_definitions = jsonencode([
     {
@@ -108,9 +108,32 @@ resource "aws_ecs_task_definition" "finki_rasporedi_td_backend" {
           containerPort = 80
         }
       ]
+      environment = [
+        {
+          name  = "MYSQL_HOST",
+          value = "terraform-20240710130712244300000001.c3ykc2um4mje.eu-central-1.rds.amazonaws.com"
+        },
+        {
+          name  = "MYSQL_PORT",
+          value = "3306"
+        },
+        {
+          name  = "MYSQL_DATABASE",
+          value = "finki_rasporedi_db"
+        },
+        {
+          name  = "MYSQL_USER",
+          value = "admin"
+        },
+        {
+          name  = "MYSQL_PASSWORD",
+          value = "Ogan09875"
+        }
+      ]
     }
   ])
 }
+
 
 
 resource "aws_security_group" "ecs_service" {
