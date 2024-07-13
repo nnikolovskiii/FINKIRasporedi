@@ -39,16 +39,16 @@ resource "aws_security_group" "rds_sg" {
 
 
 resource "aws_db_instance" "default" {
-  allocated_storage    = 20
-  db_name              = "finki_rasporedi_db"
-  engine               = "mysql"
-  engine_version       = "8.0"
-  instance_class       = "db.t3.micro"
-  username             = "admin"
-  password             = "Ogan09875"
-  skip_final_snapshot  = true
+  allocated_storage      = 20
+  db_name                = "finki_rasporedi_db"
+  engine                 = "mysql"
+  engine_version         = "8.0"
+  instance_class         = "db.t3.micro"
+  username               = "admin"
+  password               = "Ogan09875"
+  skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
-  publicly_accessible =  true
+  publicly_accessible    = true
 }
 
 resource "aws_ecs_cluster" "finki_rasporedi_ecs_cluster" {
@@ -63,8 +63,8 @@ resource "aws_iam_role" "ecs_task_execution_role" {
     Version = "2012-10-17",
     Statement = [
       {
-        Action    = "sts:AssumeRole",
-        Effect    = "Allow",
+        Action = "sts:AssumeRole",
+        Effect = "Allow",
         Principal = {
           Service = "ecs-tasks.amazonaws.com",
         },
@@ -137,10 +137,10 @@ resource "aws_lb" "finki_rasporedi_lb" {
 
 
 resource "aws_lb_target_group" "finki_rasporedi_lbt" {
-  name     = "finki-rasporedi-lbt"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = "vpc-06b2ed2efcaec4baf"
+  name        = "finki-rasporedi-lbt"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = "vpc-06b2ed2efcaec4baf"
   target_type = "ip"
 
   health_check {
@@ -306,10 +306,10 @@ resource "aws_security_group" "ecs_service_frontend" {
 }
 
 resource "aws_lb_target_group" "finki_rasporedi_lbt_frontend" {
-  name     = "finki-rasporedi-lbt-frontend"
-  port     = 8080
-  protocol = "HTTP"
-  vpc_id   = "vpc-06b2ed2efcaec4baf"
+  name        = "finki-rasporedi-lbt-frontend"
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = "vpc-06b2ed2efcaec4baf"
   target_type = "ip"
 
   health_check {
