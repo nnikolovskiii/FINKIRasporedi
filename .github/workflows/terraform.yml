@@ -42,6 +42,5 @@ jobs:
       working-directory: ./aws-infra
 
     - name: Terraform Apply
-      if: github.ref == 'refs/heads/production' && github.event_name == 'push'
       run: terraform apply -auto-approve -input=false -var 'backend_image=nnikolovskii/aws-backend-healthy:latest' -var 'frontend_image=nnikolovskii/flutter-frontend:latest'
       working-directory: ./aws-infra
