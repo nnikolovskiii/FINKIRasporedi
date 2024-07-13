@@ -143,12 +143,41 @@ class ScheduleService {
     }
   }
 
+  Future<Schedule> getScheduleByProfessor(String professorId) async {
+    final http.Response response;
+    response = await http.get(
+      Uri.parse('$baseUrl/Schedules/Professor/$professorId'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var schedule = Schedule.fromJson(jsonData);
+      return schedule;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  Future<Schedule> getScheduleByRoom(String roomId) async {
+    final http.Response response;
+    response = await http.get(
+      Uri.parse('$baseUrl/Schedules/Room/$roomId'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var schedule = Schedule.fromJson(jsonData);
+      return schedule;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
 
     Future<Map<String, String>> _getAuthorizationHeaders() async {
       final prefs = await SharedPreferences.getInstance();
       final loginDetails = prefs.getString('login_details');
       if (loginDetails == null) {
-        // Return an empty map if login details do not exist
         return {};
       }
 

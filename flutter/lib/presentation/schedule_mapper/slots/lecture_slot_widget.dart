@@ -63,12 +63,12 @@ class LectureWidget extends StatelessWidget {
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
-    Color backgroundColor = hexToColor(lecture.hexColor ?? "#888888");
+    Color backgroundColor = hexToColor(lecture.hexColor ?? "#619eff");
     bool darkText = isDarkColor(backgroundColor);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (width > 10000 || !allDays) {
+        if (width > 1000 || !allDays) {
           return GestureDetector(
             onLongPress: isDefault
                 ? null
@@ -395,7 +395,7 @@ class LectureWidget extends StatelessWidget {
                   style: TextStyle(
                     color: darkText ? Colors.white : Colors.black,
                     fontFamily: 'Lato',
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -114,7 +114,7 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
             Expanded(
               child: PageView(
                 controller: controller,
-                children: getColumns(),
+                children: getColumns(num, showAllDays, widget.schedule),
                 onPageChanged: (index) {
                   setState(() {
                     currentPage = index.toDouble();
@@ -127,101 +127,101 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
       ),
     );
   }
+}
 
-  List<List<LectureSlot>> getListLectureSlots() {
-    List<List<LectureSlot>> list = [];
+List<List<LectureSlot>> getListLectureSlots(Schedule schedule) {
+  List<List<LectureSlot>> list = [];
 
-    for (int i = 0; i < 5; i++) {
-      List<LectureSlot> lecture = [];
-      list.add(lecture);
-    }
-
-    List<LectureSlot> lectures = widget.schedule.lectures!;
-
-    for (int i = 0; i < lectures.length; i++) {
-      int idx = lectures[i].day;
-      list[idx].add(lectures[i]);
-    }
-
-    return list;
+  for (int i = 0; i < 5; i++) {
+    List<LectureSlot> lecture = [];
+    list.add(lecture);
   }
 
-  List<Widget> getColumns() {
-    List<Widget> days = [];
-    List<List<LectureSlot>> list = getListLectureSlots();
+  List<LectureSlot> lectures = schedule.lectures!;
 
-    for (int i = 0; i < 5 - num + 1; i++) {
-      days.add(Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: getDaysLabels(i, i + num),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TimeColumnWidget(
-                  startTimeHour: 8,
-                  endTimeHour: 20,
-                  dayBool: false,
-                  allDays: showAllDays,
-                ),
-                VerticalDividerWidget(
-                  numCells: 12,
-                  color: Colors.grey.shade300, edge: false,
-                ),
-                ...getDays(i, i + num, list)
-              ],
-            ),
-          ),
-        ],
-      ));
-    }
-
-    return days;
+  for (int i = 0; i < lectures.length; i++) {
+    int idx = lectures[i].day;
+    list[idx].add(lectures[i]);
   }
 
-  List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list) {
-    List<Widget> widgets = [];
-    for (int i = fromIndex; i < 5 && i < toIndex; i++) {
-      widgets.add(Expanded(
-        child: ColumnScheduleWidget(
-          lectures: list[i],
-          day: i,
-          schedule: widget.schedule,
-          dayBool: false,
-          allDays: showAllDays,
+  return list;
+}
+
+List<Widget> getColumns(int num, bool showAllDays, Schedule schedule) {
+  List<Widget> days = [];
+  List<List<LectureSlot>> list = getListLectureSlots(schedule);
+
+  for (int i = 0; i < 5 - num + 1; i++) {
+    days.add(Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: getDaysLabels(i, i + num, showAllDays),
         ),
-      ));
-      if (i < toIndex - 1) {
-        widgets.add(VerticalDividerWidget(
-          numCells: 12,
-          color: Colors.grey.shade300, edge: false,
-        ));
-      }
-    }
-    return widgets;
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TimeColumnWidget(
+                startTimeHour: 8,
+                endTimeHour: 20,
+                dayBool: false,
+                allDays: showAllDays,
+              ),
+              VerticalDividerWidget(
+                numCells: 12,
+                color: Colors.grey.shade300, edge: false,
+              ),
+              ...getDays(i, i + num, list, schedule, showAllDays)
+            ],
+          ),
+        ),
+      ],
+    ));
   }
 
-  List<Widget> getDaysLabels(int fromIndex, int toIndex) {
-    List<Widget> widgets = [];
-    widgets.add(TransparentTimeSlotWidget(allDays: showAllDays,));
-    widgets.add(const VerticalDividerWidget(
+  return days;
+}
+
+List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list, Schedule schedule, bool showAllDays) {
+  List<Widget> widgets = [];
+  for (int i = fromIndex; i < 5 && i < toIndex; i++) {
+    widgets.add(Expanded(
+      child: ColumnScheduleWidget(
+        lectures: list[i],
+        day: i,
+        schedule: schedule,
+        dayBool: false,
+        allDays: showAllDays,
+      ),
+    ));
+    if (i < toIndex - 1) {
+      widgets.add(VerticalDividerWidget(
+        numCells: 12,
+        color: Colors.grey.shade300, edge: false,
+      ));
+    }
+  }
+  return widgets;
+}
+
+List<Widget> getDaysLabels(int fromIndex, int toIndex, bool showAllDays) {
+  List<Widget> widgets = [];
+  widgets.add(TransparentTimeSlotWidget(allDays: showAllDays,));
+  widgets.add(const VerticalDividerWidget(
       numCells: 1,
       color: Colors.transparent,
       edge: true
-    ));
-    for (int i = fromIndex; i < 5 && i < toIndex; i++) {
-      widgets.add(DayWidget(day: i, allDays: showAllDays,));
-      if (i < toIndex - 1) {
-        widgets.add(const VerticalDividerWidget(
+  ));
+  for (int i = fromIndex; i < 5 && i < toIndex; i++) {
+    widgets.add(DayWidget(day: i, allDays: showAllDays,));
+    if (i < toIndex - 1) {
+      widgets.add(const VerticalDividerWidget(
           numCells: 1,
           color: Colors.transparent,
-            edge: true
-        ));
-      }
+          edge: true
+      ));
     }
-    return widgets;
   }
+  return widgets;
 }

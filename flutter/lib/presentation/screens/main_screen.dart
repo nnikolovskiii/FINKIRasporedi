@@ -186,10 +186,6 @@ class _SchedulesScreenState extends State<MainScreen> {
     switch (name) {
       case "Смер":
         return ScheduleListScreen();
-      case "Професор":
-        return ProfessorScreen();
-      case "Просторија":
-        return RoomScreen();
       default:
         return ActionListScreen();
     }

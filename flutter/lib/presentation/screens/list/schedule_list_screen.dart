@@ -58,7 +58,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                 child: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Provider.of<ScheduleProvider>(context, listen: false).setName("");
+                    Provider.of<ScheduleProvider>(context, listen: false).setName('');
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),

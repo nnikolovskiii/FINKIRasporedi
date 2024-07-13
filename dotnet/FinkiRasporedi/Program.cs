@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,8 +78,6 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped(typeof(ILectureSlotRepository), typeof(LectureSlotRepository));
 
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin", builder =>
@@ -105,6 +104,11 @@ c.SwaggerDoc("v1", new OpenApiInfo
 }));
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+// Add health checks services
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>(); // Check the health of the DbContext
+
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
 app.UseSwagger();
@@ -114,7 +118,6 @@ app.UseSwaggerUI(options =>
 });
 
 var config = app.Services.GetService<IConfiguration>();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -135,6 +138,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Map health check endpoint
+app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
     name: "default",
