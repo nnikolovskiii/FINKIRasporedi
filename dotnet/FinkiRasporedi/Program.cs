@@ -14,8 +14,14 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Construct the connection string from environment variables
+string mysqlHost = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? "localhost";
+string mysqlPort = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3306";
+string mysqlDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? "finki_rasporedi";
+string mysqlUser = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "admin";
+string mysqlPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "password";
+
+var connectionString = $"Server={mysqlHost};Port={mysqlPort};Database={mysqlDatabase};User={mysqlUser};Password={mysqlPassword};";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -83,7 +89,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAnyOrigin", builder =>
     {
         builder
-            .AllowAnyOrigin() // You can replace this with specific origins if needed
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -107,7 +113,7 @@ builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailS
 
 // Add health checks services
 builder.Services.AddHealthChecks()
-    .AddDbContextCheck<ApplicationDbContext>(); // Check the health of the DbContext
+    .AddDbContextCheck<ApplicationDbContext>(); 
 
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
@@ -127,7 +133,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -138,7 +143,6 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map health check endpoint
 app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
