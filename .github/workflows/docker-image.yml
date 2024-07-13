@@ -2,9 +2,9 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "production" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "production" ]
 
 jobs:
 
@@ -29,7 +29,7 @@ jobs:
       run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/rasporedi-backend:${{ env.TAG }}
 
     - name: Build Docker frontend
-      run: docker build ./fluttter/simple_app --file ./fluttter/simple_app/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/rasporedi-frontend:${{ env.TAG }}
+      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/rasporedi-frontend:${{ env.TAG }}
 
     - name: Push Docker image 1
       run: docker push ${{ secrets.DOCKER_USERNAME }}/rasporedi-backend:${{ env.TAG }}
