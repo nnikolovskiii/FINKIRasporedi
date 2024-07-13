@@ -14,28 +14,47 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v4
 
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
+    - name: Extract git commit SHA
+      id: git_info
+      run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+
+    - name: Get date tag
+      id: date_tag
+      run: echo "::set-output name=date::$(date +%Y%m%d%H%M%S)"
+
     - name: Build Docker backend
-      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
+      run: |
+        docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ steps.git_info.outputs.sha }} --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ steps.date_tag.outputs.date }} --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest
 
     - name: Build Docker frontend
-      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
+      run: |
+        docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ steps.git_info.outputs.sha }} --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ steps.date_tag.outputs.date }} --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
 
-    - name: Push Docker image 1
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
+    - name: Push Docker backend image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ steps.git_info.outputs.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ steps.date_tag.outputs.date }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest
 
-    - name: Push Docker image 2
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
+    - name: Push Docker frontend image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ steps.git_info.outputs.sha }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ steps.date_tag.outputs.date }}
+        docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
 
     - name: Set backend image output
       id: backend
-      run: echo "::set-output name=backend_image::${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest"
+      run: echo "::set-output name=backend_image::${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ steps.date_tag.outputs.date }}"
 
     - name: Set frontend image output
       id: frontend
-      run: echo "::set-output name=frontend_image::${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest"
+      run: echo "::set-output name=frontend_image::${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ steps.date_tag.outputs.date }}"
