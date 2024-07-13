@@ -272,8 +272,8 @@ resource "aws_ecs_task_definition" "finki_rasporedi_td_frontend" {
 
   container_definitions = jsonencode([
     {
-      name      = var.frontend_image,
-      image     = "nnikolovskii/flutter-frontend:latest",
+      name      = "finki_rasporedi_td_frontend",
+      image     = var.frontend_image,
       essential = true,
       portMappings = [
         {
