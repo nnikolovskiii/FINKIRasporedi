@@ -128,18 +128,31 @@ class ScheduleService {
     }
   }
 
-  Future<Schedule> deleteSchedule(int id) async {
+  Future<bool> deleteSchedule(int id) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/Schedules/$id'),
       headers: await _getAuthorizationHeaders(),
     );
 
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return true;
+    } else {
+      throw Exception('Failed to delete schedule');
+    }
+  }
+
+  Future<Schedule> updateSchedule(int scheduleId, Schedule schedule) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/Schedules/$scheduleId'),
+      headers: await _getAuthorizationHeaders(),
+      body: jsonEncode(schedule.toJson()),
+    );
     if (response.statusCode == 200) {
       final dynamic jsonData = jsonDecode(response.body);
       var item = Schedule.fromJson(jsonData);
       return item;
     } else {
-      throw Exception('Failed to delete schedule');
+      throw Exception('Failed to add schedule');
     }
   }
 

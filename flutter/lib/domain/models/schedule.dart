@@ -35,7 +35,7 @@ class Schedule {
       lecturesJson = lectures!.map((lecture) => lecture.toJson()).toList();
     }
 
-    if (id == null || lecturesJson == null) {
+    if (id == null) {
       return {
         'name': name,
         'description': description,

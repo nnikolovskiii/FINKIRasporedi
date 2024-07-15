@@ -16,10 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Construct the connection string from environment variables
 string mysqlHost = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? "localhost";
-string mysqlPort = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3306";
+string mysqlPort = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3308";
 string mysqlDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? "finki_rasporedi";
 string mysqlUser = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "admin";
-string mysqlPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "password";
+string mysqlPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "ogan123";
 
 var connectionString = $"Server={mysqlHost};Port={mysqlPort};Database={mysqlDatabase};User={mysqlUser};Password={mysqlPassword};";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

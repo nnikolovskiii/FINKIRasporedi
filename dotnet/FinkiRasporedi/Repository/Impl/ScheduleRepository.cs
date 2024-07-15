@@ -94,11 +94,9 @@ namespace FinkiRasporedi.Repository.Impl
         
         public async Task<Schedule> UpdateAsync(int id, Schedule entity)
         {
-            if (!authRepository.ValidateTokenAndCompareUser(entity.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
+            String userId = authRepository.ValidateTokenAndGetUserId();
+            entity.StudentId = userId;
+   
             if (id != entity.Id)
             {
                 throw new BadRequestIdException();

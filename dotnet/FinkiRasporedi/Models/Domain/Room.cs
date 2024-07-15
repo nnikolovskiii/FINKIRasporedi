@@ -10,7 +10,7 @@ namespace FinkiRasporedi.Models.Domain
         [Key]
         public string Name { get; set; }
         [JsonIgnore]
-        public virtual  List<Lecture> Lectures { get; set; }
+        public virtual  List<Lecture>? Lectures { get; set; }
         [JsonIgnore]
         public int? ScheduleId { get; set; }
         [ForeignKey("ScheduleId")]
