@@ -1,4 +1,4 @@
-﻿using FinkiRasporedi.Models.Base;
+﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,8 +17,6 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // GET: api/Rooms
         [HttpGet]
-        [NonAction]
-        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int page, int size)
         {
             IEnumerable<Room> rooms;

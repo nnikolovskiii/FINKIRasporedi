@@ -9,6 +9,18 @@ import '../domain/models/professor.dart';
 
 class ProfessorService {
   static final String baseUrl = AppConfig.apiUrl;
+  Future<List<Professor>> getAllProfessors() async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/Professors'),
+    );
+    if (response.statusCode == 200) {
+      final List<dynamic> jsonData = jsonDecode(response.body);
+      return jsonData.map((json) => Professor.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
   Future<List<Professor>> getProfessorsWithPagination(
       {int page = 1, int size = 5}) async {
     final response = await http.get(

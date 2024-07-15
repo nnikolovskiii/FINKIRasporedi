@@ -1,5 +1,5 @@
 ﻿using FinkiRasporedi.Models.Identity;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;

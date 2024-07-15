@@ -63,12 +63,12 @@ class LectureWidget extends StatelessWidget {
     double textScaleFactor = MediaQuery.of(context).textScaleFactor;
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
-    Color backgroundColor = hexToColor(lecture.hexColor ?? "#888888");
+    Color backgroundColor = hexToColor(lecture.hexColor ?? "#619eff");
     bool darkText = isDarkColor(backgroundColor);
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (width > 10000) {
+        if (width > 1000 || !allDays) {
           return GestureDetector(
             onLongPress: isDefault
                 ? null
@@ -245,10 +245,28 @@ class LectureWidget extends StatelessWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text(
-                      lecture.lecture?.course.subject.name ?? lecture.name ?? "",
-                      textScaleFactor: textScaleFactor,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            lecture.name ?? lecture.lecture!.course.subject.name,
+                            textScaleFactor: textScaleFactor,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: IconButton(
+                            icon: Icon(Icons.close),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     content: SingleChildScrollView(
                       child: ListBody(
@@ -283,53 +301,10 @@ class LectureWidget extends StatelessWidget {
                       ),
                     ),
                     actions: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                              ),
-                              onPressed: () async {
-                                await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                  ),
-                                ); // Close the dialog
-                              },
-                              child: const Text(
-                                'Избриши',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: TextButton(
-                              style: TextButton.styleFrom(
-                                backgroundColor: Theme.of(context).primaryColor,
-                                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                              ),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
-                                  ),
-                                ); // Close the dialog
-                              },
-                              child: const Text(
-                                'Ажурирај',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          if (lecture.lecture != null)
+                      Center(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
                             Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: TextButton(
@@ -338,7 +313,7 @@ class LectureWidget extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                 ),
                                 onPressed: () async {
-                                  await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                                  await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -347,12 +322,58 @@ class LectureWidget extends StatelessWidget {
                                   ); // Close the dialog
                                 },
                                 child: const Text(
-                                  'Ресетирај',
+                                  'Избриши',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 5),
+                              child: TextButton(
+                                style: TextButton.styleFrom(
+                                  backgroundColor: Theme.of(context).primaryColor,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                                    ),
+                                  ); // Close the dialog
+                                },
+                                child: const Text(
+                                  'Ажурирај',
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
                             ),
-                        ],
+                            if (lecture.lecture != null)
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: TextButton(
+                                  style: TextButton.styleFrom(
+                                    backgroundColor: Theme.of(context).primaryColor,
+                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                  ),
+                                  onPressed: () async {
+                                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => CalendarScreen(schedule.id ?? 0),
+                                      ),
+                                    ); // Close the dialog
+                                  },
+                                  child: const Text(
+                                    'Ресетирај',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                   );
@@ -374,7 +395,7 @@ class LectureWidget extends StatelessWidget {
                   style: TextStyle(
                     color: darkText ? Colors.white : Colors.black,
                     fontFamily: 'Lato',
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

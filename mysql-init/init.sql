@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `AspNetRoles`
+--
+
+DROP TABLE IF EXISTS `AspNetRoles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `AspNetRoles` (
+  `Id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `Name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `NormalizedName` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `ConcurrencyStamp` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `AspNetRoles`
+--
+
+LOCK TABLES `AspNetRoles` WRITE;
+/*!40000 ALTER TABLE `AspNetRoles` DISABLE KEYS */;
+/*!40000 ALTER TABLE `AspNetRoles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `AspNetUsers`
 --
 
@@ -50,8 +75,32 @@ CREATE TABLE `AspNetUsers` (
 
 LOCK TABLES `AspNetUsers` WRITE;
 /*!40000 ALTER TABLE `AspNetUsers` DISABLE KEYS */;
-INSERT INTO `AspNetUsers` VALUES ('1b7ed073-2a3e-414d-a83b-ec27919d59ae','niksdadfsd','NIKSDADFSD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELR+rhbFG4LDfCP2OWOCiTqz7xF9A4mMbpV9a39BpafjeiIGNagm3nfgA9oWU3p9eA==','FGPCDGAHKJ4KORSFDY7VMR2BVWIKIDQ3','38e93995-faf0-4ec1-81e3-063c5ee0afce',NULL,0,0,NULL,1,0),('26476dfa-2165-4516-bd6c-be1d2fd93114','dasdsadsad','DASDSADSAD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIIuTXowim6N85C+omCSU9XWgrbLqK2QHcKS0V3er/vD5jJazcEdyCx2NLRgyOfd6w==','EDNWOZNZSLWASWSVOKN5MK5A4PLKERFE','7846d31f-bcb4-4799-96aa-329ba4c102c5',NULL,0,0,NULL,1,0),('2bf3c24f-40b2-4adf-a690-9b26f9214f02','niksdad','NIKSDAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELS3CTLjThVr5ZYjnFGQ5Wc4y3KRIBe9LY0fxzn+TG8HgJfSth6VbWszE71Eq21IHw==','YXVGSK5KZTKWY4LJLH7OEQKAO7WGQAZA','c7061edb-90cc-46d1-a126-ba5cf54ec6bb',NULL,0,0,NULL,1,0),('3cd1f39f-ccce-4896-a142-582281fe6585','adsadasd','ADSADASD','asd@sad.com','ASD@SAD.COM',0,'AQAAAAIAAYagAAAAEJeO0tS/Cry7TViq9V8B2wpeneyJo7nnGYNhiVjjAsyc4moyRRaYqbVQx9aX7t/4ag==','IR5ACYLXV5GKCCENODOME3EABGMVEBVN','d8116e7d-a142-4f69-a8eb-7c49560755f7',NULL,0,0,NULL,1,0),('3d208379-4ea4-4c2b-9988-333f3b53eeeb','anja','ANJA','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDvbixQbIA9lAGWJEOUzYUCSjY4dnqYWl+zgdZYCo8x/JCI7z3Efx0oTaB8jGGZlVA==','4NLWRET25YLX6CFPHKWAGRCNKXL6BIVI','e1faeb23-8b25-42ee-8b9e-da70bece8902',NULL,0,0,NULL,1,0),('558ac729-ab29-48cd-ac87-92234d2e2e84','ass','ASS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEBWHtNOiJpE1B0sZ/DuYzi9sUkehkXzbFnSMDsxnkOz4IFu1RWN5zEZBL0TM9UFdvQ==','24MRMH3UORWF24C2OGCJBIC652CBRLFI','61ff3826-9b3d-4ce9-8d3d-f9fd8f8ec2ed',NULL,0,0,NULL,1,0),('5c184abe-b91d-43e4-8545-d6d8a621e128','assqw','ASSQW','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDF+5QRbM9X6A3JPTM2OoVzm7rFrCH8i0Q8NGgrgoyi2hQut3vNluqWyMf+BKadQ8Q==','SVQVWWDKWGCBHWAMQYNFK66BAQLUZ4MV','6f4e47a1-3571-43cd-aa44-40fbf2b4e9a7',NULL,0,0,NULL,1,0),('5c60d642-d1fa-43ab-887b-0b476cfd32ea','niksdadf','NIKSDADF','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEN2bjxEA8WeWfVrtGXGcLjO3BCDm7Sx0HVdjrlz4A1EgcpHUa7G9lC5eKZBDk8s5XQ==','53GBWQADZIUHECDU3ETNTSHGVEDM62JU','0b6600b3-ab27-49a3-910e-097741a43b82',NULL,0,0,NULL,1,0),('6a42ddf9-9861-4e11-8c25-3d735c5207ae','assqwsdasd','ASSQWSDASD','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEC/UQUFQpjOCp1y7760DPNsGTQpHcEnj6oAAkh/UO1MjuvzHOGIWEOI8SQ2gBCAvXQ==','FGF5R32BTOC7YSASX4NKYR36Q455VHA5','f421f339-582d-4b6e-be24-8071568f4dc6',NULL,0,0,NULL,1,0),('6e2868f5-bdfb-4c5d-bde1-101fc6191c33','asdsad','ASDSAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPYu91QEHtFpuQTbJvmhwM2Im6sqo42PYzbOPEhPPRijgNiZXJEtMZCtD3VrYBj3pQ==','OCIQ2CW5HQBHKXXGYG7UYCIJGTGTM2A6','087cfc6f-2e38-4b1d-9618-bcc8f77d4aab',NULL,0,0,NULL,1,0),('a292e3ea-35e9-432a-bae1-fa127e4165ac','gsgsgsg','GSGSGSG','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEAXhZ2Y1WnxXGxrvuNk66ibqlR5DtqhApyi2o4Vcgt3yIYvvtMlaUftORFcfEsKd/g==','ZLCFZYQWZ7LE2PJFCETC3A7QSXQA6FCH','2a82fb6b-c012-46ce-adf1-8e00a943b782',NULL,0,0,NULL,1,0),('anja1','anja1','ANJA1','anja@gmail.com','ANJA@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPCSD4IXGTIxnBliL2dYjG1mtrtAbZdSuZljdliO79bVn+EVBn+khIk0pvTCcVqO/Q==','4V6B7ZFINUNCUJNFWP77KDJAJV5HKQGN','b8463160-1b28-46a1-9e4c-8ec970d615b1',NULL,0,0,NULL,1,0),('c9dcdbeb-9ea6-4609-8acd-03335368b68e','sadsa','SADSA','nik@gmailc.om','NIK@GMAILC.OM',0,'AQAAAAIAAYagAAAAEIO7dBAX/nYei1b9eA55Oryet/blaKrTm9OMZeWZA4v8a5QDmhRwWA871g+HFlUV6g==','SZEQZH5XSPLIQZJCRY6SWPNIHXLINZZT','7c13f9a0-025e-4f18-bdd1-dcfcac8727f1',NULL,0,0,NULL,1,0),('cf21147c-9a9d-4120-b5d3-c9f6c0c030d0','NIKOLA1','NIKOLA1','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAELxOueibxuacszI7DdUCEvFSqo27yvHu8z7V9HbhmJNpenHfx5pagpyihAMze7cSEA==','FJ7OH3N5WXSURMUPGFGJEHDRDTFM4FDF','c98d9a01-8a6c-43fe-8e64-d4ae80178cd5',NULL,0,0,NULL,1,0),('d7e2a41f-4a82-4c56-a792-23f7de5889e5','NIKOLA12','NIKOLA12','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEKvNLH7O9m/FYti5hhzmlElS3mpJiJY5IJ0L0Ptx2vO7zNEmLkvNv2Gkt2I8cd+9tw==','4YBR4S4Z3TKXT7O7P2XDD5JO4XLMQTCB','c892d071-6f12-4113-b7de-7f58df85ea3c',NULL,0,0,NULL,1,0),('daa7c720-d268-4d8d-ac18-ebc49c58975c','assqws','ASSQWS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEAH4dPB1SaCHfcspPFhV+8YDzyHRvwvNmVZJYmLCxp1dp56R8Ue1tqQRZdUN3UxBeQ==','CBBN55PIWXUWRWYIEJQA3VSMSBT7RNRP','f357a4d4-3fcc-46bd-9c6c-21651c5baf3d',NULL,0,0,NULL,1,0),('e0f6e0c5-ac11-491c-bede-25c415f3dfa4','dimitar128','DIMITAR128','test@example.com','TEST@EXAMPLE.COM',0,'AQAAAAIAAYagAAAAEKAA7djX6RDzygEKH5T5jgnLHnGZ/Qm/hytSTbJ+9/fSKtNuChpwky8EAdI//uloLg==','E6MCULOF6XYM2CMCSOWSGLILX5RVP6QR','cdce17e2-ef5d-4578-9eb6-26822851115a',NULL,0,0,NULL,1,0),('fd9028cd-9bcd-4d8a-9395-cb5cdae940ba','gsgsgsgasd','GSGSGSGASD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIpxHUWarNmNwxxnouGfCgy9bujqSSDfR+jIdHsMK1pHVDL0A23aZOA3yC5Xtu9qsA==','PWZOKBEFVCMYAYWOXIHXED4FA2XUX5IX','33a81b29-76d3-4bf1-b9bc-c177830cf86a',NULL,0,0,NULL,1,0),('FINKI','FINKI','FINKI','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEN3TrAmnFBy4uYK6e8LKvW9kvITaxaP9fOGa2YLfgnDNGlMc3c9EkBNdKU/G3qPo1g==','OARU7WAKCLWCIC2YETDLFTVQX7YSBJQZ','ed2928ef-dc28-4d56-8533-47be18751dd5',NULL,0,0,NULL,1,0),('nikola','nikola','NIKOLA','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEIfMISM+ocu98MZjvqUx7ucnPEUoAz0kW2ovfrl8NaIiXZnOLxh7oAtqLaUjXP4kaw==','FWQ3PDNFIV7EWGWYNFVCDGHZUMH6LY44','b57a72ea-fe2e-4095-837f-b201d6a380d3',NULL,0,0,NULL,1,0);
+INSERT INTO `AspNetUsers` VALUES ('1b7ed073-2a3e-414d-a83b-ec27919d59ae','niksdadfsd','NIKSDADFSD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELR+rhbFG4LDfCP2OWOCiTqz7xF9A4mMbpV9a39BpafjeiIGNagm3nfgA9oWU3p9eA==','FGPCDGAHKJ4KORSFDY7VMR2BVWIKIDQ3','38e93995-faf0-4ec1-81e3-063c5ee0afce',NULL,0,0,NULL,1,0),('26476dfa-2165-4516-bd6c-be1d2fd93114','dasdsadsad','DASDSADSAD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIIuTXowim6N85C+omCSU9XWgrbLqK2QHcKS0V3er/vD5jJazcEdyCx2NLRgyOfd6w==','EDNWOZNZSLWASWSVOKN5MK5A4PLKERFE','7846d31f-bcb4-4799-96aa-329ba4c102c5',NULL,0,0,NULL,1,0),('2bf3c24f-40b2-4adf-a690-9b26f9214f02','niksdad','NIKSDAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAELS3CTLjThVr5ZYjnFGQ5Wc4y3KRIBe9LY0fxzn+TG8HgJfSth6VbWszE71Eq21IHw==','YXVGSK5KZTKWY4LJLH7OEQKAO7WGQAZA','c7061edb-90cc-46d1-a126-ba5cf54ec6bb',NULL,0,0,NULL,1,0),('3cd1f39f-ccce-4896-a142-582281fe6585','adsadasd','ADSADASD','asd@sad.com','ASD@SAD.COM',0,'AQAAAAIAAYagAAAAEJeO0tS/Cry7TViq9V8B2wpeneyJo7nnGYNhiVjjAsyc4moyRRaYqbVQx9aX7t/4ag==','IR5ACYLXV5GKCCENODOME3EABGMVEBVN','d8116e7d-a142-4f69-a8eb-7c49560755f7',NULL,0,0,NULL,1,0),('3d208379-4ea4-4c2b-9988-333f3b53eeeb','anja','ANJA','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDvbixQbIA9lAGWJEOUzYUCSjY4dnqYWl+zgdZYCo8x/JCI7z3Efx0oTaB8jGGZlVA==','4NLWRET25YLX6CFPHKWAGRCNKXL6BIVI','e1faeb23-8b25-42ee-8b9e-da70bece8902',NULL,0,0,NULL,1,0),('4425a643-c0e5-4bfc-a270-c918651ed6da','string','STRING','string','STRING',0,'AQAAAAIAAYagAAAAEFzp/a1do7dK0Or2LhG/3wotratYOa+qf6XIVXF70mmaoo3uB+gEustLOW5o39k6Zw==','KTAZXPOC5NJ2DW5TW7SKP33IAYZINWID','4f3d533e-cd1f-451b-9076-55103def1429',NULL,0,0,NULL,1,0),('558ac729-ab29-48cd-ac87-92234d2e2e84','ass','ASS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEBWHtNOiJpE1B0sZ/DuYzi9sUkehkXzbFnSMDsxnkOz4IFu1RWN5zEZBL0TM9UFdvQ==','24MRMH3UORWF24C2OGCJBIC652CBRLFI','61ff3826-9b3d-4ce9-8d3d-f9fd8f8ec2ed',NULL,0,0,NULL,1,0),('5c184abe-b91d-43e4-8545-d6d8a621e128','assqw','ASSQW','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEDF+5QRbM9X6A3JPTM2OoVzm7rFrCH8i0Q8NGgrgoyi2hQut3vNluqWyMf+BKadQ8Q==','SVQVWWDKWGCBHWAMQYNFK66BAQLUZ4MV','6f4e47a1-3571-43cd-aa44-40fbf2b4e9a7',NULL,0,0,NULL,1,0),('5c60d642-d1fa-43ab-887b-0b476cfd32ea','niksdadf','NIKSDADF','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEN2bjxEA8WeWfVrtGXGcLjO3BCDm7Sx0HVdjrlz4A1EgcpHUa7G9lC5eKZBDk8s5XQ==','53GBWQADZIUHECDU3ETNTSHGVEDM62JU','0b6600b3-ab27-49a3-910e-097741a43b82',NULL,0,0,NULL,1,0),('6a42ddf9-9861-4e11-8c25-3d735c5207ae','assqwsdasd','ASSQWSDASD','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEC/UQUFQpjOCp1y7760DPNsGTQpHcEnj6oAAkh/UO1MjuvzHOGIWEOI8SQ2gBCAvXQ==','FGF5R32BTOC7YSASX4NKYR36Q455VHA5','f421f339-582d-4b6e-be24-8071568f4dc6',NULL,0,0,NULL,1,0),('6e2868f5-bdfb-4c5d-bde1-101fc6191c33','asdsad','ASDSAD','nik@gmail.com','NIK@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPYu91QEHtFpuQTbJvmhwM2Im6sqo42PYzbOPEhPPRijgNiZXJEtMZCtD3VrYBj3pQ==','OCIQ2CW5HQBHKXXGYG7UYCIJGTGTM2A6','087cfc6f-2e38-4b1d-9618-bcc8f77d4aab',NULL,0,0,NULL,1,0),('966df469-2914-4a67-8273-4250f35f9c93','FINKI1','FINKI1','finki@gmail.com','FINKI@GMAIL.COM',0,'AQAAAAIAAYagAAAAECrfo/BaaQkK3Rf3PmTzD+Cr5u9kMsRAxTwst8ra7Wd/hKhSZoe1BQr8kY/X9ETdMw==','4CJ3I2MCJZG2JSXPVJJUTOUED54QXHUH','9d509ca7-e599-4411-bea4-8cb847bf2776',NULL,0,0,NULL,1,0),('a292e3ea-35e9-432a-bae1-fa127e4165ac','gsgsgsg','GSGSGSG','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEAXhZ2Y1WnxXGxrvuNk66ibqlR5DtqhApyi2o4Vcgt3yIYvvtMlaUftORFcfEsKd/g==','ZLCFZYQWZ7LE2PJFCETC3A7QSXQA6FCH','2a82fb6b-c012-46ce-adf1-8e00a943b782',NULL,0,0,NULL,1,0),('anja1','anja1','ANJA1','anja@gmail.com','ANJA@GMAIL.COM',0,'AQAAAAIAAYagAAAAEPCSD4IXGTIxnBliL2dYjG1mtrtAbZdSuZljdliO79bVn+EVBn+khIk0pvTCcVqO/Q==','4V6B7ZFINUNCUJNFWP77KDJAJV5HKQGN','b8463160-1b28-46a1-9e4c-8ec970d615b1',NULL,0,0,NULL,1,0),('c9dcdbeb-9ea6-4609-8acd-03335368b68e','sadsa','SADSA','nik@gmailc.om','NIK@GMAILC.OM',0,'AQAAAAIAAYagAAAAEIO7dBAX/nYei1b9eA55Oryet/blaKrTm9OMZeWZA4v8a5QDmhRwWA871g+HFlUV6g==','SZEQZH5XSPLIQZJCRY6SWPNIHXLINZZT','7c13f9a0-025e-4f18-bdd1-dcfcac8727f1',NULL,0,0,NULL,1,0),('cf21147c-9a9d-4120-b5d3-c9f6c0c030d0','NIKOLA1','NIKOLA1','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAELxOueibxuacszI7DdUCEvFSqo27yvHu8z7V9HbhmJNpenHfx5pagpyihAMze7cSEA==','FJ7OH3N5WXSURMUPGFGJEHDRDTFM4FDF','c98d9a01-8a6c-43fe-8e64-d4ae80178cd5',NULL,0,0,NULL,1,0),('d7e2a41f-4a82-4c56-a792-23f7de5889e5','NIKOLA12','NIKOLA12','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEKvNLH7O9m/FYti5hhzmlElS3mpJiJY5IJ0L0Ptx2vO7zNEmLkvNv2Gkt2I8cd+9tw==','4YBR4S4Z3TKXT7O7P2XDD5JO4XLMQTCB','c892d071-6f12-4113-b7de-7f58df85ea3c',NULL,0,0,NULL,1,0),('daa7c720-d268-4d8d-ac18-ebc49c58975c','assqws','ASSQWS','anja@anja.com','ANJA@ANJA.COM',0,'AQAAAAIAAYagAAAAEAH4dPB1SaCHfcspPFhV+8YDzyHRvwvNmVZJYmLCxp1dp56R8Ue1tqQRZdUN3UxBeQ==','CBBN55PIWXUWRWYIEJQA3VSMSBT7RNRP','f357a4d4-3fcc-46bd-9c6c-21651c5baf3d',NULL,0,0,NULL,1,0),('e0f6e0c5-ac11-491c-bede-25c415f3dfa4','dimitar128','DIMITAR128','test@example.com','TEST@EXAMPLE.COM',0,'AQAAAAIAAYagAAAAEKAA7djX6RDzygEKH5T5jgnLHnGZ/Qm/hytSTbJ+9/fSKtNuChpwky8EAdI//uloLg==','E6MCULOF6XYM2CMCSOWSGLILX5RVP6QR','cdce17e2-ef5d-4578-9eb6-26822851115a',NULL,0,0,NULL,1,0),('fd9028cd-9bcd-4d8a-9395-cb5cdae940ba','gsgsgsgasd','GSGSGSGASD','nik@nik.com','NIK@NIK.COM',0,'AQAAAAIAAYagAAAAEIpxHUWarNmNwxxnouGfCgy9bujqSSDfR+jIdHsMK1pHVDL0A23aZOA3yC5Xtu9qsA==','PWZOKBEFVCMYAYWOXIHXED4FA2XUX5IX','33a81b29-76d3-4bf1-b9bc-c177830cf86a',NULL,0,0,NULL,1,0),('FINKI','FINKI','FINKI','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEN3TrAmnFBy4uYK6e8LKvW9kvITaxaP9fOGa2YLfgnDNGlMc3c9EkBNdKU/G3qPo1g==','OARU7WAKCLWCIC2YETDLFTVQX7YSBJQZ','ed2928ef-dc28-4d56-8533-47be18751dd5',NULL,0,0,NULL,1,0),('nikola','nikola','NIKOLA','finki@finki.com','FINKI@FINKI.COM',0,'AQAAAAIAAYagAAAAEIfMISM+ocu98MZjvqUx7ucnPEUoAz0kW2ovfrl8NaIiXZnOLxh7oAtqLaUjXP4kaw==','FWQ3PDNFIV7EWGWYNFVCDGHZUMH6LY44','b57a72ea-fe2e-4095-837f-b201d6a380d3',NULL,0,0,NULL,1,0);
 /*!40000 ALTER TABLE `AspNetUsers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `__EFMigrationsHistory`
+--
+
+DROP TABLE IF EXISTS `__EFMigrationsHistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `__EFMigrationsHistory` (
+  `MigrationId` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `ProductVersion` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  PRIMARY KEY (`MigrationId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `__EFMigrationsHistory`
+--
+
+LOCK TABLES `__EFMigrationsHistory` WRITE;
+/*!40000 ALTER TABLE `__EFMigrationsHistory` DISABLE KEYS */;
+INSERT INTO `__EFMigrationsHistory` VALUES ('20240709114708_AllDbMigration','7.0.12'),('20240709115940_AllDbMigration','7.0.12'),('20240709120549_AddScheduleColToProfessor','7.0.12'),('20240709123929_AllDbMigration','7.0.12'),('20240709204253_AddScheduleToRoom','7.0.12'),('20240713120927_AddLecturesToRoom','8.0.7'),('20240713122043_AddLecturesToRoom1','8.0.7'),('20240713122801_AddLecturesToRoom2','8.0.7');
+/*!40000 ALTER TABLE `__EFMigrationsHistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -347,7 +396,7 @@ CREATE TABLE `lectureslots` (
   PRIMARY KEY (`Id`),
   KEY `IX_LectureSlots_LectureId` (`LectureId`),
   CONSTRAINT `FK_LectureSlots_Lectures_LectureId` FOREIGN KEY (`LectureId`) REFERENCES `lectures` (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -356,7 +405,7 @@ CREATE TABLE `lectureslots` (
 
 LOCK TABLES `lectureslots` WRITE;
 /*!40000 ALTER TABLE `lectureslots` DISABLE KEYS */;
-INSERT INTO `lectureslots` VALUES (3,13,NULL,NULL,NULL,NULL,NULL),(4,15,NULL,NULL,NULL,NULL,NULL),(6,44,'',3,11,12,'#0FBDBD'),(7,113,NULL,3,8,11,'#39C7A0'),(19,179,NULL,0,18,20,'#B9B9B9'),(20,182,NULL,4,12,14,'#86ABFF'),(21,NULL,'lab1',0,8,12,'#000000');
+INSERT INTO `lectureslots` VALUES (3,13,NULL,NULL,NULL,NULL,NULL),(4,15,NULL,NULL,NULL,NULL,NULL),(6,44,'',3,11,12,'#0FBDBD'),(7,113,NULL,3,8,11,'#39C7A0'),(19,179,NULL,0,18,20,'#B9B9B9'),(20,182,NULL,4,12,14,'#86ABFF'),(21,NULL,'lab1',0,8,12,'#000000'),(22,345,NULL,0,10,12,NULL),(23,345,NULL,0,10,12,NULL),(24,345,NULL,0,10,12,NULL),(25,346,NULL,0,8,10,NULL),(26,347,NULL,4,16,18,NULL),(27,348,NULL,4,8,10,NULL),(28,349,NULL,4,14,16,NULL),(29,350,NULL,0,15,17,NULL),(30,351,NULL,0,13,15,NULL),(31,352,NULL,1,15,17,NULL),(32,353,NULL,1,17,19,NULL),(33,354,NULL,2,15,17,NULL),(34,355,NULL,4,10,12,NULL),(35,350,NULL,0,15,17,NULL),(36,351,NULL,0,13,15,NULL),(37,352,NULL,1,15,17,NULL),(38,353,NULL,1,17,19,NULL),(39,354,NULL,2,15,17,NULL),(40,355,NULL,4,10,12,NULL),(41,148,NULL,2,17,19,NULL),(42,13,NULL,3,9,11,NULL),(43,35,NULL,4,14,16,NULL),(44,98,NULL,4,12,14,NULL),(45,121,NULL,1,10,12,NULL),(46,122,NULL,2,9,12,NULL),(47,128,NULL,1,12,14,NULL),(48,147,NULL,2,12,15,NULL),(49,154,NULL,0,10,12,NULL),(50,278,NULL,0,12,14,NULL),(51,287,NULL,0,10,12,NULL),(52,288,NULL,0,12,14,NULL),(53,300,NULL,1,17,19,NULL);
 /*!40000 ALTER TABLE `lectureslots` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,7 +421,10 @@ CREATE TABLE `professors` (
   `Name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Email` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   `ProfessorTitle` int DEFAULT NULL,
-  PRIMARY KEY (`Id`)
+  `ScheduleId` int DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `IX_Professors_ScheduleId` (`ScheduleId`),
+  CONSTRAINT `FK_Professors_Schedules_ScheduleId` FOREIGN KEY (`ScheduleId`) REFERENCES `schedules` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -382,7 +434,7 @@ CREATE TABLE `professors` (
 
 LOCK TABLES `professors` WRITE;
 /*!40000 ALTER TABLE `professors` DISABLE KEYS */;
-INSERT INTO `professors` VALUES ('aleksandar.petrushev','Александар Петрушев',NULL,NULL),('aleksandar.stojmenski','Александар Стојменски',NULL,NULL),('aleksandar.tenev','Александар Тенев',NULL,NULL),('aleksandra.dedinets','Александра Дединец',NULL,NULL),('aleksandra.popovska.mitrovikj','Александра Поповска Митровиќ',NULL,NULL),('ana.atanasova','Ана Атанасова',NULL,NULL),('ana.madevska.bogdanova','Ана Мадевска Богданова',NULL,NULL),('ana.todorovska','Ана Тодоровска',NULL,NULL),('anastas.mishev','Анастас Мишев',NULL,NULL),('andrea.kulakov','Андреа Кулаков',NULL,NULL),('andreja.naumoski','Андреја Наумоски',NULL,NULL),('biljana.stojkoska.risteska','Билјана Стојкоска Ристеска',NULL,NULL),('biljana.tojtovska.ribarski','Билјана Тојтовска Рибарски',NULL,NULL),('boban.joksimoski','Бобан Јоксимоски',NULL,NULL),('bojan.ilijoski','Бојан Илијоски',NULL,NULL),('bojana.koteska','Бојана Котеска',NULL,NULL),('boris.stanoev','Борис Станоев',NULL,NULL),('boro.jakimovski','Боро Јакимовски',NULL,NULL),('dejan.gjorgjevikj','Дејан Ѓорѓевиќ',NULL,NULL),('dejan.spasov','Дејан Спасов',NULL,NULL),('dimitar.kitanovski','Димитар Китановски',NULL,NULL),('dimitar.milevski','Димитар Милевски',NULL,NULL),('dimitar.trajanov','Димитар Трајанов',NULL,NULL),('eftim.zdravevski','Ефтим Здравевски',NULL,NULL),('elena.rizova','Елена Ризова',NULL,NULL),('emil.stankov','Емил Станков',NULL,NULL),('georgina.mircheva','Георгина Мирчева',NULL,NULL),('gjorgji.madzharov','Ѓорѓи Маџаров',NULL,NULL),('goran.velinov','Горан Велинов',NULL,NULL),('gotse.armenski','Гоце Арменски',NULL,NULL),('igor.mishkovski','Игор Мишковски',NULL,NULL),('ilinka.ivanoska','Илинка Иваноска',NULL,NULL),('ivan.chorbev','Иван Чорбев',NULL,NULL),('ivan.kitanovski','Иван Китановски',NULL,NULL),('ivitsa.dimitrovski','Ивица Димитровски',NULL,NULL),('jana.kuzmanova','Јана Кузманова',NULL,NULL),('jasmina.jovanovska','Јасмина Јовановска',NULL,NULL),('jovana.dobreva','Јована Добрева',NULL,NULL),('katarina.trojachanets.dineva','Катарина Тројачанец Динева',NULL,NULL),('katerina.zdravkova','Катерина Здравкова',NULL,NULL),('khristina.mikhajloska','Христина Михајлоска',NULL,NULL),('kire.trivodaliev','Кире Триводалиев',NULL,NULL),('kiril.kjiroski','Кирил Ќироски',NULL,NULL),('kosta.mitreski','Коста Митрески',NULL,NULL),('kostadin.mishev','Костадин Мишев',NULL,NULL),('lasko.basnarkov','Ласко Баснарков',NULL,NULL),('ljupcho.antovski','Љупчо Антовски',NULL,NULL),('magdalena.kostoska.gjorchevska','Магдалена Костоска Ѓорчевска',NULL,NULL),('marija.mikhova','Марија Михова',NULL,NULL),('marija.taneska','Марија Танеска',NULL,NULL),('marjan.gushev','Марјан Гушев',NULL,NULL),('martin.dinev','Мартин Динев',NULL,NULL),('martina.toshevska','Мартина Тошевска',NULL,NULL),('metodija.jancheski','Методија Јанчески',NULL,NULL),('mila.dodevska','Мила Додевска',NULL,NULL),('mile.jovanov','Миле Јованов',NULL,NULL),('milena.trajanoska','Милена Трајаноска',NULL,NULL),('milosh.jovanovikj','Милош Јовановиќ',NULL,NULL),('miroslav.mirchev','Мирослав Мирчев',NULL,NULL),('monika.simjanoska','Моника Симјаноска',NULL,NULL),('natasha.ilievska','Наташа Илиевска',NULL,NULL),('nenad.anchev','Ненад Анчев',NULL,NULL),('nevena.atskovska','Невена Ацковска',NULL,NULL),('panche.ribarski','Панче Рибарски',NULL,NULL),('petar.rogachikj','Петар Рогачиќ',NULL,NULL),('petar.sekuloski','Петар Секулоски',NULL,NULL),('petre.lameski','Петре Ламески',NULL,NULL),('riste.stojanov','Ристе Стојанов',NULL,NULL),('sasho.gramatikov','Сашо Граматиков',NULL,NULL),('sijche.pechkova','Сијче Печкова',NULL,NULL),('slave.temkov','Славе Темков',NULL,NULL),('slobodan.kalajdzhiski','Слободан Калајџиски',NULL,NULL),('smilka.janeska.sarkanjats','Смилка Јанеска Саркањац',NULL,NULL),('sonja.gievska','Соња Гиевска',NULL,NULL),('stefan.andonov','Стефан Андонов',NULL,NULL),('vangel.ajanovski','Вангел Ајановски',NULL,NULL),('veritsa.bakeva','Верица Бакева',NULL,NULL),('vesna.dimitrievska.ristovska','Весна Димитриевска Ристовска',NULL,NULL),('vesna.dimitrova','Весна Димитрова',NULL,NULL),('vladimir.trajkovikj','Владимир Трајковиќ',NULL,NULL),('vladimir.zdraveski','Владимир Здравески',NULL,NULL),('vladislav.bidikov','Владислав Бидиков',NULL,NULL),('vlatko.spasev','Влатко Спасев',NULL,NULL),('vojdan.kjorveziroski','Војдан Ќорвезироски',NULL,NULL),('zhivko.atanaskoski','Живко Атанаскоски',NULL,NULL),('zoritsa.karapancheva','Зорица Карапанчева',NULL,NULL);
+INSERT INTO `professors` VALUES ('aleksandar.petrushev','Александар Петрушев',NULL,NULL,NULL),('aleksandar.stojmenski','Александар Стојменски',NULL,NULL,NULL),('aleksandar.tenev','Александар Тенев',NULL,NULL,NULL),('aleksandra.dedinets','Александра Дединец',NULL,NULL,NULL),('aleksandra.popovska.mitrovikj','Александра Поповска Митровиќ',NULL,NULL,NULL),('ana.atanasova','Ана Атанасова',NULL,NULL,NULL),('ana.madevska.bogdanova','Ана Мадевска Богданова',NULL,NULL,NULL),('ana.todorovska','Ана Тодоровска',NULL,NULL,NULL),('anastas.mishev','Анастас Мишев',NULL,NULL,NULL),('andrea.kulakov','Андреа Кулаков',NULL,NULL,NULL),('andreja.naumoski','Андреја Наумоски',NULL,NULL,NULL),('biljana.stojkoska.risteska','Билјана Стојкоска Ристеска',NULL,NULL,NULL),('biljana.tojtovska.ribarski','Билјана Тојтовска Рибарски',NULL,NULL,NULL),('boban.joksimoski','Бобан Јоксимоски',NULL,NULL,NULL),('bojan.ilijoski','Бојан Илијоски',NULL,NULL,NULL),('bojana.koteska','Бојана Котеска',NULL,NULL,NULL),('boris.stanoev','Борис Станоев',NULL,NULL,NULL),('boro.jakimovski','Боро Јакимовски',NULL,NULL,NULL),('dejan.gjorgjevikj','Дејан Ѓорѓевиќ',NULL,NULL,NULL),('dejan.spasov','Дејан Спасов',NULL,NULL,NULL),('dimitar.kitanovski','Димитар Китановски',NULL,NULL,NULL),('dimitar.milevski','Димитар Милевски',NULL,NULL,NULL),('dimitar.trajanov','Димитар Трајанов',NULL,NULL,NULL),('eftim.zdravevski','Ефтим Здравевски',NULL,NULL,NULL),('elena.rizova','Елена Ризова',NULL,NULL,NULL),('emil.stankov','Емил Станков',NULL,NULL,NULL),('georgina.mircheva','Георгина Мирчева',NULL,NULL,NULL),('gjorgji.madzharov','Ѓорѓи Маџаров',NULL,NULL,NULL),('goran.velinov','Горан Велинов',NULL,NULL,NULL),('gotse.armenski','Гоце Арменски',NULL,NULL,NULL),('igor.mishkovski','Игор Мишковски',NULL,NULL,NULL),('ilinka.ivanoska','Илинка Иваноска',NULL,NULL,NULL),('ivan.chorbev','Иван Чорбев',NULL,NULL,NULL),('ivan.kitanovski','Иван Китановски',NULL,NULL,NULL),('ivitsa.dimitrovski','Ивица Димитровски',NULL,NULL,NULL),('jana.kuzmanova','Јана Кузманова',NULL,NULL,NULL),('jasmina.jovanovska','Јасмина Јовановска',NULL,NULL,NULL),('jovana.dobreva','Јована Добрева',NULL,NULL,NULL),('katarina.trojachanets.dineva','Катарина Тројачанец Динева',NULL,NULL,NULL),('katerina.zdravkova','Катерина Здравкова',NULL,NULL,NULL),('khristina.mikhajloska','Христина Михајлоска',NULL,NULL,NULL),('kire.trivodaliev','Кире Триводалиев',NULL,NULL,NULL),('kiril.kjiroski','Кирил Ќироски',NULL,NULL,NULL),('kosta.mitreski','Коста Митрески',NULL,NULL,NULL),('kostadin.mishev','Костадин Мишев',NULL,NULL,NULL),('lasko.basnarkov','Ласко Баснарков',NULL,NULL,NULL),('ljupcho.antovski','Љупчо Антовски',NULL,NULL,NULL),('magdalena.kostoska.gjorchevska','Магдалена Костоска Ѓорчевска',NULL,NULL,NULL),('marija.mikhova','Марија Михова',NULL,NULL,NULL),('marija.taneska','Марија Танеска',NULL,NULL,NULL),('marjan.gushev','Марјан Гушев',NULL,NULL,NULL),('martin.dinev','Мартин Динев',NULL,NULL,NULL),('martina.toshevska','Мартина Тошевска',NULL,NULL,NULL),('metodija.jancheski','Методија Јанчески',NULL,NULL,NULL),('mila.dodevska','Мила Додевска',NULL,NULL,NULL),('mile.jovanov','Миле Јованов',NULL,NULL,NULL),('milena.trajanoska','Милена Трајаноска',NULL,NULL,NULL),('milosh.jovanovikj','Милош Јовановиќ',NULL,NULL,NULL),('miroslav.mirchev','Мирослав Мирчев',NULL,NULL,NULL),('monika.simjanoska','Моника Симјаноска',NULL,NULL,NULL),('natasha.ilievska','Наташа Илиевска',NULL,NULL,NULL),('nenad.anchev','Ненад Анчев',NULL,NULL,NULL),('nevena.atskovska','Невена Ацковска',NULL,NULL,NULL),('panche.ribarski','Панче Рибарски',NULL,NULL,NULL),('petar.rogachikj','Петар Рогачиќ',NULL,NULL,NULL),('petar.sekuloski','Петар Секулоски',NULL,NULL,NULL),('petre.lameski','Петре Ламески',NULL,NULL,NULL),('riste.stojanov','Ристе Стојанов',NULL,NULL,NULL),('sasho.gramatikov','Сашо Граматиков',NULL,NULL,NULL),('sijche.pechkova','Сијче Печкова',NULL,NULL,NULL),('slave.temkov','Славе Темков',NULL,NULL,NULL),('slobodan.kalajdzhiski','Слободан Калајџиски',NULL,NULL,NULL),('smilka.janeska.sarkanjats','Смилка Јанеска Саркањац',NULL,NULL,NULL),('sonja.gievska','Соња Гиевска',NULL,NULL,NULL),('stefan.andonov','Стефан Андонов',NULL,NULL,24),('vangel.ajanovski','Вангел Ајановски',NULL,NULL,NULL),('veritsa.bakeva','Верица Бакева',NULL,NULL,NULL),('vesna.dimitrievska.ristovska','Весна Димитриевска Ристовска',NULL,NULL,NULL),('vesna.dimitrova','Весна Димитрова',NULL,NULL,NULL),('vladimir.trajkovikj','Владимир Трајковиќ',NULL,NULL,NULL),('vladimir.zdraveski','Владимир Здравески',NULL,NULL,NULL),('vladislav.bidikov','Владислав Бидиков',NULL,NULL,NULL),('vlatko.spasev','Влатко Спасев',NULL,NULL,NULL),('vojdan.kjorveziroski','Војдан Ќорвезироски',NULL,NULL,NULL),('zhivko.atanaskoski','Живко Атанаскоски',NULL,NULL,NULL),('zoritsa.karapancheva','Зорица Карапанчева',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `professors` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -395,7 +447,10 @@ DROP TABLE IF EXISTS `rooms`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rooms` (
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  PRIMARY KEY (`Name`)
+  `ScheduleId` int DEFAULT NULL,
+  PRIMARY KEY (`Name`),
+  UNIQUE KEY `IX_rooms_ScheduleId` (`ScheduleId`),
+  CONSTRAINT `FK_rooms_schedules_ScheduleId` FOREIGN KEY (`ScheduleId`) REFERENCES `schedules` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -405,7 +460,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms` VALUES ('112 ФЕИТ'),('116 ТМФ'),('117 ТМФ'),('203 ТМФ'),('216 ТМФ'),('223 ФЕИТ'),('224 МФ'),('225 МФ'),('315 ТМФ'),('Netaville'),('online'),('Амфитеатар МФ'),('Амфитеатар Педагаошка'),('Амфитеатар ТМФ'),('Барака 1'),('Барака 2.1'),('Барака 2.2'),('Барака 3.2'),('ЛАБ.138'),('Слушална 7 на Филозофскиот факултет ');
+INSERT INTO `rooms` VALUES ('116 ТМФ',NULL),('117 ТМФ',NULL),('203 ТМФ',NULL),('216 ТМФ',NULL),('223 ФЕИТ',NULL),('224 МФ',NULL),('225 МФ',NULL),('315 ТМФ',NULL),('Netaville',NULL),('online',NULL),('Амфитеатар МФ',NULL),('Амфитеатар Педагаошка',NULL),('Амфитеатар ТМФ',NULL),('Барака 1',NULL),('Барака 2.1',NULL),('Барака 2.2',NULL),('Барака 3.2',NULL),('ЛАБ.138',NULL),('Слушална 7 на Филозофскиот факултет ',NULL),('112 ФЕИТ',31);
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -432,7 +487,7 @@ CREATE TABLE `schedulelectures` (
 
 LOCK TABLES `schedulelectures` WRITE;
 /*!40000 ALTER TABLE `schedulelectures` DISABLE KEYS */;
-INSERT INTO `schedulelectures` VALUES (19,1),(20,1),(21,1),(6,3),(7,3);
+INSERT INTO `schedulelectures` VALUES (19,1),(20,1),(21,1),(6,3),(7,3),(35,24),(36,24),(37,24),(38,24),(39,24),(40,24),(42,31),(43,31),(44,31),(45,31),(46,31),(47,31),(48,31),(49,31),(50,31),(51,31),(52,31),(53,31);
 /*!40000 ALTER TABLE `schedulelectures` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -450,7 +505,7 @@ CREATE TABLE `schedules` (
   `StudentId` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`Id`),
   KEY `IX_Schedules_StudentId` (`StudentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -459,7 +514,7 @@ CREATE TABLE `schedules` (
 
 LOCK TABLES `schedules` WRITE;
 /*!40000 ALTER TABLE `schedules` DISABLE KEYS */;
-INSERT INTO `schedules` VALUES (1,'Nikola','Nikola','nikola'),(3,'anja','asdad','anja1'),(4,'default','default','FINKI'),(5,'asd','asd','FINKI'),(6,'da','dsa','FINKI'),(7,'sdfsd','sdfsdf','FINKI'),(8,'nikola','nikola2','nikola'),(9,'nikola','nikola3','nikola'),(10,'anja','anja1','anja1'),(11,'nikola','nikola4','nikola'),(12,'nikola','nikola6','nikola'),(13,'as','as1','nikola'),(14,'a','a','nikola');
+INSERT INTO `schedules` VALUES (1,'Nikola','Nikola','nikola'),(3,'anja','asdad','anja1'),(4,'default','default','FINKI'),(5,'asd','asd','FINKI'),(6,'da','dsa','FINKI'),(7,'sdfsd','sdfsdf','FINKI'),(8,'nikola','nikola2','nikola'),(9,'nikola','nikola3','nikola'),(10,'anja','anja1','anja1'),(11,'nikola','nikola4','nikola'),(12,'nikola','nikola6','nikola'),(13,'as','as1','nikola'),(14,'a','a','nikola'),(24,'Стефан Андонов','Стефан Андонов','FINKI1'),(31,'112 ФЕИТ','112 ФЕИТ','FINKI1');
 /*!40000 ALTER TABLE `schedules` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -523,7 +578,7 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-05 11:50:41
+-- Dump completed on 2024-07-13 14:35:27
 DROP USER 'admin'@'%';
 
 -- Create the admin user

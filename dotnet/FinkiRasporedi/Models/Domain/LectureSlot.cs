@@ -1,4 +1,4 @@
-﻿using FinkiRasporedi.Models.Base;
+﻿using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,6 +6,7 @@ namespace FinkiRasporedi.Models.Domain
 {
     public class LectureSlot
     {
+
         [Key]
         public int Id { get; set; }
 

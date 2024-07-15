@@ -1,46 +1,81 @@
-﻿using FinkiRasporedi.Models.Base;
+﻿using FinkiRasporedi.Data;
 using FinkiRasporedi.Models.Domain;
 using FinkiRasporedi.Models.Exceptions;
 using FinkiRasporedi.Models.Identity;
-using FinkiRasporedi.Repository.Data;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
-namespace FinkiRasporedi.Repository
+namespace FinkiRasporedi.Repository.Impl
 {
-    public class ScheduleRepository : IScheduleRepository
+    public class ScheduleRepository(
+        ApplicationDbContext context,
+        ILectureRepository lectureRepository,
+        ILectureSlotRepository lectureSlotRepository,
+        IAuthRepository authRepository,
+        IProfessorRepository professorRepository,
+        IRoomRepository roomRepository)
+        : IScheduleRepository
     {
-        private readonly DbSet<Schedule> _schedules;
-        private readonly ApplicationDbContext _context;
-        private readonly ILectureRepository _lectureRepository;
-        private readonly ILectureSlotRepository _lectureSlotRepository;
-        private readonly DbSet<Student> _students;
-        private readonly IAuthRepository _authRepository;
+        private readonly DbSet<Schedule> _schedules = context.Set<Schedule>();
+        private readonly DbSet<Student> _students = context.Set<Student>();
 
 
-        public ScheduleRepository(
-            ApplicationDbContext context,
-            ILectureRepository lectureRepository, ILectureSlotRepository lectureSlotRepository,
-            IAuthRepository authRepository
-        )
+        public async Task<IEnumerable<Schedule>> GetAllAsync()
         {
-            _schedules = context.Set<Schedule>();
-            _context = context;
-            _lectureRepository = lectureRepository;
-            _lectureSlotRepository = lectureSlotRepository;
-            _students = context.Set<Student>(); ;
-            _authRepository = authRepository;
+            return await _schedules.ToListAsync();
+        }
+        
+        public async Task<IEnumerable<Schedule>> GetPageAsync(int page, int pageSize)
+        {
+            if (page < 1)
+            {
+                throw new ArgumentException("Page number must be greater than or equal to 1.");
+            }
+
+            if (pageSize < 1)
+            {
+                throw new ArgumentException("Page size must be greater than or equal to 1.");
+            }
+
+            var schedules = await _schedules
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return schedules;
+        }
+
+        public async Task<Schedule> GetByIdAsync(int id)
+        {
+            var schedule = await _schedules.FindAsync(id);
+            
+            if (schedule == null)
+            {
+                throw new ScheduleNotFoundException(id);
+            }
+
+            if (schedule.StudentId != "FINKI" && schedule.StudentId != "FINKI1" && !authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
+            return schedule;
         }
 
         public async Task<Schedule> AddAsync(Schedule entity)
         {
-            String user_id = _authRepository.ValidateTokenAndGetUserId();
-            entity.StudentId = user_id;
+            String userId = authRepository.ValidateTokenAndGetUserId();
+            entity.StudentId = userId;
 
-            _context.schedules?.Add(entity);
+            return await _addAsync(entity);
+        }
+        
+        private async Task<Schedule> _addAsync(Schedule entity)
+        {
+            context.schedules.Add(entity);
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -56,135 +91,22 @@ namespace FinkiRasporedi.Repository
 
             return entity;
         }
-
-        public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot)
-        {
-            Schedule schedule = await GetByIdAsync(id);
-
-            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
-            if (lectureSlot.Lecture != null)
-            {
-                int lectureId = lectureSlot.Lecture.Id;
-                Lecture lecture = await _lectureRepository.GetByIdAsync(lectureId);
-                lectureSlot.Lecture = lecture;
-                lectureSlot.TimeFrom = lecture.TimeFrom;
-                lectureSlot.TimeTo = lecture.TimeTo;
-                lectureSlot.Name = lecture.Name;
-                lectureSlot.Day = lecture.Day;
-            }
-            LectureSlot tmp = await _lectureSlotRepository.AddAsync(lectureSlot);
-            schedule.Lectures.Add(tmp);
-            _context.Entry(schedule).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return schedule;
-        }
-
-
-        public async Task<Schedule> RemoveLectureAsync(int id, int lectureSlotId)
-        {
-            LectureSlot lectureSlot = await _lectureSlotRepository.GetByIdAsync(lectureSlotId);
-            await _lectureSlotRepository.DeleteAsync(lectureSlotId);
-            Schedule schedule = await GetByIdAsync(id);
-
-            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
-            schedule.Lectures.Remove(lectureSlot);
-            _context.Entry(schedule).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-            return schedule;
-        }
-
-        public async Task<Schedule> DeleteAsync(int id)
-        {
-            var schedule = await GetByIdAsync(id);
-
-            if (!_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
-            _schedules.Remove(schedule);
-            await _context.SaveChangesAsync();
-            return schedule;
-        }
-
-        public async Task<IEnumerable<Schedule>> GetAllAsync()
-        {
-            throw new Exception("EndpointNotAccessable");
-            return await _schedules.ToListAsync();
-        }
-
-        public async Task<Schedule> GetByIdAsync(int id)
-        {
-            var schedule = await _schedules.FindAsync(id);
-
-            if (schedule.StudentId != "FINKI" && !_authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
-            if (schedule == null)
-            {
-                throw new ScheduleNotFoundException(id);
-            }
-
-            return schedule;
-        }
-
-
-        public async Task<IEnumerable<Schedule>> GetPageAsync(int page, int pageSize)
-        {
-            throw new Exception("EndpointNotAccessable");
-            if (page < 1)
-            {
-                throw new ArgumentException("Page number must be greater than or equal to 1.");
-            }
-
-            if (pageSize < 1)
-            {
-                throw new ArgumentException("Page size must be greater than or equal to 1.");
-            }
-
-            var Schedules = await _schedules
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return Schedules;
-        }
-
-
-        public async Task<int> GetTotalCountAsync()
-        {
-            throw new Exception("EndpointNotAccessable");
-            return await _schedules.CountAsync();
-        }
-
-
+        
         public async Task<Schedule> UpdateAsync(int id, Schedule entity)
         {
-            if (!_authRepository.ValidateTokenAndCompareUser(entity.StudentId))
-            {
-                throw new Exception("TokenValidationError");
-            }
-
+            String userId = authRepository.ValidateTokenAndGetUserId();
+            entity.StudentId = userId;
+   
             if (id != entity.Id)
             {
                 throw new BadRequestIdException();
             }
 
-            _context.Entry(entity).State = EntityState.Modified;
+            context.Entry(entity).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -201,40 +123,165 @@ namespace FinkiRasporedi.Repository
             return entity;
         }
 
+        public async Task<Schedule> DeleteAsync(int id)
+        {
+            var schedule = await GetByIdAsync(id);
+
+            if (!authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
+            _schedules.Remove(schedule);
+            await context.SaveChangesAsync();
+            return schedule;
+        }
+
+
+        public async Task<int> GetTotalCountAsync()
+        {
+            return await _schedules.CountAsync();
+        }
+        
+
         private bool ScheduleExists(int id)
         {
-            return (_schedules?.Any(e => e.Id == id)).GetValueOrDefault();
+            return _schedules.Any(e => e.Id == id);
         }
 
 
         public async Task<IEnumerable<Schedule>> GetDefaultSchedules()
         {
-            Student? default_user = await _students.FindAsync("FINKI");
+            Student? defaultUser = await _students.FindAsync("FINKI");
 
-            if (default_user != null)
+            if (defaultUser != null)
             {
-                return default_user.Schedules;
+                return defaultUser.Schedules;
             }
 
-            return Enumerable.Empty<Schedule>();
+            return [];
         }
 
         public async Task<IEnumerable<Schedule>> GetStudentSchedules()
         {
-            var userId = _authRepository.ValidateTokenAndGetUserId();
+            var userId = authRepository.ValidateTokenAndGetUserId();
             if (userId == null)
             {
                 throw new UnauthorizedAccessException("Invalid token");
             }
 
-            var stuent = await _students.FindAsync(userId);
+            var student = await _students.FindAsync(userId);
 
-            if (stuent != null)
+            if (student != null)
             {
-                return stuent.Schedules;
+                return student.Schedules;
             }
 
-            return Enumerable.Empty<Schedule>();
+            return [];
+        }
+        
+        public async Task<Schedule> AddLectureAsync(int id, LectureSlot lectureSlot, bool validateUser)
+        {
+            Schedule schedule = await GetByIdAsync(id);
+
+            if (validateUser && !authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+
+            if (lectureSlot.Lecture != null)
+            {
+                int lectureId = lectureSlot.Lecture.Id;
+                Lecture lecture = await lectureRepository.GetByIdAsync(lectureId);
+                lectureSlot.Lecture = lecture;
+                lectureSlot.TimeFrom = lecture.TimeFrom;
+                lectureSlot.TimeTo = lecture.TimeTo;
+                lectureSlot.Name = lecture.Name;
+                lectureSlot.Day = lecture.Day;
+            }
+            LectureSlot tmp = await lectureSlotRepository.AddAsync(lectureSlot);
+            
+            schedule.Lectures ??= new List<LectureSlot>();
+            
+            schedule.Lectures.Add(tmp);
+            context.Entry(schedule).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return schedule;
+        }
+
+
+        public async Task<Schedule> RemoveLectureAsync(int id, int lectureSlotId)
+        {
+            LectureSlot lectureSlot = await lectureSlotRepository.GetByIdAsync(lectureSlotId);
+            await lectureSlotRepository.DeleteAsync(lectureSlotId);
+            Schedule schedule = await GetByIdAsync(id);
+
+            if (!authRepository.ValidateTokenAndCompareUser(schedule.StudentId))
+            {
+                throw new Exception("TokenValidationError");
+            }
+            
+            schedule.Lectures ??= new List<LectureSlot>();
+            schedule.Lectures.Remove(lectureSlot);
+            context.Entry(schedule).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+            return schedule;
+        }
+        
+        public async Task<Professor> AddScheduleToProfessor(Professor professor)
+        {
+            Schedule schedule = new Schedule
+            {
+                Name = professor.Name,
+                Description = professor.Name,
+                StudentId = "FINKI1",
+                Lectures = new List<LectureSlot>()
+            };
+
+            Schedule savedSchedule = await _addAsync(schedule);
+            
+            foreach (Lecture lecture in professor.Lectures)
+            {
+                LectureSlot lectureSlot = new LectureSlot
+                {
+                    Lecture = lecture
+                };
+                await AddLectureAsync(savedSchedule.Id, lectureSlot, false);
+            }
+
+            professor.Schedule = schedule;
+
+            await professorRepository.UpdateAsync(professor.Id, professor);
+
+            return professor;
+        }
+
+        public async Task<Room> AddScheduleToRoom(Room room)
+        {
+            Schedule schedule = new Schedule
+            {
+                Name = room.Name,
+                Description = room.Name,
+                StudentId = "FINKI1",
+                Lectures = new List<LectureSlot>()
+            };
+
+            Schedule savedSchedule = await _addAsync(schedule);
+            
+            foreach (Lecture lecture in room.Lectures)
+            {
+                LectureSlot lectureSlot = new LectureSlot
+                {
+                    Lecture = lecture
+                };
+                await AddLectureAsync(savedSchedule.Id, lectureSlot, false);
+            }
+
+            room.Schedule = schedule;
+
+            await roomRepository.UpdateAsync(room.Name, room);
+
+            return room;
         }
     }
 }

@@ -128,18 +128,61 @@ class ScheduleService {
     }
   }
 
-  Future<Schedule> deleteSchedule(int id) async {
+  Future<bool> deleteSchedule(int id) async {
     final response = await http.delete(
       Uri.parse('$baseUrl/Schedules/$id'),
       headers: await _getAuthorizationHeaders(),
     );
 
+    if (response.statusCode == 200 || response.statusCode == 204) {
+      return true;
+    } else {
+      throw Exception('Failed to delete schedule');
+    }
+  }
+
+  Future<Schedule> updateSchedule(int scheduleId, Schedule schedule) async {
+    final response = await http.put(
+      Uri.parse('$baseUrl/Schedules/$scheduleId'),
+      headers: await _getAuthorizationHeaders(),
+      body: jsonEncode(schedule.toJson()),
+    );
     if (response.statusCode == 200) {
       final dynamic jsonData = jsonDecode(response.body);
       var item = Schedule.fromJson(jsonData);
       return item;
     } else {
-      throw Exception('Failed to delete schedule');
+      throw Exception('Failed to add schedule');
+    }
+  }
+
+  Future<Schedule> getScheduleByProfessor(String professorId) async {
+    final http.Response response;
+    response = await http.get(
+      Uri.parse('$baseUrl/Schedules/Professor/$professorId'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var schedule = Schedule.fromJson(jsonData);
+      return schedule;
+    } else {
+      throw Exception('Failed to fetch data');
+    }
+  }
+
+  Future<Schedule> getScheduleByRoom(String roomId) async {
+    final http.Response response;
+    response = await http.get(
+      Uri.parse('$baseUrl/Schedules/Room/$roomId'),
+    );
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = jsonDecode(response.body);
+      var schedule = Schedule.fromJson(jsonData);
+      return schedule;
+    } else {
+      throw Exception('Failed to fetch data');
     }
   }
 
@@ -148,7 +191,6 @@ class ScheduleService {
       final prefs = await SharedPreferences.getInstance();
       final loginDetails = prefs.getString('login_details');
       if (loginDetails == null) {
-        // Return an empty map if login details do not exist
         return {};
       }
 

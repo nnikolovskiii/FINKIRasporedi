@@ -1,7 +1,7 @@
 using FinkiRasporedi.Models.Identity;
 using FinkiRasporedi.Models.Mailling;
 using FinkiRasporedi.Repository;
-using FinkiRasporedi.Repository.Data;
+using FinkiRasporedi.Data;
 using FinkiRasporedi.Repository.Impl;
 using FinkiRasporedi.Repository.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,11 +10,18 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+// Construct the connection string from environment variables
+string mysqlHost = Environment.GetEnvironmentVariable("MYSQL_HOST") ?? "localhost";
+string mysqlPort = Environment.GetEnvironmentVariable("MYSQL_PORT") ?? "3308";
+string mysqlDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE") ?? "finki_rasporedi";
+string mysqlUser = Environment.GetEnvironmentVariable("MYSQL_USER") ?? "admin";
+string mysqlPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD") ?? "ogan123";
+
+var connectionString = $"Server={mysqlHost};Port={mysqlPort};Database={mysqlDatabase};User={mysqlUser};Password={mysqlPassword};";
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -77,14 +84,12 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped(typeof(ILectureSlotRepository), typeof(LectureSlotRepository));
 
-
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAnyOrigin", builder =>
     {
         builder
-            .AllowAnyOrigin() // You can replace this with specific origins if needed
+            .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
@@ -105,6 +110,11 @@ c.SwaggerDoc("v1", new OpenApiInfo
 }));
 
 builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+// Add health checks services
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>(); 
+
 var app = builder.Build();
 app.UseCors("AllowAnyOrigin");
 app.UseSwagger();
@@ -115,7 +125,6 @@ app.UseSwaggerUI(options =>
 
 var config = app.Services.GetService<IConfiguration>();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -124,7 +133,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -135,6 +143,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapHealthChecks("/health");
 
 app.MapControllerRoute(
     name: "default",

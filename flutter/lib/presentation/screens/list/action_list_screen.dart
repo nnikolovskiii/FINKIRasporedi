@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
+import 'package:flutter_app/presentation/screens/calendar/professor_calendar_screen.dart';
+import 'package:flutter_app/presentation/screens/calendar/room_calendar_screen.dart';
 import 'package:flutter_app/presentation/screens/main_screen.dart';
 import 'package:provider/provider.dart';
-
-import '../../../domain/providers/schedule_provider.dart'; // Import ScheduleListScreen
+import '../../../domain/providers/schedule_provider.dart';
 
 class ActionListScreen extends StatelessWidget {
   @override
@@ -23,15 +23,29 @@ class ActionListScreen extends StatelessWidget {
   Widget _buildCard(BuildContext context, String title, Color color) {
     return GestureDetector(
       onTap: () {
-        Provider.of<ScheduleProvider>(context, listen: false).setName(title);
-        if (title == 'Смер') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0,)),
-          );
-        } else {
-          // Handle other card taps if needed
-          print('$title card tapped');
+        switch (title) {
+          case 'Смер':
+            Provider.of<ScheduleProvider>(context, listen: false).setName(title);
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+            );
+            break;
+          case 'Професор':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfessorCalendarScreen()),
+            );
+            break;
+          case 'Просторија':
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RoomCalendarScreen()),
+            );
+            break;
+          default:
+            print('$title card tapped');
         }
       },
       child: Card(

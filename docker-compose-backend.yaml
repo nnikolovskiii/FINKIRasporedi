@@ -1,13 +1,19 @@
 version: '3.7'
 
 services:
-  backend:
-    image: nnikolovskii/dotnet_finki_rasporedi:latest
-    build:
-      context: ./dotnet
-      dockerfile: Dockerfile
+  mysql:
+    image: mysql:latest
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=finki-rasporedi.c3ykc2um4mje.eu-central-1.rds.amazonaws.com;Port=3306;Database=finki_rasporedi;User=admin;Password=Ogan09875!;
+      MYSQL_DATABASE: finki_rasporedi
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ogan123
+      MYSQL_ROOT_PASSWORD: ogan123
     ports:
-      - "7069:80"
+      - "3308:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
