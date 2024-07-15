@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../auth/login.dart';
 import '../login/auth.dart';
 
 class NotLoggedInMessageScreen extends StatelessWidget {
@@ -11,10 +10,10 @@ class NotLoggedInMessageScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center( // Wrap the Text widget with Center
-            child: const Text(
+          const Center(
+            child: Text(
               'Мора да сте логирани за да си видите вашите распореди!',
-              textAlign: TextAlign.center, // Ensure the text is centered
+              textAlign: TextAlign.center,
             ),
           ),
           const SizedBox(height: 20),
@@ -22,7 +21,7 @@ class NotLoggedInMessageScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) =>  AuthScreen()),
+                MaterialPageRoute(builder: (context) => const AuthScreen()),
               );
             },
             child: const Text('Логирај се'),

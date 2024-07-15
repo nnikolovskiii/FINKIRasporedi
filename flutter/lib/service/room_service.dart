@@ -6,6 +6,7 @@ import '../domain/configs/app_config.dart';
 
 class RoomService {
   static final String baseUrl = AppConfig.apiUrl;
+
   Future<List<Room>> getAllRooms() async {
     final response = await http.get(
       Uri.parse('$baseUrl/Rooms'),

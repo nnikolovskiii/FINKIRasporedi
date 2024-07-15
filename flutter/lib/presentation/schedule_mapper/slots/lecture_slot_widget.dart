@@ -38,7 +38,8 @@ class LectureWidget extends StatelessWidget {
 
   double getHeight(double height, LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return ((height * 1 / 13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
+    return ((height * 1 / 13) - CalendarConfig.heightOffset) * interval +
+        8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -51,7 +52,8 @@ class LectureWidget extends StatelessWidget {
   }
 
   bool isDarkColor(Color color) {
-    double brightness = (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
+    double brightness =
+        (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
     return brightness < 128;
   }
 
@@ -73,163 +75,186 @@ class LectureWidget extends StatelessWidget {
             onLongPress: isDefault
                 ? null
                 : () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            lecture.name ?? lecture.lecture!.course.subject.name,
-                            textScaleFactor: textScaleFactor,
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: [
-                          if (lecture.lecture != null) ...[
-                            Text(
-                              'Просторија: ${lecture.lecture!.room.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Text(
-                              'Професор: ${lecture.lecture!.professor.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ] else
-                            Text(
-                              'Лекција: ${lecture.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Изберете акција:',
-                            textScaleFactor: textScaleFactor,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                ),
-                                onPressed: () async {
-                                  await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                    ),
-                                  ); // Close the dialog
-                                },
-                                child: const Text(
-                                  'Избриши',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
-                                    ),
-                                  ); // Close the dialog
-                                },
-                                child: const Text(
-                                  'Ажурирај',
-                                  style: TextStyle(color: Colors.white),
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  lecture.name ??
+                                      lecture.lecture!.course.subject.name,
+                                  textScaleFactor: textScaleFactor,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                 ),
                               ),
-                            ),
-                            if (lecture.lecture != null)
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Theme.of(context).primaryColor,
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                  ),
-                                  onPressed: () async {
-                                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                      ),
-                                    ); // Close the dialog
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
                                   },
-                                  child: const Text(
-                                    'Ресетирај',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
                                 ),
                               ),
+                            ],
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: [
+                                if (lecture.lecture != null) ...[
+                                  Text(
+                                    'Просторија: ${lecture.lecture!.room.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  Text(
+                                    'Професор: ${lecture.lecture!.professor.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                ] else
+                                  Text(
+                                    'Лекција: ${lecture.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Изберете акција:',
+                                  textScaleFactor: textScaleFactor,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                      ),
+                                      onPressed: () async {
+                                        await scheduleService.removeLecture(
+                                            schedule.id ?? 0, lecture.id ?? -1);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CalendarScreen(
+                                                    schedule.id ?? 0),
+                                          ),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Избриши',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FieldScreen(
+                                                schedule: schedule,
+                                                lectureSlot: lecture),
+                                          ),
+                                        ); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'Ажурирај',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  if (lecture.lecture != null)
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 20),
+                                        ),
+                                        onPressed: () async {
+                                          await lectureSlotService
+                                              .resetLectureSlot(
+                                                  lecture.id ?? -1);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CalendarScreen(
+                                                      schedule.id ?? 0),
+                                            ),
+                                          );
+                                        },
+                                        child: const Text(
+                                          'Ресетирај',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+                        );
+                      },
+                    );
+                  },
             child: Stack(
               children: [
                 Container(
-                  child: Container(
-                    height: getHeight(height, lecture),
-                    width: allDays
-                        ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
-                        : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _buildConditionalWidget(!darkText),
-                      ),
+                  height: getHeight(height, lecture),
+                  width: allDays
+                      ? (width - CalendarConfig.offsetAllDays) *
+                          CalendarConfig.calNumAllDays
+                      : (width - CalendarConfig.offsetOneDay) *
+                          CalendarConfig.calNumOneDay,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _buildConditionalWidget(!darkText),
                     ),
                   ),
                 ),
@@ -241,157 +266,184 @@ class LectureWidget extends StatelessWidget {
             onLongPress: isDefault
                 ? null
                 : () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            lecture.name ?? lecture.lecture!.course.subject.name,
-                            textScaleFactor: textScaleFactor,
-                            style: Theme.of(context).textTheme.headlineMedium,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                        Align(
-                          alignment: Alignment.topRight,
-                          child: IconButton(
-                            icon: Icon(Icons.close),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: [
-                          if (lecture.lecture != null) ...[
-                            Text(
-                              'Просторија: ${lecture.lecture!.room.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            Text(
-                              'Професор: ${lecture.lecture!.professor.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          ] else
-                            Text(
-                              'Лекција: ${lecture.name}',
-                              textScaleFactor: textScaleFactor,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Изберете акција:',
-                            textScaleFactor: textScaleFactor,
-                            style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: [
-                      Center(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                ),
-                                onPressed: () async {
-                                  await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                    ),
-                                  ); // Close the dialog
-                                },
-                                child: const Text(
-                                  'Избриши',
-                                  style: TextStyle(color: Colors.white),
-                                ),
-
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
-                              child: TextButton(
-                                style: TextButton.styleFrom(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
-                                    ),
-                                  ); // Close the dialog
-                                },
-                                child: const Text(
-                                  'Ажурирај',
-                                  style: TextStyle(color: Colors.white),
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  lecture.name ??
+                                      lecture.lecture!.course.subject.name,
+                                  textScaleFactor: textScaleFactor,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
                                 ),
                               ),
-                            ),
-                            if (lecture.lecture != null)
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 5),
-                                child: TextButton(
-                                  style: TextButton.styleFrom(
-                                    backgroundColor: Theme.of(context).primaryColor,
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                                  ),
-                                  onPressed: () async {
-                                    await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => CalendarScreen(schedule.id ?? 0),
-                                      ),
-                                    ); // Close the dialog
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: IconButton(
+                                  icon: const Icon(Icons.close),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
                                   },
-                                  child: const Text(
-                                    'Ресетирај',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
                                 ),
                               ),
+                            ],
+                          ),
+                          content: SingleChildScrollView(
+                            child: ListBody(
+                              children: [
+                                if (lecture.lecture != null) ...[
+                                  Text(
+                                    'Просторија: ${lecture.lecture!.room.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                  Text(
+                                    'Професор: ${lecture.lecture!.professor.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                ] else
+                                  Text(
+                                    'Лекција: ${lecture.name}',
+                                    textScaleFactor: textScaleFactor,
+                                    style:
+                                        Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Изберете акција:',
+                                  textScaleFactor: textScaleFactor,
+                                  style: TextStyle(
+                                    color: Theme.of(context).primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            Center(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                      ),
+                                      onPressed: () async {
+                                        await scheduleService.removeLecture(
+                                            schedule.id ?? 0, lecture.id ?? -1);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CalendarScreen(
+                                                    schedule.id ?? 0),
+                                          ),
+                                        ); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'Избриши',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 5),
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 10, horizontal: 20),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FieldScreen(
+                                                schedule: schedule,
+                                                lectureSlot: lecture),
+                                          ),
+                                        ); // Close the dialog
+                                      },
+                                      child: const Text(
+                                        'Ажурирај',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                  if (lecture.lecture != null)
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: TextButton(
+                                        style: TextButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 10, horizontal: 20),
+                                        ),
+                                        onPressed: () async {
+                                          await lectureSlotService
+                                              .resetLectureSlot(
+                                                  lecture.id ?? -1);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CalendarScreen(
+                                                      schedule.id ?? 0),
+                                            ),
+                                          ); // Close the dialog
+                                        },
+                                        child: const Text(
+                                          'Ресетирај',
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
                           ],
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
+                        );
+                      },
+                    );
+                  },
             child: Container(
               height: getHeight(height, lecture),
               width: allDays
-                  ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
-                  : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay,
+                  ? (width - CalendarConfig.offsetAllDays) *
+                      CalendarConfig.calNumAllDays
+                  : (width - CalendarConfig.offsetOneDay) *
+                      CalendarConfig.calNumOneDay,
               decoration: BoxDecoration(
                 color: backgroundColor,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Center(
                 child: Text(
-                  lecture.lecture?.course.subject.abbreviation ?? lecture.name ?? "",
+                  lecture.lecture?.course.subject.abbreviation ??
+                      lecture.name ??
+                      "",
                   style: TextStyle(
                     color: darkText ? Colors.white : Colors.black,
                     fontFamily: 'Lato',
@@ -433,7 +485,8 @@ class LectureWidget extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
                 child: Text(
                   lecture.lecture!.course.subject.name,
                   style: textStyle.copyWith(
@@ -477,13 +530,10 @@ class LectureWidget extends StatelessWidget {
   }
 
   Color hexToColor(String hexColor) {
-    // Remove the # character if present
     if (hexColor.startsWith('#')) {
       hexColor = hexColor.substring(1);
     }
-    // Parse the hex color string to an integer
     int hexValue = int.parse(hexColor, radix: 16);
-    // Create a color object from the hex value
     return Color(hexValue).withOpacity(1.0);
   }
 }

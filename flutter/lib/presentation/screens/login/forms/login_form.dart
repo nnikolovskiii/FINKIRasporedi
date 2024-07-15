@@ -6,12 +6,12 @@ import '../components/rounded_password_input.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({
-    Key? key,
+    super.key,
     required this.isLogin,
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
-  }) : super(key: key);
+  });
 
   final bool isLogin;
   final Duration animationDuration;
@@ -37,7 +37,7 @@ class _LoginFormState extends State<LoginForm> {
       duration: widget.animationDuration * 4,
       child: Align(
         alignment: Alignment.center,
-        child: Container(
+        child: SizedBox(
           width: widget.size.width,
           height: widget.defaultLoginSize,
           child: SingleChildScrollView(
@@ -73,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
                 const RoundedPasswordInput(hint: 'Password',color: Color(0xff253338), textColor: Colors.white70,),
                 const SizedBox(height: 10),
                 const RoundedButton(title: 'LOGIN', color:Color(0xFF608dc6) , textColor: Colors.white,),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),

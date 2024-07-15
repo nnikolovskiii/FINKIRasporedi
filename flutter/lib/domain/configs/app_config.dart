@@ -8,6 +8,5 @@ class AppConfig {
     final response = await HttpRequest.getString('config.json');
     final config = json.decode(response);
     apiUrl = config['apiUrl'];
-    print('Loaded API URL: $apiUrl');  // Debug print
   }
 }

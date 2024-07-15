@@ -12,13 +12,14 @@ class RoomCalendarContentScreen extends StatefulWidget {
   final List<Room> rooms;
 
   const RoomCalendarContentScreen({
-    Key? key,
+    super.key,
     required this.schedule,
     required this.rooms,
-  }) : super(key: key);
+  });
 
   @override
-  _RoomCalendarContentScreenState createState() => _RoomCalendarContentScreenState();
+  _RoomCalendarContentScreenState createState() =>
+      _RoomCalendarContentScreenState();
 }
 
 class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
@@ -69,7 +70,8 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
   void _filterProfessors(String query) {
     setState(() {
       filteredRooms = widget.rooms
-          .where((room) => room.name.toLowerCase().contains(query.toLowerCase()))
+          .where(
+              (room) => room.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
       _overlayEntry?.markNeedsBuild();
     });
@@ -79,25 +81,26 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
     if (_overlayEntry != null) return;
 
     if (selectedProfessor != null) {
-      final selectedProf = widget.rooms.firstWhere((room) => room.name == selectedProfessor);
+      final selectedProf =
+          widget.rooms.firstWhere((room) => room.name == selectedProfessor);
       filteredRooms.removeWhere((room) => room.name == selectedProfessor);
       filteredRooms.insert(0, selectedProf);
     }
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        width: 200, // Adjust the width as needed
+        width: 200,
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: const Offset(0, 50), // Adjust as needed
+          offset: const Offset(0, 50),
           child: Material(
             elevation: 4.0,
             child: SizedBox(
-              height: 200, // Adjust the height as needed
+              height: 200,
               child: Scrollbar(
                 controller: _scrollController,
-                thumbVisibility: true, // Show the scroll thumb
+                thumbVisibility: true,
                 child: ListView(
                   shrinkWrap: true,
                   controller: _scrollController,
@@ -111,11 +114,13 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
                           _overlayEntry?.remove();
                           _overlayEntry = null;
                         });
-                        Provider.of<ScheduleProvider>(context, listen: false).setRoom(room.name);
+                        Provider.of<ScheduleProvider>(context, listen: false)
+                            .setRoom(room.name);
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => RoomCalendarScreen()),
+                          MaterialPageRoute(
+                              builder: (context) => const RoomCalendarScreen()),
                         );
                       },
                     );
@@ -128,12 +133,7 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
       ),
     );
 
-    Overlay.of(context)!.insert(_overlayEntry!);
-  }
-
-  void _hideOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   @override
@@ -147,7 +147,8 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
-          } else if (details.delta.dx < 0 && currentPage < (5 - num).toDouble()) {
+          } else if (details.delta.dx < 0 &&
+              currentPage < (5 - num).toDouble()) {
             controller.nextPage(
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
@@ -164,7 +165,7 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
                 children: [
                   if (showAllDays)
                     SizedBox(
-                      width: 200, // Adjust the width as needed
+                      width: 200,
                       child: CompositedTransformTarget(
                         link: _layerLink,
                         child: TextField(

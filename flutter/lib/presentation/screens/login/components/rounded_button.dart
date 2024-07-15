@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-
 class RoundedButton extends StatelessWidget {
   final Color color;
   final Color textColor;
+
   const RoundedButton({
-    Key? key,
-    required this.title, required this.color, required this.textColor,
-  }) : super(key: key);
+    super.key,
+    required this.title,
+    required this.color,
+    required this.textColor,
+  });
 
   final String title;
 
@@ -24,15 +26,11 @@ class RoundedButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           color: color,
         ),
-
-        padding: EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         alignment: Alignment.center,
         child: Text(
           title,
-          style: TextStyle(
-              color: textColor,
-              fontSize: 18
-          ),
+          style: TextStyle(color: textColor, fontSize: 18),
         ),
       ),
     );

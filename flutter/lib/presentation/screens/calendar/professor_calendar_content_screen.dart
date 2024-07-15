@@ -1,10 +1,8 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/screens/calendar/professor_calendar_screen.dart';
-import 'package:flutter_app/presentation/screens/calendar/room_calendar_screen.dart';
 import 'package:provider/provider.dart';
 import '../../../domain/models/professor.dart';
-import '../../../domain/models/room.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import 'calendar_content_screen.dart';
@@ -14,16 +12,18 @@ class ProfessorCalendarContentScreen extends StatefulWidget {
   final List<Professor> professors;
 
   const ProfessorCalendarContentScreen({
-    Key? key,
+    super.key,
     required this.schedule,
     required this.professors,
-  }) : super(key: key);
+  });
 
   @override
-  _ProfessorCalendarContentScreenState createState() => _ProfessorCalendarContentScreenState();
+  _ProfessorCalendarContentScreenState createState() =>
+      _ProfessorCalendarContentScreenState();
 }
 
-class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarContentScreen> {
+class _ProfessorCalendarContentScreenState
+    extends State<ProfessorCalendarContentScreen> {
   late final PageController controller;
   late final ScrollController _scrollController;
   double currentPage = 0;
@@ -71,7 +71,8 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
   void _filterProfessors(String query) {
     setState(() {
       filteredProfessors = widget.professors
-          .where((professor) => professor.name.toLowerCase().contains(query.toLowerCase()))
+          .where((professor) =>
+              professor.name.toLowerCase().contains(query.toLowerCase()))
           .toList();
       _overlayEntry?.markNeedsBuild();
     });
@@ -81,25 +82,26 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
     if (_overlayEntry != null) return;
 
     if (selectedProfessor != null) {
-      final selectedProf = widget.professors.firstWhere((prof) => prof.id == selectedProfessor);
+      final selectedProf =
+          widget.professors.firstWhere((prof) => prof.id == selectedProfessor);
       filteredProfessors.removeWhere((prof) => prof.id == selectedProfessor);
       filteredProfessors.insert(0, selectedProf);
     }
 
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        width: 200, // Adjust the width as needed
+        width: 200,
         child: CompositedTransformFollower(
           link: _layerLink,
           showWhenUnlinked: false,
-          offset: const Offset(0, 50), // Adjust as needed
+          offset: const Offset(0, 50),
           child: Material(
             elevation: 4.0,
             child: SizedBox(
-              height: 200, // Adjust the height as needed
+              height: 200,
               child: Scrollbar(
                 controller: _scrollController,
-                thumbVisibility: true, // Show the scroll thumb
+                thumbVisibility: true,
                 child: ListView(
                   shrinkWrap: true,
                   controller: _scrollController,
@@ -113,11 +115,14 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
                           _overlayEntry?.remove();
                           _overlayEntry = null;
                         });
-                        Provider.of<ScheduleProvider>(context, listen: false).setProfessor(professor.id);
+                        Provider.of<ScheduleProvider>(context, listen: false)
+                            .setProfessor(professor.id);
 
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => ProfessorCalendarScreen()),
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const ProfessorCalendarScreen()),
                         );
                       },
                     );
@@ -130,12 +135,7 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
       ),
     );
 
-    Overlay.of(context)!.insert(_overlayEntry!);
-  }
-
-  void _hideOverlay() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
+    Overlay.of(context).insert(_overlayEntry!);
   }
 
   @override
@@ -149,7 +149,8 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
-          } else if (details.delta.dx < 0 && currentPage < (5 - num).toDouble()) {
+          } else if (details.delta.dx < 0 &&
+              currentPage < (5 - num).toDouble()) {
             controller.nextPage(
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
@@ -166,7 +167,7 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
                 children: [
                   if (showAllDays)
                     SizedBox(
-                      width: 200, // Adjust the width as needed
+                      width: 200,
                       child: CompositedTransformTarget(
                         link: _layerLink,
                         child: TextField(

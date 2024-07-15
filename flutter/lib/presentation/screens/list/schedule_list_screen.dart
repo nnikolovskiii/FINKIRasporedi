@@ -5,13 +5,12 @@ import 'package:flutter_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import '../add/add_schedule_screen.dart';
-import '../auth/login.dart';
 import '../calendar/calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
 import '../main_screen.dart';
 
 class ScheduleListScreen extends StatefulWidget {
-  const ScheduleListScreen({Key? key}) : super(key: key);
+  const ScheduleListScreen({super.key});
 
   @override
   _ScheduleListScreenState createState() => _ScheduleListScreenState();
@@ -33,7 +32,8 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
   }
 
   Future<List<Schedule>> fetchSchedules() async {
-    final isDefault = Provider.of<ScheduleProvider>(context, listen: false).isDefault;
+    final isDefault =
+        Provider.of<ScheduleProvider>(context, listen: false).isDefault;
     if (isDefault) {
       return await ScheduleService().getDefaultSchedulesWithPagination();
     } else {
@@ -57,12 +57,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
               child: Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () {
-                    Provider.of<ScheduleProvider>(context, listen: false).setName('');
+                    Provider.of<ScheduleProvider>(context, listen: false)
+                        .setName('');
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              const MainScreen(initialIndex: 0)),
                     );
                   },
                 ),
@@ -84,14 +87,15 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                   );
                 } else if (snapshot.hasError) {
                   if (snapshot.error.toString().contains('not_logged_in')) {
-                    return NotLoggedInMessageScreen();
+                    return const NotLoggedInMessageScreen();
                   } else {
                     return Center(
                       child: Text('Error: ${snapshot.error}'),
                     );
                   }
                 } else if (snapshot.hasData) {
-                  List<ScheduleItem> scheduleItems = snapshot.data!.map((schedule) {
+                  List<ScheduleItem> scheduleItems =
+                      snapshot.data!.map((schedule) {
                     return ScheduleItem(
                       schedule: schedule,
                       theme: "resources/images/bgImg.jpg",
@@ -127,13 +131,13 @@ class ScheduleItem extends StatelessWidget {
   final bool isDefault;
 
   ScheduleItem({
-    Key? key,
+    super.key,
     required this.schedule,
     required this.theme,
     required this.bgColor,
     required this.bgColor1,
     required this.isDefault,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +161,7 @@ class ScheduleItem extends StatelessWidget {
                 color: Colors.grey.withOpacity(0.5),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3), // Shadow only on the bottom side
+                offset: const Offset(0, 3),
               ),
             ],
           ),
@@ -165,7 +169,8 @@ class ScheduleItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
                 child: Image.asset(
                   theme,
                   height: 110,
@@ -198,37 +203,41 @@ class ScheduleItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: Icon(Icons.edit),
+                            icon: const Icon(Icons.edit),
                             color: Colors.white,
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => AddScheduleScreen(schedule: schedule,)),
+                                MaterialPageRoute(
+                                    builder: (context) => AddScheduleScreen(
+                                          schedule: schedule,
+                                        )),
                               );
                             },
                           ),
                           IconButton(
-                            icon: Icon(Icons.delete),
+                            icon: const Icon(Icons.delete),
                             color: Colors.red,
                             onPressed: () async {
                               bool? confirmDelete = await showDialog<bool>(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
-                                    title: Text('Потврди бришење:'),
-                                    content: Text('Дали сте сигурни дека сакате да го избришете распоредот?'),
+                                    title: const Text('Потврди бришење:'),
+                                    content: const Text(
+                                        'Дали сте сигурни дека сакате да го избришете распоредот?'),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop(false);
                                         },
-                                        child: Text('Откажи'),
+                                        child: const Text('Откажи'),
                                       ),
                                       TextButton(
                                         onPressed: () {
                                           Navigator.of(context).pop(true);
                                         },
-                                        child: Text('Избриши'),
+                                        child: const Text('Избриши'),
                                       ),
                                     ],
                                   );
@@ -236,10 +245,13 @@ class ScheduleItem extends StatelessWidget {
                               );
 
                               if (confirmDelete == true) {
-                                await scheduleService.deleteSchedule(schedule.id ?? 0);
+                                await scheduleService
+                                    .deleteSchedule(schedule.id ?? 0);
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 1)),
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const MainScreen(initialIndex: 1)),
                                 );
                               }
                             },

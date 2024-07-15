@@ -152,11 +152,11 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
     widget.lectureSlot.hexColor = selectedColor.toHex().toString();
 
     if (widget.update) {
-      await widget.lectureSlotService.updateLectureSlot(
-          widget.lectureSlot.id ?? 0, widget.lectureSlot);
+      await widget.lectureSlotService
+          .updateLectureSlot(widget.lectureSlot.id ?? 0, widget.lectureSlot);
     } else {
-      await widget.scheduleService.addLecture(
-          widget.schedule.id ?? 0, widget.lectureSlot);
+      await widget.scheduleService
+          .addLecture(widget.schedule.id ?? 0, widget.lectureSlot);
     }
 
     Navigator.pushReplacement(

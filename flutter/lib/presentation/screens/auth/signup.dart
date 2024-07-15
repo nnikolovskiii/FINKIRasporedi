@@ -4,7 +4,7 @@ import 'package:flutter_app/presentation/screens/auth/login.dart';
 import 'package:flutter_app/service/auth_service.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({Key? key}) : super(key: key);
+  const SignupPage({super.key});
 
   @override
   _SignUpState createState() => _SignUpState();
@@ -34,7 +34,7 @@ class _SignUpState extends State<SignupPage> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => LoginPage(),
+                builder: (context) => const LoginPage(),
               ),
             );
           },
@@ -45,7 +45,7 @@ class _SignUpState extends State<SignupPage> {
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
+              constraints: const BoxConstraints(
                 maxWidth: 600, // Max width for larger screens
               ),
               child: Form(
@@ -121,7 +121,9 @@ class _SignUpState extends State<SignupPage> {
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                            _obscurePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
@@ -149,18 +151,21 @@ class _SignUpState extends State<SignupPage> {
                         prefixIcon: const Icon(Icons.password),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureConfirmPassword ? Icons.visibility_off : Icons.visibility,
+                            _obscureConfirmPassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscureConfirmPassword = !_obscureConfirmPassword;
+                              _obscureConfirmPassword =
+                                  !_obscureConfirmPassword;
                             });
                           },
                         ),
                       ),
                       obscureText: _obscureConfirmPassword,
                       validator: (val) =>
-                      val != password ? 'Лозинките не се совпаѓаат' : null,
+                          val != password ? 'Лозинките не се совпаѓаат' : null,
                       onChanged: (val) {
                         setState(() => confirmPassword = val);
                       },
@@ -178,17 +183,17 @@ class _SignUpState extends State<SignupPage> {
                           _attemptSignUp();
                         }
                       },
+                      style: ElevatedButton.styleFrom(
+                        shape: const StadiumBorder(),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: const Color(0xFF123499),
+                      ),
                       child: const Text(
                         "Регистрирај се",
                         style: TextStyle(
                           fontSize: 18, // Scalable font size
                           color: Colors.white,
                         ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        shape: const StadiumBorder(),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        backgroundColor: const Color(0xFF123499),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -277,8 +282,6 @@ class _SignUpState extends State<SignupPage> {
       setState(() {
         error = 'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
       });
-
-      print(e);
     }
   }
 }

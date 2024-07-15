@@ -30,10 +30,5 @@ class CalendarConfig {
     timeRatioOneDay = config['time_ratio_one_day'];
     calNumOneDay = calRatioOneDay / (calRatioOneDay +timeRatioOneDay);
     timeNumOneDay =  timeRatioOneDay / (calRatioOneDay+timeRatioOneDay);
-
-    print(calNumAllDays);
-    print(timeNumAllDays);
-    print(calNumOneDay);
-    print(timeNumOneDay);
   }
 }

@@ -4,6 +4,7 @@ class RegisterRequestModel {
     this.password,
     this.email,
   });
+
   late final String? username;
   late final String? password;
   late final String? email;

@@ -47,8 +47,8 @@ class _LoginPageState extends State<LoginPage> {
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(horizontal: screenSize.width * 0.1),
             child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: 400, // Reduced max width for better fit on smaller screens
+              constraints: const BoxConstraints(
+                maxWidth: 400,
               ),
               child: Form(
                 key: globalFormKey,
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainScreen(initialIndex: 0),
+                  builder: (context) => const MainScreen(initialIndex: 0),
                 ),
               );
             } else {

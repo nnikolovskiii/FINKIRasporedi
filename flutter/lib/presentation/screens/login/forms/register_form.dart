@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -8,12 +7,12 @@ import '../components/rounded_password_input.dart';
 
 class RegisterForm extends StatelessWidget {
   const RegisterForm({
-    Key? key,
+    super.key,
     required this.isLogin,
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
-  }) : super(key: key);
+  });
 
   final bool isLogin;
   final Duration animationDuration;
@@ -29,7 +28,7 @@ class RegisterForm extends StatelessWidget {
         visible: !isLogin,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
+          child: SizedBox(
             width: size.width,
             height: defaultLoginSize,
             child: SingleChildScrollView(
