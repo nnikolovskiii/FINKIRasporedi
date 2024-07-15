@@ -1,8 +1,12 @@
-name: 'Terraform'
+name: CI/CD Pipeline
 
 on:
+  push:
+    branches: [ "production" ]
+  pull_request:
+    branches: [ "production" ]
   workflow_run:
-    workflows: ["Docker Image CI"]
+    workflows: ["CI/CD Pipeline"]
     types:
       - completed
 
@@ -10,8 +14,34 @@ permissions:
   contents: read
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v4
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker backend
+      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+
+    - name: Build Docker frontend
+      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
+
+    - name: Push Docker image 1
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+
+    - name: Push Docker image 2
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
+
   terraform:
     name: 'Terraform'
+    needs: build
     runs-on: ubuntu-latest
     environment: production
 
@@ -38,9 +68,9 @@ jobs:
       working-directory: ./aws-infra
 
     - name: Terraform Plan
-      run: terraform plan -input=false -var 'backend_image=nnikolovskii/aws-backend-healthy:latest' -var 'frontend_image=nnikolovskii/flutter-frontend:latest'
+      run: terraform plan -input=false -var "backend_image=${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}" -var "frontend_image=${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}"
       working-directory: ./aws-infra
 
     - name: Terraform Apply
-      run: terraform apply -auto-approve -input=false -var 'backend_image=nnikolovskii/aws-backend-healthy:latest' -var 'frontend_image=nnikolovskii/flutter-frontend:latest'
+      run: terraform apply -auto-approve -input=false -var "backend_image=${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}" -var "frontend_image=${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}"
       working-directory: ./aws-infra
