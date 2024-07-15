@@ -1,8 +1,12 @@
-name: 'Terraform'
+name: CI/CD Pipeline
 
 on:
+  push:
+    branches: [ "production" ]
+  pull_request:
+    branches: [ "production" ]
   workflow_run:
-    workflows: ["Docker Image CI"]
+    workflows: ["CI/CD Pipeline"]
     types:
       - completed
 
@@ -10,27 +14,36 @@ permissions:
   contents: read
 
 jobs:
-  fetch-images:
+  build:
     runs-on: ubuntu-latest
 
-    outputs:
-      backend_image: ${{ steps.set-backend-image.outputs.backend_image }}
-      frontend_image: ${{ steps.set-frontend-image.outputs.frontend_image }}
-
     steps:
-    - name: Set backend image
-      id: set-backend-image
-      run: echo "::set-output name=backend_image::${{ github.event.workflow_run.outputs.backend_image }}"
+    - name: Check out the repository
+      uses: actions/checkout@v4
 
-    - name: Set frontend image
-      id: set-frontend-image
-      run: echo "::set-output name=frontend_image::${{ github.event.workflow_run.outputs.frontend_image }}"
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build Docker backend
+      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+
+    - name: Build Docker frontend
+      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
+
+    - name: Push Docker image 1
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+
+    - name: Push Docker image 2
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
 
   terraform:
     name: 'Terraform'
+    needs: build
     runs-on: ubuntu-latest
     environment: production
-    needs: fetch-images
 
     steps:
     - name: Checkout repository
@@ -42,7 +55,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1  # Change to your desired region
-    
+
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
@@ -55,12 +68,9 @@ jobs:
       working-directory: ./aws-infra
 
     - name: Terraform Plan
-      run: |
-        terraform plan -input=false -var "backend_image=${{ needs.fetch-images.outputs.backend_image }}" -var "frontend_image=${{ needs.fetch-images.outputs.frontend_image }}"
+      run: terraform plan -input=false -var "backend_image=${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}" -var "frontend_image=${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}"
       working-directory: ./aws-infra
 
     - name: Terraform Apply
-      run: |
-        terraform apply -auto-approve -input=false -var "backend_image=${{ needs.fetch-images.outputs.backend_image }}" -var "frontend_image=${{ needs.fetch-images.outputs.frontend_image }}"
+      run: terraform apply -auto-approve -input=false -var "backend_image=${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}" -var "frontend_image=${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}"
       working-directory: ./aws-infra
-   
