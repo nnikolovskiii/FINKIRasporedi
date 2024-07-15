@@ -10,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    outputs:
+      backend_image: ${{ steps.build_backend.outputs.image_tag }}
+      frontend_image: ${{ steps.build_frontend.outputs.image_tag }}
+
     steps:
     - name: Check out the repository
       uses: actions/checkout@v4
@@ -21,10 +25,16 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker backend
-      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+      id: build_backend
+      run: |
+        docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
+        echo "::set-output name=image_tag::${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}"
 
     - name: Build Docker frontend
-      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
+      id: build_frontend
+      run: |
+        docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
+        echo "::set-output name=image_tag::${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}"
 
     - name: Push Docker image 1
       run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
