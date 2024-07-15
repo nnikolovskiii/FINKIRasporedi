@@ -21,13 +21,13 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build Docker backend
-      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
+      run: docker build ./dotnet --file ./dotnet/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
 
     - name: Build Docker frontend
-      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
+      run: docker build ./flutter --file ./flutter/Dockerfile --tag ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
 
     - name: Push Docker image 1
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:latest 
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/aws-backend-healthy:${{ github.sha }}
 
     - name: Push Docker image 2
-      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:latest
+      run: docker push ${{ secrets.DOCKER_USERNAME }}/flutter-frontend:${{ github.sha }}
