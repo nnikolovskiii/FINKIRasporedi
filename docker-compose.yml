@@ -8,8 +8,12 @@ services:
       dockerfile: Dockerfile
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql;Port=3306;Database=finki_rasporedi;User=admin;Password=ogan123;
       - ASPNETCORE_URLS=http://+:80
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=finki_rasporedi
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=ogan123
     depends_on:
       - mysql
     ports:

@@ -172,7 +172,7 @@ class _ProfessorCalendarContentScreenState extends State<ProfessorCalendarConten
                         child: TextField(
                           controller: _searchController,
                           decoration: const InputDecoration(
-                            hintText: 'Пребарување професор...',
+                            hintText: 'Пребарај професор...',
                             border: UnderlineInputBorder(),
                           ),
                           onChanged: (query) {

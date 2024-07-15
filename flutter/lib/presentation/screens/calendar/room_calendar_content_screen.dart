@@ -170,7 +170,7 @@ class _RoomCalendarContentScreenState extends State<RoomCalendarContentScreen> {
                         child: TextField(
                           controller: _searchController,
                           decoration: const InputDecoration(
-                            hintText: 'Пребарување професор...',
+                            hintText: 'Пребарај просторија...',
                             border: UnderlineInputBorder(),
                           ),
                           onChanged: (query) {

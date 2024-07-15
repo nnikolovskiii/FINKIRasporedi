@@ -43,8 +43,15 @@ namespace FinkiRasporedi.Web.RestControllers
 
         // PUT: api/Schedules/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSchedule(int id, Schedule schedule)
+        public async Task<IActionResult> PutSchedule(int id, ScheduleDTO scheduleDto)
         {
+            var schedule = new Schedule
+            {
+                Id = scheduleDto.Id,
+                Lectures = scheduleDto.Lectures,
+                Description = scheduleDto.Description,
+                Name = scheduleDto.Name
+            };
             var updatedSchedule = await scheduleRepository.UpdateAsync(id, schedule);
             return Ok(updatedSchedule);
         }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/service/schedule_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../../domain/providers/schedule_provider.dart';
+import '../add/add_schedule_screen.dart';
 import '../auth/login.dart';
 import '../calendar/calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
@@ -96,6 +97,7 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
                       theme: "resources/images/bgImg.jpg",
                       bgColor: Colors.blue.shade900.withOpacity(0.8),
                       bgColor1: const Color(0xFFFFFFFF),
+                      isDefault: isDefault,
                     );
                   }).toList();
 
@@ -117,17 +119,20 @@ class _ScheduleListScreenState extends State<ScheduleListScreen> {
 }
 
 class ScheduleItem extends StatelessWidget {
+  final ScheduleService scheduleService = ScheduleService();
   final Schedule schedule;
   final String theme;
   final Color bgColor;
   final Color bgColor1;
+  final bool isDefault;
 
-  const ScheduleItem({
+  ScheduleItem({
     Key? key,
     required this.schedule,
     required this.theme,
     required this.bgColor,
     required this.bgColor1,
+    required this.isDefault,
   }) : super(key: key);
 
   @override
@@ -188,6 +193,59 @@ class ScheduleItem extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
+                    if (!isDefault)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(Icons.edit),
+                            color: Colors.white,
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => AddScheduleScreen(schedule: schedule,)),
+                              );
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete),
+                            color: Colors.red,
+                            onPressed: () async {
+                              bool? confirmDelete = await showDialog<bool>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Потврди бришење:'),
+                                    content: Text('Дали сте сигурни дека сакате да го избришете распоредот?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(false);
+                                        },
+                                        child: Text('Откажи'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop(true);
+                                        },
+                                        child: Text('Избриши'),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+
+                              if (confirmDelete == true) {
+                                await scheduleService.deleteSchedule(schedule.id ?? 0);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 1)),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                   ],
                 ),
               ),
