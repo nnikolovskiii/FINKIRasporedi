@@ -10,12 +10,27 @@ permissions:
   contents: read
 
 jobs:
+  fetch-images:
+    runs-on: ubuntu-latest
+
+    outputs:
+      backend_image: ${{ steps.set-backend-image.outputs.backend_image }}
+      frontend_image: ${{ steps.set-frontend-image.outputs.frontend_image }}
+
+    steps:
+    - name: Set backend image
+      id: set-backend-image
+      run: echo "::set-output name=backend_image::${{ github.event.workflow_run.outputs.backend_image }}"
+
+    - name: Set frontend image
+      id: set-frontend-image
+      run: echo "::set-output name=frontend_image::${{ github.event.workflow_run.outputs.frontend_image }}"
+
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
-
-    needs: build
+    needs: fetch-images
 
     steps:
     - name: Checkout repository
@@ -27,7 +42,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-central-1  # Change to your desired region
-
+    
     - name: Setup Terraform
       uses: hashicorp/setup-terraform@v1
 
@@ -41,10 +56,11 @@ jobs:
 
     - name: Terraform Plan
       run: |
-        terraform plan -input=false -var "backend_image=${{ needs.build.outputs.backend_image }}" -var "frontend_image=${{ needs.build.outputs.frontend_image }}"
+        terraform plan -input=false -var "backend_image=${{ needs.fetch-images.outputs.backend_image }}" -var "frontend_image=${{ needs.fetch-images.outputs.frontend_image }}"
       working-directory: ./aws-infra
 
     - name: Terraform Apply
       run: |
-        terraform apply -auto-approve -input=false -var "backend_image=${{ needs.build.outputs.backend_image }}" -var "frontend_image=${{ needs.build.outputs.frontend_image }}"
+        terraform apply -auto-approve -input=false -var "backend_image=${{ needs.fetch-images.outputs.backend_image }}" -var "frontend_image=${{ needs.fetch-images.outputs.frontend_image }}"
       working-directory: ./aws-infra
+   
