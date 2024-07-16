@@ -4,6 +4,10 @@ import 'input_container.dart';
 class RoundedInput extends StatelessWidget {
   final Color color;
   final Color textColor;
+  final IconData icon;
+  final String hint;
+  final Function(String) onChanged;
+  final String? Function(String?)? validator;
 
   const RoundedInput({
     super.key,
@@ -11,22 +15,20 @@ class RoundedInput extends StatelessWidget {
     required this.hint,
     required this.color,
     required this.textColor,
+    required this.onChanged,
+    required this.validator,
   });
-
-  final IconData icon;
-  final String hint;
 
   @override
   Widget build(BuildContext context) {
     return InputContainer(
       color: color,
-      child: TextField(
+      child: TextFormField(
         cursorColor: Colors.white,
         style: TextStyle(
           color: textColor,
           fontWeight: FontWeight.w400,
         ),
-        // Text color
         decoration: InputDecoration(
           icon: Icon(icon, color: textColor),
           hintText: hint,
@@ -35,7 +37,10 @@ class RoundedInput extends StatelessWidget {
             fontWeight: FontWeight.w400,
           ),
           border: InputBorder.none,
+          errorStyle: const TextStyle(color: Colors.redAccent),
         ),
+        onChanged: onChanged,
+        validator: validator,
       ),
     );
   }

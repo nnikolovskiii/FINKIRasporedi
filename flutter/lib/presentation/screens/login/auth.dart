@@ -144,7 +144,7 @@ class _AuthScreenState extends State<AuthScreen>
                 },
           child: isLogin
               ? const Text(
-                  "Don't have an account? Sign up",
+                  "Немате кориснички профил? Регистрирај се",
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 )
               : null,

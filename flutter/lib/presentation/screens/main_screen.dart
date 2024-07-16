@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/presentation/screens/login/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
-import 'auth/login.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
@@ -61,7 +61,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => const LoginPage()),
+                          builder: (context) => const AuthScreen()),
                     );
                   },
                 );
@@ -94,7 +94,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
+                              builder: (context) => const AuthScreen()),
                         );
                       },
                     ),

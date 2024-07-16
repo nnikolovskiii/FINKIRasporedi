@@ -12,7 +12,7 @@ class NotLoggedInMessageScreen extends StatelessWidget {
         children: [
           const Center(
             child: Text(
-              'Мора да сте логирани за да си видите вашите распореди!',
+              'Мора да сте најавени за да ги видите вашите распореди!',
               textAlign: TextAlign.center,
             ),
           ),
@@ -24,7 +24,7 @@ class NotLoggedInMessageScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const AuthScreen()),
               );
             },
-            child: const Text('Логирај се'),
+            child: const Text('Најава'),
           ),
         ],
       ),

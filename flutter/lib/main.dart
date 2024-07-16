@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/configs/calendar_config.dart';
-import 'package:flutter_app/presentation/screens/auth/login.dart';
+import 'package:flutter_app/presentation/screens/login/auth.dart';
 import 'package:flutter_app/presentation/screens/main_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
       home: const MainScreen(),
       routes: {
         '/home': (context) => const MainScreen(),
-        '/login': (context) => const LoginPage(),
+        '/login': (context) => const AuthScreen(),
       },
     );
   }
