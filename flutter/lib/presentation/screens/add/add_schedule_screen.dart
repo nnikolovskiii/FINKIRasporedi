@@ -12,7 +12,7 @@ class AddScheduleScreen extends StatefulWidget {
   AddScheduleScreen({super.key, this.schedule});
 
   @override
-  _AddScheduleScreenState createState() => _AddScheduleScreenState();
+  State<AddScheduleScreen> createState() => _AddScheduleScreenState();
 }
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
@@ -95,13 +95,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       await widget.scheduleService
                           .updateSchedule(schedule.id!, schedule);
                     }
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(initialIndex: 1),
-                      ),
-                    );
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const MainScreen(initialIndex: 1),
+                        ),
+                      );
+                    }
                   }
                 },
                 style: ButtonStyle(

@@ -24,7 +24,7 @@ class ColorPickerScreen extends StatefulWidget {
   });
 
   @override
-  _ColorPickerScreenState createState() => _ColorPickerScreenState();
+  State<ColorPickerScreen> createState() => _ColorPickerScreenState();
 }
 
 class _ColorPickerScreenState extends State<ColorPickerScreen> {

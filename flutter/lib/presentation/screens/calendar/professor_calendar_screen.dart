@@ -18,7 +18,7 @@ class ProfessorCalendarScreen extends StatefulWidget {
   const ProfessorCalendarScreen({super.key});
 
   @override
-  _ProfessorCalendarScreenState createState() =>
+  State<ProfessorCalendarScreen> createState() =>
       _ProfessorCalendarScreenState();
 }
 

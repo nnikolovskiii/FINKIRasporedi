@@ -13,7 +13,7 @@ class ScheduleListScreen extends StatefulWidget {
   const ScheduleListScreen({super.key});
 
   @override
-  _ScheduleListScreenState createState() => _ScheduleListScreenState();
+  State<ScheduleListScreen> createState() => _ScheduleListScreenState();
 }
 
 class _ScheduleListScreenState extends State<ScheduleListScreen> {

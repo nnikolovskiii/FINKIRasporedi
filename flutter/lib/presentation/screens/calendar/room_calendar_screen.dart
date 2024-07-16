@@ -17,7 +17,7 @@ class RoomCalendarScreen extends StatefulWidget {
   const RoomCalendarScreen({super.key});
 
   @override
-  _RoomCalendarScreenState createState() => _RoomCalendarScreenState();
+  State<RoomCalendarScreen> createState() => _RoomCalendarScreenState();
 }
 
 class _RoomCalendarScreenState extends State<RoomCalendarScreen> {

@@ -21,7 +21,7 @@ class ProfessorListScreen extends StatefulWidget {
       required this.courseName});
 
   @override
-  _ProfessorListScreenState createState() =>
+  State<ProfessorListScreen> createState() =>
       _ProfessorListScreenState(courseId, courseName);
 }
 

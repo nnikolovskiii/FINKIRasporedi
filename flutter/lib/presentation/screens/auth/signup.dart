@@ -7,7 +7,7 @@ class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
 
   @override
-  _SignUpState createState() => _SignUpState();
+  State<SignupPage> createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignupPage> {
@@ -261,17 +261,14 @@ class _SignUpState extends State<SignupPage> {
     return null;
   }
 
-  // Method to attempt sign-up
   void _attemptSignUp() async {
     try {
-      // Perform sign-up process here
       await AuthService.register(RegisterRequestModel(
         username: username,
         email: email,
         password: password,
       ));
 
-      // Navigate to the login page after successful sign-up
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

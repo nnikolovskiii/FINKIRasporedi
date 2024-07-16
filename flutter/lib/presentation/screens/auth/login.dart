@@ -11,7 +11,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
@@ -170,7 +170,7 @@ class _LoginPageState extends State<LoginPage> {
               isApiCallProcess = false;
             });
 
-            if (result == true) {
+            if (result == true && context.mounted) {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(

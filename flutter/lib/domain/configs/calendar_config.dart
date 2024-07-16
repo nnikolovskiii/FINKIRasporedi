@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:html';
+import 'package:universal_html/html.dart' as html;
 
 class CalendarConfig {
   static late double timeRatioAllDays;
@@ -15,7 +15,7 @@ class CalendarConfig {
   static late double heightOffset;
 
   static Future<void> forCalendar() async {
-    final response = await HttpRequest.getString('calendar-config.json');
+    final response = await html.HttpRequest.getString('calendar-config.json');
     final config = json.decode(response);
     offsetAllDays = config['offset_all_days'];
     offsetOneDay = config['offset_one_day'];

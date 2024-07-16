@@ -18,7 +18,7 @@ class ProfessorCalendarContentScreen extends StatefulWidget {
   });
 
   @override
-  _ProfessorCalendarContentScreenState createState() =>
+  State<ProfessorCalendarContentScreen> createState() =>
       _ProfessorCalendarContentScreenState();
 }
 

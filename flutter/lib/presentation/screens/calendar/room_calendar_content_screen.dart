@@ -18,7 +18,7 @@ class RoomCalendarContentScreen extends StatefulWidget {
   });
 
   @override
-  _RoomCalendarContentScreenState createState() =>
+  State<RoomCalendarContentScreen> createState() =>
       _RoomCalendarContentScreenState();
 }
 

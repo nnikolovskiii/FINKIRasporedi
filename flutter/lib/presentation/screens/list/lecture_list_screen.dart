@@ -41,7 +41,7 @@ class LectureListScreen extends StatefulWidget {
   });
 
   @override
-  _LectureListScreenState createState() => _LectureListScreenState();
+  State<LectureListScreen> createState() => _LectureListScreenState();
 }
 
 class _LectureListScreenState extends State<LectureListScreen> {

@@ -158,14 +158,16 @@ class LectureWidget extends StatelessWidget {
                                       onPressed: () async {
                                         await scheduleService.removeLecture(
                                             schedule.id ?? 0, lecture.id ?? -1);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CalendarScreen(
-                                                    schedule.id ?? 0),
-                                          ),
-                                        );
+                                        if (context.mounted) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CalendarScreen(
+                                                      schedule.id ?? 0),
+                                            ),
+                                          );
+                                        }
                                       },
                                       child: const Text(
                                         'Избриши',
@@ -214,14 +216,16 @@ class LectureWidget extends StatelessWidget {
                                           await lectureSlotService
                                               .resetLectureSlot(
                                                   lecture.id ?? -1);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CalendarScreen(
-                                                      schedule.id ?? 0),
-                                            ),
-                                          );
+                                          if (context.mounted) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CalendarScreen(
+                                                        schedule.id ?? 0),
+                                              ),
+                                            );
+                                          }
                                         },
                                         child: const Text(
                                           'Ресетирај',
@@ -349,14 +353,16 @@ class LectureWidget extends StatelessWidget {
                                       onPressed: () async {
                                         await scheduleService.removeLecture(
                                             schedule.id ?? 0, lecture.id ?? -1);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CalendarScreen(
-                                                    schedule.id ?? 0),
-                                          ),
-                                        ); // Close the dialog
+                                        if (context.mounted) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CalendarScreen(
+                                                      schedule.id ?? 0),
+                                            ),
+                                          );
+                                        }
                                       },
                                       child: const Text(
                                         'Избриши',
@@ -405,14 +411,16 @@ class LectureWidget extends StatelessWidget {
                                           await lectureSlotService
                                               .resetLectureSlot(
                                                   lecture.id ?? -1);
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  CalendarScreen(
-                                                      schedule.id ?? 0),
-                                            ),
-                                          ); // Close the dialog
+                                          if (context.mounted) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CalendarScreen(
+                                                        schedule.id ?? 0),
+                                              ),
+                                            ); // Close the dialog
+                                          }
                                         },
                                         child: const Text(
                                           'Ресетирај',
