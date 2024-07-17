@@ -108,7 +108,7 @@ class _LoginFormState extends State<LoginForm> {
                         return SizedBox(
                           width: imageWidth,
                           child: Image.asset(
-                            'resources/images/Innovation.gif',
+                            'resources/images/ideas.gif',
                             fit: BoxFit.contain,
                           ),
                         );

@@ -41,11 +41,15 @@ class _SchedulesScreenState extends State<MainScreen> {
 
     return Scaffold(
       appBar: CustomAppBar(
-        title: const Text(
-          'Распореди',
-          style: TextStyle(
-            fontSize: 16,
-            color:  Colors.white,
+        title: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ClipOval(
+            child: Image.asset(
+              'resources/images/rasporedi_logo.png',
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         actions: <Widget>[
@@ -112,7 +116,7 @@ class _SchedulesScreenState extends State<MainScreen> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
             child: ToggleButtons(
               isSelected: [_selectedIndex == 0, _selectedIndex == 1],
               onPressed: (index) {
