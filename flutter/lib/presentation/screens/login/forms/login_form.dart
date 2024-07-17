@@ -37,6 +37,7 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
+
     var screenSize = MediaQuery.of(context).size;
 
     return AnimatedOpacity(
@@ -61,6 +62,41 @@ class _LoginFormState extends State<LoginForm> {
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: Color(0xff253338),
+// =======
+//     return AnimatedOpacity(
+//       opacity: widget.isLogin ? 1.0 : 0.0,
+//       duration: widget.animationDuration * 4,
+//       child: Align(
+//         alignment: Alignment.center,
+//         child: Container(
+//           width: widget.size.width,
+//           height: widget.defaultLoginSize,
+//           child: SingleChildScrollView(
+//             child: Column(
+//               crossAxisAlignment: CrossAxisAlignment.center,
+//               mainAxisAlignment: MainAxisAlignment.center,
+//               children: [
+//                 const Text(
+//                   'Добредојде назад',
+//                   style: TextStyle(
+//                       fontWeight: FontWeight.bold,
+//                       fontSize: 24,
+//                       color: Color(0xff253338)
+//                   ),
+//                 ),
+//                 const SizedBox(height: 5),
+//                 LayoutBuilder(
+//                   builder: (context, constraints) {
+//                     // Determine the image width based on the screen width
+//                     double imageWidth = constraints.maxWidth < 600
+//                         ? constraints.maxWidth * 0.5 // For mobile
+//                         : constraints.maxWidth * 0.2; // For web
+//                     return SizedBox(
+//                       width: imageWidth,
+//                       child: Image.asset(
+//                         'resources/images/Innovation.gif',
+//                         fit: BoxFit.contain,
+// >>>>>>> frontend
                       ),
                     ),
                     const SizedBox(height: 5),
@@ -164,7 +200,16 @@ class _LoginFormState extends State<LoginForm> {
                     const SizedBox(height: 10),
                   ],
                 ),
+
               ),
+// =======
+//                 const RoundedInput(icon: Icons.person, hint: 'Корисничко име',color:  Color(0xff253338)  , textColor: Colors.white70,),
+//                 const RoundedPasswordInput(hint: 'Лозинка',color: Color(0xff253338), textColor: Colors.white70,),
+//                 const SizedBox(height: 10),
+//                 const RoundedButton(title: 'Најави се', color:Color(0xFF608dc6) , textColor: Colors.white,),
+//                 SizedBox(height: 10),
+//               ],
+// >>>>>>> frontend
             ),
           ),
         ),
