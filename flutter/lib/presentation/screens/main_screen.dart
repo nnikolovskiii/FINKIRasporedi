@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
-import '../widgets/CustomAppBar.dart';
+import '../widgets/custom-app-bar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
@@ -14,10 +14,10 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key, this.initialIndex = 0});
 
   @override
-  _SchedulesScreenState createState() => _SchedulesScreenState();
+  State<MainScreen> createState() => _MainScreenState();
 }
 
-class _SchedulesScreenState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> {
   late int _selectedIndex;
 
   @override
@@ -60,11 +60,12 @@ class _SchedulesScreenState extends State<MainScreen> {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError || snapshot.data == null) {
                 return IconButton(
-                  icon: const Icon(Icons.account_circle_sharp, color: Colors.white),
+                  icon: const Icon(Icons.account_circle_sharp,
+                      color: Colors.white),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) =>  AuthScreen()),
+                          builder: (context) => const AuthScreen()),
                     );
                   },
                 );
@@ -96,7 +97,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) =>  AuthScreen()),
+                              builder: (context) => const AuthScreen()),
                         );
                       },
                     ),
@@ -142,14 +143,14 @@ class _SchedulesScreenState extends State<MainScreen> {
       ),
       floatingActionButton: !isDefault
           ? FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddScheduleScreen()),
-          );
-        },
-        child: const Icon(Icons.add, color: Colors.white),
-      )
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddScheduleScreen()),
+                );
+              },
+              child: const Icon(Icons.add, color: Colors.white),
+            )
           : null,
     );
   }

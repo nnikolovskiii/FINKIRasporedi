@@ -14,27 +14,23 @@ class ProfessorListScreen extends StatefulWidget {
   final String courseId;
   final String courseName;
 
-  const ProfessorListScreen(
-      {super.key,
-      required this.schedule,
-      required this.courseId,
-      required this.courseName});
+  const ProfessorListScreen({
+    super.key,
+    required this.schedule,
+    required this.courseId,
+    required this.courseName,
+  });
 
   @override
-  State<ProfessorListScreen> createState() =>
-      _ProfessorListScreenState(courseId, courseName);
+  State<ProfessorListScreen> createState() => _ProfessorListScreenState();
 }
 
 class _ProfessorListScreenState extends State<ProfessorListScreen> {
-  final String courseId;
-  final String courseName;
   List<Professor> professors = [];
   List<Professor> filteredProfessors = [];
   ProfessorService professorService = ProfessorService();
   CourseService courseService = CourseService();
   final TextEditingController _searchController = TextEditingController();
-
-  _ProfessorListScreenState(this.courseId, this.courseName);
 
   @override
   void initState() {
@@ -44,8 +40,8 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
 
   Future<void> fetchProfessors() async {
     try {
-      List<Professor> fetchedProfessors =
-          await professorService.getProfessorsByCourseId(courseId: courseId);
+      List<Professor> fetchedProfessors = await professorService
+          .getProfessorsByCourseId(courseId: widget.courseId);
       setState(() {
         professors = fetchedProfessors;
         filteredProfessors = fetchedProfessors;
@@ -73,7 +69,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          courseName,
+          widget.courseName,
           style: const TextStyle(
             fontSize: 16,
             color: Color(0xFF123499),
@@ -111,7 +107,7 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                             schedule: widget.schedule,
                             professorId: professorId,
                             professorName: selectedProfessor.name,
-                            courseId: courseId,
+                            courseId: widget.courseId,
                           ),
                         ),
                       );

@@ -43,7 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
         visible: !widget.isLogin,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
+          child: SizedBox(
             width: widget.size.width,
             height: widget.defaultLoginSize,
             child: SingleChildScrollView(
@@ -56,7 +56,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     const Text(
                       'Добредојде',
                       style: TextStyle(
-
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: Color(0xff253338),
@@ -176,19 +175,6 @@ class _RegisterFormState extends State<RegisterForm> {
                     const SizedBox(height: 10),
                   ],
                 ),
-// =======
-//                       );
-//                     },
-//                   ),
-//                   const RoundedInput(icon: Icons.person , hint: 'Корисничко име',textColor: Color(0xff253338), color: Colors.white,),
-//                   const RoundedInput(icon: Icons.mail ,textColor: Color(0xff253338),hint: 'е-пошта',color: Colors.white,),
-//                   const RoundedPasswordInput(hint: 'Лозинка',color: Colors.white, textColor: Color(0xff253338),),
-//                   const RoundedPasswordInput(hint: 'Повтори лозинка',color: Colors.white, textColor: Color(0xff253338),),
-//                   const SizedBox(height: 10),
-//                   const RoundedButton(title: 'Регистрирај се', color:  Color(0xff253338), textColor: Colors.white,),
-//                   const SizedBox(height: 10),
-//                 ],
-// >>>>>>> frontend
               ),
             ),
           ),
@@ -205,21 +191,26 @@ class _RegisterFormState extends State<RegisterForm> {
         password: password,
       ));
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginForm(
-            isLogin: true,
-            animationDuration: widget.animationDuration,
-            size: widget.size,
-            defaultLoginSize: widget.defaultLoginSize,
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginForm(
+              isLogin: true,
+              animationDuration: widget.animationDuration,
+              size: widget.size,
+              defaultLoginSize: widget.defaultLoginSize,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
-      setState(() {
-        error = 'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
-      });
+      if (mounted) {
+        setState(() {
+          error =
+              'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
+        });
+      }
     }
   }
 }
