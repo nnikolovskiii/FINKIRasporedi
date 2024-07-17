@@ -2,11 +2,7 @@ class Student {
   String username;
   final String token;
 
-  Student({
-    required this.username,
-    required this.token
-  });
-
+  Student({required this.username, required this.token});
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(

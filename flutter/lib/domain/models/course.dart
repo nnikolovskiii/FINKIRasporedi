@@ -1,5 +1,3 @@
-
-
 import 'package:flutter_app/domain/models/semester.dart';
 import 'package:flutter_app/domain/models/subject.dart';
 

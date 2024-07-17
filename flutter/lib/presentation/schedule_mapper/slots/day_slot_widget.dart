@@ -37,7 +37,7 @@ class DayWidget extends StatelessWidget {
     double fontSize = useShortNames ? 14 : 16;
 
     return SizedBox(
-      height: (height * 1/13) - CalendarConfig.heightOffset,
+      height: (height * 1 / 13) - CalendarConfig.heightOffset,
       width: itemWidth,
       child: Center(
         child: Text(

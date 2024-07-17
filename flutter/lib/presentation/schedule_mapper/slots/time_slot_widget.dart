@@ -6,11 +6,11 @@ class TimeSlotWidget extends StatelessWidget {
   final String time;
   final bool allDays;
 
-  TimeSlotWidget({
-    Key? key,
+  const TimeSlotWidget({
+    super.key,
     required this.time,
     required this.allDays,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TimeSlotWidget extends StatelessWidget {
         : (width - CalendarConfig.offsetOneDay) * CalendarConfig.timeNumOneDay;
 
     return Container(
-      height: (height * 1/13) - CalendarConfig.heightOffset,
+      height: (height * 1 / 13) - CalendarConfig.heightOffset,
       width: itemWidth,
       alignment: Alignment.center,
       child: FittedBox(
