@@ -21,7 +21,9 @@ class NotLoggedInMessageScreen extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
+
                 MaterialPageRoute(builder: (context) => AuthScreen()),
+
               );
             },
             child: const Text('Најава'),
