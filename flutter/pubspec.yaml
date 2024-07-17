@@ -94,6 +94,9 @@ flutter:
     - resources/images/bgImg.jpg
     - resources/images/io.png
     - resources/images/info.png
+
+    - resources/images/rasporedi_logo.png
+    - resources/images/rasporedi_logo_4.png
     - resources/images/welcome.jpg
     - resources/images/welcome2.png
     - resources/images/Innovation.gif
