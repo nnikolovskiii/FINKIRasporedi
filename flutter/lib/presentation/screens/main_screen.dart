@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_app/presentation/screens/login/auth.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
+
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
@@ -39,7 +42,7 @@ class _SchedulesScreenState extends State<MainScreen> {
     final name = Provider.of<ScheduleProvider>(context).name;
 
     return Scaffold(
-      appBar: AppBar(
+      appBar: CustomAppBar(
         title: const Text(
           'Распореди',
           style: TextStyle(
@@ -47,8 +50,6 @@ class _SchedulesScreenState extends State<MainScreen> {
             color: Color(0xFF123499),
           ),
         ),
-        elevation: 20,
-        automaticallyImplyLeading: false,
         actions: <Widget>[
           FutureBuilder<Map<String, dynamic>?>(
             future: AuthService.getLoggedInUser(),

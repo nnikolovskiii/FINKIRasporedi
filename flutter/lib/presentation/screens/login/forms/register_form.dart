@@ -57,6 +57,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     const Text(
                       'Добредојдовте',
                       style: TextStyle(
+
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                         color: Color(0xff253338),
@@ -176,6 +177,19 @@ class _RegisterFormState extends State<RegisterForm> {
                     const SizedBox(height: 10),
                   ],
                 ),
+// =======
+//                       );
+//                     },
+//                   ),
+//                   const RoundedInput(icon: Icons.person , hint: 'Корисничко име',textColor: Color(0xff253338), color: Colors.white,),
+//                   const RoundedInput(icon: Icons.mail ,textColor: Color(0xff253338),hint: 'е-пошта',color: Colors.white,),
+//                   const RoundedPasswordInput(hint: 'Лозинка',color: Colors.white, textColor: Color(0xff253338),),
+//                   const RoundedPasswordInput(hint: 'Повтори лозинка',color: Colors.white, textColor: Color(0xff253338),),
+//                   const SizedBox(height: 10),
+//                   const RoundedButton(title: 'Регистрирај се', color:  Color(0xff253338), textColor: Colors.white,),
+//                   const SizedBox(height: 10),
+//                 ],
+// >>>>>>> frontend
               ),
             ),
           ),
