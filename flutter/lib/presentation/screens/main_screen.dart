@@ -61,7 +61,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => const AuthScreen()),
+                          builder: (context) =>  AuthScreen()),
                     );
                   },
                 );
@@ -94,7 +94,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) => const AuthScreen()),
+                              builder: (context) =>  AuthScreen()),
                         );
                       },
                     ),
