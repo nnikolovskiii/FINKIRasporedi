@@ -46,7 +46,7 @@ class _LoginFormState extends State<LoginForm> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Welcome Back',
+                  'Добредојде назад',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 24,
@@ -69,10 +69,10 @@ class _LoginFormState extends State<LoginForm> {
                     );
                   },
                 ),
-                const RoundedInput(icon: Icons.mail, hint: 'Username',color:  Color(0xff253338)  , textColor: Colors.white70,),
-                const RoundedPasswordInput(hint: 'Password',color: Color(0xff253338), textColor: Colors.white70,),
+                const RoundedInput(icon: Icons.person, hint: 'Корисничко име',color:  Color(0xff253338)  , textColor: Colors.white70,),
+                const RoundedPasswordInput(hint: 'Лозинка',color: Color(0xff253338), textColor: Colors.white70,),
                 const SizedBox(height: 10),
-                const RoundedButton(title: 'LOGIN', color:Color(0xFF608dc6) , textColor: Colors.white,),
+                const RoundedButton(title: 'Најави се', color:Color(0xFF608dc6) , textColor: Colors.white,),
                 SizedBox(height: 10),
               ],
             ),

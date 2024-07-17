@@ -39,7 +39,7 @@ class RegisterForm extends StatelessWidget {
                 children: [
 
                   const Text(
-                    'Welcome',
+                    'Добредојде',
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -61,11 +61,12 @@ class RegisterForm extends StatelessWidget {
                       );
                     },
                   ),
-                  const RoundedInput(icon: Icons.mail, hint: 'Username',textColor: Color(0xff253338), color: Colors.white,),
-                  const RoundedInput(icon: Icons.face_rounded ,textColor: Color(0xff253338),hint: 'Name',color: Colors.white,),
-                  const RoundedPasswordInput(hint: 'Password',color: Colors.white, textColor: Color(0xff253338),),
+                  const RoundedInput(icon: Icons.person , hint: 'Корисничко име',textColor: Color(0xff253338), color: Colors.white,),
+                  const RoundedInput(icon: Icons.mail ,textColor: Color(0xff253338),hint: 'е-пошта',color: Colors.white,),
+                  const RoundedPasswordInput(hint: 'Лозинка',color: Colors.white, textColor: Color(0xff253338),),
+                  const RoundedPasswordInput(hint: 'Повтори лозинка',color: Colors.white, textColor: Color(0xff253338),),
                   const SizedBox(height: 10),
-                  const RoundedButton(title: 'SIGN UP', color:  Color(0xff253338), textColor: Colors.white,),
+                  const RoundedButton(title: 'Регистрирај се', color:  Color(0xff253338), textColor: Colors.white,),
                   const SizedBox(height: 10),
                 ],
               ),
