@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_app/presentation/screens/login/auth.dart';
-
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
-
 import '../widgets/CustomAppBar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
@@ -48,7 +45,7 @@ class _SchedulesScreenState extends State<MainScreen> {
           'Распореди',
           style: TextStyle(
             fontSize: 16,
-            color: Color(0xFF123499),
+            color:  Colors.white,
           ),
         ),
         actions: <Widget>[
@@ -59,7 +56,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError || snapshot.data == null) {
                 return IconButton(
-                  icon: const Icon(Icons.account_circle_sharp),
+                  icon: const Icon(Icons.account_circle_sharp, color: Colors.white),
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
@@ -78,20 +75,19 @@ class _SchedulesScreenState extends State<MainScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.account_circle,
-                              color: Color(0xFF123499)),
+                          const Icon(Icons.account_circle, color: Colors.white),
                           const SizedBox(width: 5),
                           Text(
                             snapshot.data!['username'],
                             style: const TextStyle(
-                                color: Color(0xFF123499),
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.logout),
+                      icon: const Icon(Icons.logout, color: Colors.white),
                       onPressed: () {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
@@ -106,7 +102,7 @@ class _SchedulesScreenState extends State<MainScreen> {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.info_sharp),
+            icon: const Icon(Icons.info_sharp, color: Colors.white),
             onPressed: () {
               _showImageDialog(context);
             },
@@ -124,7 +120,7 @@ class _SchedulesScreenState extends State<MainScreen> {
               },
               borderRadius: BorderRadius.circular(10),
               selectedColor: Colors.white,
-              fillColor: Colors.blue,
+              fillColor: const Color(0xFF375f95).withOpacity(1),
               color: Colors.black,
               constraints: const BoxConstraints(minHeight: 40, minWidth: 150),
               children: const [
@@ -148,7 +144,7 @@ class _SchedulesScreenState extends State<MainScreen> {
             MaterialPageRoute(builder: (context) => AddScheduleScreen()),
           );
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       )
           : null,
     );
