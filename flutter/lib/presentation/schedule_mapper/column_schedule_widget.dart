@@ -13,16 +13,15 @@ class ColumnScheduleWidget extends StatelessWidget {
   final List<LectureSlot> lectures;
   final bool allDays;
   final Schedule schedule;
-  bool dayBool;
+  final bool dayBool;
 
-  ColumnScheduleWidget({
-    super.key,
-    required this.lectures,
-    required this.day,
-    required this.allDays,
-    required this.schedule,
-    this.dayBool = true
-  });
+  const ColumnScheduleWidget(
+      {super.key,
+      required this.lectures,
+      required this.day,
+      required this.allDays,
+      required this.schedule,
+      this.dayBool = true});
 
   defineColumn() {
     List<Widget> lectureWidgets = [];
@@ -30,15 +29,21 @@ class ColumnScheduleWidget extends StatelessWidget {
     int j = 0;
     if (dayBool) {
       lectureWidgets.add(DayWidget(
-        day: day, allDays: allDays,
+        day: day,
+        allDays: allDays,
       ));
     }
-    lectureWidgets.add(HorizontalDividerWidget(hasColor: true, allDays: allDays, time: false,));
+    lectureWidgets.add(HorizontalDividerWidget(
+      hasColor: true,
+      allDays: allDays,
+      time: false,
+    ));
     for (int i = 8; i < 20; i++) {
       if (j < lectures.length && i == lectures[j].timeFrom) {
         lectureWidgets.add(LectureWidget(
           lecture: lectures[j],
-          allDays: allDays, schedule: schedule,
+          allDays: allDays,
+          schedule: schedule,
         ));
 
         int interval = lectures[j].timeTo - lectures[j].timeFrom;
@@ -48,7 +53,11 @@ class ColumnScheduleWidget extends StatelessWidget {
         lectureWidgets.add(EmptyTimeSlotWidget(allDays: allDays));
       }
 
-      lectureWidgets.add(HorizontalDividerWidget(hasColor: true, allDays: allDays, time: false,));
+      lectureWidgets.add(HorizontalDividerWidget(
+        hasColor: true,
+        allDays: allDays,
+        time: false,
+      ));
     }
     return lectureWidgets;
   }
@@ -56,14 +65,12 @@ class ColumnScheduleWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-          child: Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ...defineColumn(),
-            ]),
-      ),
+      child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ...defineColumn(),
+          ]),
     );
   }
 }

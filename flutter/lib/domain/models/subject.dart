@@ -25,7 +25,7 @@ class Subject {
       'id': id,
       'name': name,
       'abbreviation': abbreviation,
-      'level': level ,
+      'level': level,
     };
   }
 }

@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_app/presentation/screens/login/auth.dart';
+
 import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
-import '../widgets/CustomAppBar.dart';
-import 'auth/login.dart';
+
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
 
-  const MainScreen({Key? key, this.initialIndex = 0}) : super(key: key);
+  const MainScreen({super.key, this.initialIndex = 0});
 
   @override
   _SchedulesScreenState createState() => _SchedulesScreenState();
@@ -29,7 +31,8 @@ class _SchedulesScreenState extends State<MainScreen> {
   void _onToggle(int index) {
     setState(() {
       _selectedIndex = index;
-      Provider.of<ScheduleProvider>(context, listen: false).setIsDefault(index == 0);
+      Provider.of<ScheduleProvider>(context, listen: false)
+          .setIsDefault(index == 0);
     });
   }
 
@@ -58,7 +61,8 @@ class _SchedulesScreenState extends State<MainScreen> {
                   icon: const Icon(Icons.account_circle_sharp),
                   onPressed: () {
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => const LoginPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const AuthScreen()),
                     );
                   },
                 );
@@ -73,11 +77,14 @@ class _SchedulesScreenState extends State<MainScreen> {
                       ),
                       child: Row(
                         children: [
-                          const Icon(Icons.account_circle, color: Color(0xFF123499)),
+                          const Icon(Icons.account_circle,
+                              color: Color(0xFF123499)),
                           const SizedBox(width: 5),
                           Text(
                             snapshot.data!['username'],
-                            style: const TextStyle(color: Color(0xFF123499), fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                                color: Color(0xFF123499),
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -87,7 +94,8 @@ class _SchedulesScreenState extends State<MainScreen> {
                       onPressed: () {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          MaterialPageRoute(
+                              builder: (context) => const AuthScreen()),
                         );
                       },
                     ),
@@ -125,20 +133,22 @@ class _SchedulesScreenState extends State<MainScreen> {
             ),
           ),
           Expanded(
-            child: (_selectedIndex == 0) ? _getSelectedWidget(name) : ScheduleListScreen(),
+            child: (_selectedIndex == 0)
+                ? _getSelectedWidget(name)
+                : const ScheduleListScreen(),
           ),
         ],
       ),
       floatingActionButton: !isDefault
           ? FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddScheduleScreen()),
-          );
-        },
-        child: const Icon(Icons.add),
-      )
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddScheduleScreen()),
+                );
+              },
+              child: const Icon(Icons.add),
+            )
           : null,
     );
   }
@@ -162,7 +172,8 @@ class _SchedulesScreenState extends State<MainScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.close_rounded, color: Color(0xFF123499)),
+                    icon: const Icon(Icons.close_rounded,
+                        color: Color(0xFF123499)),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -181,9 +192,9 @@ class _SchedulesScreenState extends State<MainScreen> {
   Widget _getSelectedWidget(String name) {
     switch (name) {
       case "Смер":
-        return ScheduleListScreen();
+        return const ScheduleListScreen();
       default:
-        return ActionListScreen();
+        return const ActionListScreen();
     }
   }
 }

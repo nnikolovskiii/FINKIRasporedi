@@ -2,7 +2,6 @@ import 'package:flutter_app/domain/models/course.dart';
 import 'package:flutter_app/domain/models/professor.dart';
 import 'package:flutter_app/domain/models/room.dart';
 
-
 class Lecture {
   int id;
   String? name;
