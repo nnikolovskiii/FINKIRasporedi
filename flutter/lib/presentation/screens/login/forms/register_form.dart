@@ -4,7 +4,6 @@ import '../components/rounded_input.dart';
 import '../components/rounded_password_input.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import 'package:flutter_app/domain/models/register_request_model.dart';
-
 import 'login_form.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -44,7 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
         visible: !widget.isLogin,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: SizedBox(
+          child: Container(
             width: widget.size.width,
             height: widget.defaultLoginSize,
             child: SingleChildScrollView(
@@ -55,7 +54,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Добредојдовте',
+                      'Добредојде',
                       style: TextStyle(
 
                         fontWeight: FontWeight.bold,
@@ -79,7 +78,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                     RoundedInput(
-                      icon: Icons.mail,
+                      icon: Icons.person,
                       hint: 'Корисничко име',
                       color: Colors.white,
                       textColor: const Color(0xff253338),
@@ -94,7 +93,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                     RoundedInput(
-                      icon: Icons.face_rounded,
+                      icon: Icons.mail,
                       hint: 'е-пошта',
                       color: Colors.white,
                       textColor: const Color(0xff253338),

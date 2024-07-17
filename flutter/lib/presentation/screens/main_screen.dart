@@ -7,6 +7,7 @@ import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart'
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
 
+import '../widgets/CustomAppBar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
@@ -62,7 +63,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                   onPressed: () {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                          builder: (context) => const AuthScreen()),
+                          builder: (context) =>  AuthScreen()),
                     );
                   },
                 );
@@ -95,7 +96,7 @@ class _SchedulesScreenState extends State<MainScreen> {
                         AuthService.logout();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                              builder: (context) => const AuthScreen()),
+                              builder: (context) =>  AuthScreen()),
                         );
                       },
                     ),
@@ -141,14 +142,14 @@ class _SchedulesScreenState extends State<MainScreen> {
       ),
       floatingActionButton: !isDefault
           ? FloatingActionButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AddScheduleScreen()),
-                );
-              },
-              child: const Icon(Icons.add),
-            )
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddScheduleScreen()),
+          );
+        },
+        child: const Icon(Icons.add),
+      )
           : null,
     );
   }
