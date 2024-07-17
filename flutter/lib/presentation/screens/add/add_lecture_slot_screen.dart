@@ -3,8 +3,7 @@ import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../widgets/color_picker_widget.dart';
 
-bool isOverlapping(Schedule schedule, LectureSlot lec,
-    {LectureSlot? currentLecture}) {
+bool isOverlapping(Schedule schedule, LectureSlot lec, {LectureSlot? currentLecture}) {
   List<LectureSlot> lectures = schedule.lectures ?? [];
   for (LectureSlot lec1 in lectures) {
     // Skip the current lecture if it's being edited
@@ -13,9 +12,9 @@ bool isOverlapping(Schedule schedule, LectureSlot lec,
     }
     if (lec1.day == lec.day) {
       bool overlap =
-          ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
-              (lec1.timeTo > lec.timeFrom && lec1.timeTo <= lec.timeTo) ||
-              (lec1.timeFrom <= lec.timeFrom && lec1.timeTo >= lec.timeTo));
+      ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
+          (lec1.timeTo > lec.timeFrom && lec1.timeTo <= lec.timeTo) ||
+          (lec1.timeFrom <= lec.timeFrom && lec1.timeTo >= lec.timeTo));
 
       if (overlap) {
         return true;
@@ -36,11 +35,12 @@ class FieldScreen extends StatefulWidget {
   });
 
   @override
-  State<FieldScreen> createState() => _FieldScreenState();
+  _FieldScreenState createState() => _FieldScreenState();
 }
 
 class _FieldScreenState extends State<FieldScreen> {
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController abbreviationController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   int selectedDayIndex = 0;
   int selectedTimeFrom = 8;
@@ -51,6 +51,7 @@ class _FieldScreenState extends State<FieldScreen> {
     super.initState();
     if (widget.lectureSlot != null) {
       nameController.text = widget.lectureSlot!.name ?? "";
+      abbreviationController.text = widget.lectureSlot!.abbreviation ?? ""; // Assuming LectureSlot has an abbreviation field
       selectedDayIndex = widget.lectureSlot!.day;
       selectedTimeFrom = widget.lectureSlot!.timeFrom.toInt();
       selectedTimeTo = widget.lectureSlot!.timeTo.toInt();
@@ -77,23 +78,45 @@ class _FieldScreenState extends State<FieldScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (widget.lectureSlot == null ||
-                  (widget.lectureSlot != null &&
-                      widget.lectureSlot!.name != null &&
-                      widget.lectureSlot!.name!.isNotEmpty)) ...[
+              if (widget.lectureSlot?.lecture == null) ...[
                 TextFormField(
                   controller: nameController,
                   decoration: InputDecoration(
                       hintText: "Име",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
+                          borderSide: BorderSide.none
+                      ),
                       fillColor: const Color(0xFF123499).withOpacity(0.1),
                       filled: true,
-                      prefixIcon: const Icon(Icons.drive_file_rename_outline)),
+                      prefixIcon: const Icon(Icons.drive_file_rename_outline)
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Името е задолжително';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 20),
+                TextFormField(
+                  controller: abbreviationController,
+                  decoration: InputDecoration(
+                      hintText: "Кратенка",
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(18),
+                          borderSide: BorderSide.none
+                      ),
+                      fillColor: const Color(0xFF123499).withOpacity(0.1),
+                      filled: true,
+                      prefixIcon: const Icon(Icons.short_text)
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Кратенката е задолжителна';
+                    }
+                    if (value.length > 5) {
+                      return 'Кратенката мора да биде до 5 букви';
                     }
                     return null;
                   },
@@ -124,6 +147,12 @@ class _FieldScreenState extends State<FieldScreen> {
                   DropdownMenuItem<int>(value: 3, child: Text('Четврток')),
                   DropdownMenuItem<int>(value: 4, child: Text('Петок')),
                 ],
+                validator: (value) {
+                  if (value == null) {
+                    return 'Изборот на ден е задолжителен';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 20),
               Row(
@@ -211,27 +240,27 @@ class _FieldScreenState extends State<FieldScreen> {
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
                           String? name = nameController.text;
-                          if (name == "") {
+                          if (name == ""){
                             name = null;
                           }
+                          String abbreviation = abbreviationController.text;
 
-                          if (widget.lectureSlot == null) {
+                          if (widget.lectureSlot == null || widget.lectureSlot!.lecture == null) {
                             LectureSlot newLectureSlot = LectureSlot(
                               name: name,
+                              abbreviation: abbreviation, // Assuming LectureSlot has an abbreviation field
                               day: selectedDayIndex,
                               timeFrom: selectedTimeFrom,
                               timeTo: selectedTimeTo,
                             );
 
-                            if (isOverlapping(
-                                widget.schedule, newLectureSlot)) {
+                            if (isOverlapping(widget.schedule, newLectureSlot)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text('Overlap Warning'),
-                                    content: const Text(
-                                        'The selected lecture overlaps with an existing one.'),
+                                    content: const Text('The selected lecture overlaps with an existing one.'),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -261,20 +290,18 @@ class _FieldScreenState extends State<FieldScreen> {
                             }
                           } else {
                             widget.lectureSlot!.name = name;
+                            widget.lectureSlot!.abbreviation = abbreviation; // Assuming LectureSlot has an abbreviation field
                             widget.lectureSlot!.day = selectedDayIndex;
                             widget.lectureSlot!.timeFrom = selectedTimeFrom;
                             widget.lectureSlot!.timeTo = selectedTimeTo;
 
-                            if (isOverlapping(
-                                widget.schedule, widget.lectureSlot!,
-                                currentLecture: widget.lectureSlot)) {
+                            if (isOverlapping(widget.schedule, widget.lectureSlot!, currentLecture: widget.lectureSlot)) {
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                     title: const Text('Overlap Warning'),
-                                    content: const Text(
-                                        'The selected lecture overlaps with an existing one.'),
+                                    content: const Text('The selected lecture overlaps with an existing one.'),
                                     actions: [
                                       TextButton(
                                         onPressed: () {
@@ -294,8 +321,7 @@ class _FieldScreenState extends State<FieldScreen> {
                                     schedule: widget.schedule,
                                     lectureSlot: widget.lectureSlot!,
                                     update: true,
-                                    color: widget.lectureSlot!
-                                        .hexColor, // Pass the color
+                                    color: widget.lectureSlot!.hexColor, // Pass the color
                                   ),
                                 ),
                               ).then((result) {

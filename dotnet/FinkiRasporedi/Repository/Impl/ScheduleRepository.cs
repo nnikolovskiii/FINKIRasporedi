@@ -198,6 +198,7 @@ namespace FinkiRasporedi.Repository.Impl
                 lectureSlot.TimeTo = lecture.TimeTo;
                 lectureSlot.Name = lecture.Name;
                 lectureSlot.Day = lecture.Day;
+                lectureSlot.Abbreviation = lecture.Course.Subject.Abbreviation;
             }
             LectureSlot tmp = await lectureSlotRepository.AddAsync(lectureSlot);
             

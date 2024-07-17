@@ -40,30 +40,12 @@ class _LoginFormState extends State<LoginForm> {
 
     var screenSize = MediaQuery.of(context).size;
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            bool isDefault =
-                Provider.of<ScheduleProvider>(context, listen: false).isDefault;
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    MainScreen(initialIndex: isDefault ? 0 : 1),
-              ),
-            );
-          },
-        ),
-        title: const Text('Распореди'),
-      ),
-      body: AnimatedOpacity(
+    return AnimatedOpacity(
         opacity: widget.isLogin ? 1.0 : 0.0,
         duration: widget.animationDuration * 4,
         child: Align(
           alignment: Alignment.center,
-          child: SizedBox(
+          child: Container(
             width: widget.size.width,
             height: widget.defaultLoginSize,
             child: SingleChildScrollView(
@@ -75,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
-                      'Добредојдовте',
+                      'Добредојде назад',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
@@ -133,7 +115,7 @@ class _LoginFormState extends State<LoginForm> {
                       },
                     ),
                     RoundedInput(
-                      icon: Icons.mail,
+                      icon: Icons.person,
                       hint: 'Корисничко име',
                       color: const Color(0xff253338),
                       textColor: Colors.white70,
@@ -170,7 +152,7 @@ class _LoginFormState extends State<LoginForm> {
                     if (error.isNotEmpty) _showErrorMessage(),
                     const SizedBox(height: 10),
                     RoundedButton(
-                      title: 'Најава',
+                      title: 'Најави се',
                       color: const Color(0xFF608dc6),
                       textColor: Colors.white,
                       onPressed: () async {
@@ -198,7 +180,7 @@ class _LoginFormState extends State<LoginForm> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      const MainScreen(initialIndex: 0),
+                                  const MainScreen(initialIndex: 0),
                                 ),
                               );
                             } else {
@@ -231,8 +213,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   Widget _showErrorMessage() {
