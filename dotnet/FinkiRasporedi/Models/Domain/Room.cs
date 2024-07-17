@@ -9,6 +9,8 @@ namespace FinkiRasporedi.Models.Domain
     {
         [Key]
         public string Name { get; set; }
+        
+        public string? Abbreviation { get; set; }
         [JsonIgnore]
         public virtual  List<Lecture>? Lectures { get; set; }
         [JsonIgnore]

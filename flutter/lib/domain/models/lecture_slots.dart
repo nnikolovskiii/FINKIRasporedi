@@ -8,6 +8,7 @@ class LectureSlot {
   int timeFrom;
   int timeTo;
   String? hexColor;
+  String? abbreviation;
 
   LectureSlot({
     this.id,
@@ -17,6 +18,7 @@ class LectureSlot {
     required this.timeFrom,
     required this.timeTo,
     this.hexColor,
+    this.abbreviation
   });
 
   factory LectureSlot.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class LectureSlot {
       timeFrom: json['timeFrom'],
       timeTo: json['timeTo'] ,
       hexColor: json['hexColor'],
+      abbreviation: json['abbreviation']
     );
   }
 
@@ -43,6 +46,7 @@ class LectureSlot {
     if (lecture != null) json['lecture'] = lecture!.toJson();
     if (name != null) json['name'] = name;
     if (hexColor != null) json['hexColor'] = hexColor;
+    if (abbreviation != null) json['abbreviation'] = abbreviation;
 
     return json;
   }

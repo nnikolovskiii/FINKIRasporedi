@@ -13,6 +13,8 @@ namespace FinkiRasporedi.Models.Domain
         public virtual Lecture? Lecture { get; set; }
 
         public String? Name { get; set; }
+        
+        public String? Abbreviation { get; set; }
 
         public Day? Day { get; set; }
         public int? TimeFrom { get; set; }
