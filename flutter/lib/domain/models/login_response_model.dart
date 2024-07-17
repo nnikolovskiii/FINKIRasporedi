@@ -8,6 +8,7 @@ class LoginResponseModel {
     required this.token,
     required this.username,
   });
+
   late final String token;
   late final String username;
 
@@ -30,6 +31,7 @@ class Data {
     required this.email,
     required this.token,
   });
+
   late final String username;
   late final String email;
   late final String token;

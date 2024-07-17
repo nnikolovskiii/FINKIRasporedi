@@ -245,10 +245,6 @@ class _FieldScreenState extends State<FieldScreen> {
                           }
                           String abbreviation = abbreviationController.text;
 
-                          print('Selected Day Index: $selectedDayIndex');
-                          print('Time From: $selectedTimeFrom');
-                          print('Time To: $selectedTimeTo');
-
                           if (widget.lectureSlot == null || widget.lectureSlot!.lecture == null) {
                             LectureSlot newLectureSlot = LectureSlot(
                               name: name,

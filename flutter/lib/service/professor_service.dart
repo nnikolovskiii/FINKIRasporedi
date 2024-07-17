@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../domain/configs/app_config.dart';
 
 import '../domain/models/professor.dart';
 
 class ProfessorService {
   static final String baseUrl = AppConfig.apiUrl;
+
   Future<List<Professor>> getAllProfessors() async {
     final response = await http.get(
       Uri.parse('$baseUrl/Professors'),

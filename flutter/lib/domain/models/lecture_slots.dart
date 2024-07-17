@@ -29,7 +29,7 @@ class LectureSlot {
       name: json['name'],
       day: json['day'],
       timeFrom: json['timeFrom'],
-      timeTo: json['timeTo'] ,
+      timeTo: json['timeTo'],
       hexColor: json['hexColor'],
       abbreviation: json['abbreviation']
     );

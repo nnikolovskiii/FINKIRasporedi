@@ -79,7 +79,7 @@ class LectureWidget extends StatelessWidget {
               showDialog(
                 context: context,
                 builder: (context) {
-                    return getAlertDialog(context);
+                  return getAlertDialog(context);
                 },
               );
             },
@@ -109,13 +109,13 @@ class LectureWidget extends StatelessWidget {
           return GestureDetector(
             onTap: isDefault ?
                 () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return getAlertDialogDetails(context);
-                    },
-                  );
-                }
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return getAlertDialogDetails(context);
+                },
+              );
+            }
                 : null,
             onLongPress: isDefault
                 ? null

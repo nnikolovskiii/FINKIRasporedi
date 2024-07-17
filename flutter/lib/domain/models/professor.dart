@@ -15,12 +15,12 @@ class Professor {
 
   factory Professor.fromJson(Map<String, dynamic> json) {
     return Professor(
-        id: json['id'],
-        name: json['name'],
-        email: json['email'],
-        professorTitle: json['professorTitle'] != null
-            ? ProfessorTitle.values[json['professorTitle']]
-            : null,
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      professorTitle: json['professorTitle'] != null
+          ? ProfessorTitle.values[json['professorTitle']]
+          : null,
     );
   }
 

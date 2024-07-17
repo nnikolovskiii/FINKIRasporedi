@@ -6,15 +6,17 @@ import 'package:provider/provider.dart';
 import '../../../domain/providers/schedule_provider.dart';
 
 class ActionListScreen extends StatelessWidget {
+  const ActionListScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
-          _buildCard(context, 'Смер', Color(0xFF315DA8)),
-          _buildCard(context, 'Професор', Color(0xFFDE6287)),
-          _buildCard(context, 'Просторија', Color(0xFFE77672)),
+          _buildCard(context, 'Смер', const Color(0xFF315DA8)),
+          _buildCard(context, 'Професор', const Color(0xFFDE6287)),
+          _buildCard(context, 'Просторија', const Color(0xFFE77672)),
         ],
       ),
     );
@@ -25,27 +27,29 @@ class ActionListScreen extends StatelessWidget {
       onTap: () {
         switch (title) {
           case 'Смер':
-            Provider.of<ScheduleProvider>(context, listen: false).setName(title);
+            Provider.of<ScheduleProvider>(context, listen: false)
+                .setName(title);
 
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => MainScreen(initialIndex: 0)),
+              MaterialPageRoute(
+                  builder: (context) => const MainScreen(initialIndex: 0)),
             );
             break;
           case 'Професор':
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => ProfessorCalendarScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const ProfessorCalendarScreen()),
             );
             break;
           case 'Просторија':
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => RoomCalendarScreen()),
+              MaterialPageRoute(builder: (context) => const RoomCalendarScreen()),
             );
             break;
           default:
-            print('$title card tapped');
         }
       },
       child: Card(
@@ -60,7 +64,7 @@ class ActionListScreen extends StatelessWidget {
             width: double.infinity,
             child: Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 18,
               ),

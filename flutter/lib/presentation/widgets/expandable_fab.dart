@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
   const _ExpandingActionButton({
@@ -21,14 +20,14 @@ class _ExpandingActionButton extends StatelessWidget {
       animation: progress,
       builder: (context, child) {
         final offset = Offset.fromDirection(
-          directionInDegrees * (3.141592653589793 / 180.0), // Using the value of π directly
+          directionInDegrees * (3.141592653589793 / 180.0),
           progress.value * maxDistance,
         );
         return Positioned(
           right: 4.0 + offset.dx,
           bottom: 4.0 + offset.dy,
           child: Transform.rotate(
-            angle: (1.0 - progress.value) * (3.141592653589793 / 2), // Using the value of π directly
+            angle: (1.0 - progress.value) * (3.141592653589793 / 2),
             child: child!,
           ),
         );
@@ -41,16 +40,14 @@ class _ExpandingActionButton extends StatelessWidget {
   }
 }
 
-
-
 @immutable
 class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
-    Key? key,
+    super.key,
     this.initialOpen,
     required this.distance,
     required this.children,
-  }) : super(key: key);
+  });
 
   final bool? initialOpen;
   final double distance;
@@ -168,8 +165,8 @@ class _ExpandableFabState extends State<ExpandableFab>
     final count = widget.children.length;
     final step = 90.0 / (count - 1);
     for (var i = 0, angleInDegrees = 0.0;
-    i < count;
-    i++, angleInDegrees += step) {
+        i < count;
+        i++, angleInDegrees += step) {
       children.add(
         _ExpandingActionButton(
           directionInDegrees: angleInDegrees,
@@ -181,7 +178,4 @@ class _ExpandableFabState extends State<ExpandableFab>
     }
     return children;
   }
-
 }
-
-

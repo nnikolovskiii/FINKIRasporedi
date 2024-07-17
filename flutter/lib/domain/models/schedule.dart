@@ -1,4 +1,3 @@
-
 import 'lecture_slots.dart';
 
 class Schedule {
@@ -16,10 +15,11 @@ class Schedule {
 
   factory Schedule.fromJson(Map<String, dynamic> json) {
     List<LectureSlot>? lectures;
-    if(json["lectures"] != null) {
+    if (json["lectures"] != null) {
       var lectureList = json['lectures'] as List<dynamic>;
-      lectures = lectureList.map((lectureJson) =>
-          LectureSlot.fromJson(lectureJson)).toList();
+      lectures = lectureList
+          .map((lectureJson) => LectureSlot.fromJson(lectureJson))
+          .toList();
     }
     return Schedule(
       id: json['id'] as int,
@@ -40,7 +40,7 @@ class Schedule {
         'name': name,
         'description': description,
       };
-    }else{
+    } else {
       return {
         'id': id,
         'name': name,
@@ -49,5 +49,4 @@ class Schedule {
       };
     }
   }
-
 }

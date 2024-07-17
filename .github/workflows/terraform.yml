@@ -1,14 +1,8 @@
 name: CI/CD Pipeline
 
 on:
-  push:
-    branches: [ "production" ]
   pull_request:
     branches: [ "production" ]
-  workflow_run:
-    workflows: ["CI/CD Pipeline"]
-    types:
-      - completed
 
 permissions:
   contents: read
