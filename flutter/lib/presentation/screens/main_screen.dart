@@ -141,17 +141,29 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-      floatingActionButton: !isDefault
-          ? FloatingActionButton(
+      floatingActionButton: FutureBuilder<bool>(
+        future: AuthService.isLoggedIn(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(); // Display nothing while loading
+          } else if (snapshot.hasError || !snapshot.data!) {
+            return Container(); // Display nothing if error or not logged in
+          } else {
+            return !isDefault
+                ? FloatingActionButton(
               onPressed: () async {
                 await Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AddScheduleScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => AddScheduleScreen()),
                 );
               },
-              child: const Icon(Icons.add, color: Colors.white),
+              child: const Icon(Icons.add),
             )
-          : null,
+                : Container();
+          }
+        },
+      ),
     );
   }
 
