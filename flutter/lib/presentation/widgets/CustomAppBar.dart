@@ -41,7 +41,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 class CustomShape extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = Colors.blue;
+    Paint paint = Paint()..color =   Color(0xFF375f95).withOpacity(1);
     Path path = Path()
       ..lineTo(0, size.height - 40)
       ..quadraticBezierTo(
