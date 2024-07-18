@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
 import 'package:flutter_app/presentation/screens/add/add_lecture_slot_screen.dart';
 import 'package:flutter_app/service/lecture_slot_service.dart';
 
-import '../../../domain/configs/calendar_config.dart';
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
@@ -130,75 +128,6 @@ class LectureSlotWidgetMin extends StatelessWidget {
 
   }
 
-  List<Widget> _buildConditionalWidget(bool darkText) {
-    List<Widget> widgets = [];
-
-    TextStyle textStyle = TextStyle(
-      color: darkText ? Colors.black : Colors.white,
-      fontFamily: 'Lato',
-      fontSize: 14,
-    );
-
-    if (lectureSlot.lecture != null) {
-      widgets.add(
-        Column(
-          children: [
-            Align(
-              alignment: Alignment.topLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0),
-                child: Text(
-                  lectureSlot.lecture!.room.name,
-                  style: textStyle,
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.center,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
-                child: Text(
-                  lectureSlot.lecture!.course.subject.name,
-                  style: textStyle.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16,
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0),
-                child: Text(
-                  lectureSlot.lecture!.professor.name,
-                  style: textStyle,
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      widgets.add(
-        Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
-            child: Text(
-              lectureSlot.name ?? "",
-              style: textStyle.copyWith(
-                fontSize: 16,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
-    return widgets;
-  }
-
 
   AlertDialog getAlertDialog(BuildContext context){
     return AlertDialog(
@@ -216,7 +145,7 @@ class LectureSlotWidgetMin extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -258,21 +187,22 @@ class LectureSlotWidgetMin extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
                     await scheduleService.removeLecture(schedule.id ?? 0, lectureSlot.id ?? -1);
+                    if(context.mounted){
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CalendarScreen(schedule.id ?? 0),
                       ),
                     ); // Close the dialog
-                  },
+                  }},
                   child: const Text(
                     'Избриши',
                     style: TextStyle(color: Colors.white),
@@ -281,11 +211,11 @@ class LectureSlotWidgetMin extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -303,21 +233,23 @@ class LectureSlotWidgetMin extends StatelessWidget {
               ),
               if (lectureSlot.lecture != null)
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     ),
                     onPressed: () async {
                       await lectureSlotService.resetLectureSlot(lectureSlot.id ?? -1);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CalendarScreen(schedule.id ?? 0),
-                        ),
-                      ); // Close the dialog
-                    },
+                      if(context.mounted){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CalendarScreen(schedule.id ?? 0),
+                          ),
+                        ); // Close the dialog
+                      }
+                      },
                     child: const Text(
                       'Ресетирај',
                       style: TextStyle(color: Colors.white),
@@ -347,7 +279,7 @@ class LectureSlotWidgetMin extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_slot_widget_min.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_app/service/lecture_slot_service.dart';
 
 import '../../../domain/configs/calendar_config.dart';
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
-import '../../../domain/providers/schedule_provider.dart';
 import '../../../service/schedule_service.dart';
 import 'horizontal_divider_widget.dart';
 import 'lecture_slot_widget_min.dart';
@@ -16,14 +14,14 @@ class ComposeLecturesSlotWidget extends StatefulWidget {
   final List<LectureSlot> lectureSlots;
   final Schedule schedule;
 
-  ComposeLecturesSlotWidget({
-    Key? key,
+  const ComposeLecturesSlotWidget({
+    super.key,
     required this.lectureSlots,
     required this.allDays, required this.schedule,
-  }) : super(key: key);
+  });
 
   @override
-  _ComposeLecturesSlotWidgetState createState() => _ComposeLecturesSlotWidgetState();
+  State<ComposeLecturesSlotWidget> createState() => _ComposeLecturesSlotWidgetState();
 }
 
 class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
@@ -103,8 +101,6 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height - 176.4;
 
-    bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
-
     double itemWidth = widget.allDays
         ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
         : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay;
@@ -126,7 +122,6 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ensures equal spacing between children
             children: widget.lectureSlots.map((slot) {
-              double slotHeight = (slot.timeTo - slot.timeFrom).toDouble();
               return getColumn(slot, slotWidth, height-4);
             }).toList(),
           ),

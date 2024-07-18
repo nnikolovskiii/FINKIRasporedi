@@ -18,10 +18,10 @@ class CalendarScreen extends StatefulWidget {
   const CalendarScreen(this.scheduleId, {super.key});
 
   @override
-  _CalendarAppState createState() => _CalendarAppState();
+ State<CalendarScreen> createState() => _CalendarScreenState();
 }
 
-class _CalendarAppState extends State<CalendarScreen> {
+class _CalendarScreenState extends State<CalendarScreen> {
   final ScheduleService scheduleService = ScheduleService();
   Schedule? scheduleFuture;
 

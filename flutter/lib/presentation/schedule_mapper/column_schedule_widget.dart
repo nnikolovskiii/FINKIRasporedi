@@ -56,7 +56,7 @@ class ColumnScheduleWidget extends StatelessWidget {
             allDays: allDays,
             time: false,
           ));
-        }else if (overlappingLectureSlots.length != 0){
+        }else if (overlappingLectureSlots.isNotEmpty){
           lectureWidgets.add(LectureWidget(
             lectureSlot: overlappingLectureSlots[0],
             allDays: allDays,
@@ -100,7 +100,7 @@ class ColumnScheduleWidget extends StatelessWidget {
         allDays: allDays,
         time: false,
       ));
-    }else if (overlappingLectureSlots.length != 0){
+    }else if (overlappingLectureSlots.isNotEmpty){
       lectureWidgets.add(LectureWidget(
         lectureSlot: overlappingLectureSlots[0],
         allDays: allDays,

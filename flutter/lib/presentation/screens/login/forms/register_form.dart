@@ -43,7 +43,7 @@ class _RegisterFormState extends State<RegisterForm> {
         visible: !widget.isLogin,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
+          child: SizedBox(
             width: widget.size.width,
             height: widget.defaultLoginSize,
             child: SingleChildScrollView(
@@ -191,21 +191,26 @@ class _RegisterFormState extends State<RegisterForm> {
         password: password,
       ));
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginForm(
-            isLogin: true,
-            animationDuration: widget.animationDuration,
-            size: widget.size,
-            defaultLoginSize: widget.defaultLoginSize,
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginForm(
+              isLogin: true,
+              animationDuration: widget.animationDuration,
+              size: widget.size,
+              defaultLoginSize: widget.defaultLoginSize,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
-      setState(() {
-        error = 'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
-      });
+      if (mounted) {
+        setState(() {
+          error =
+              'Регистрацијата е неуспешна: ${e.toString().split(': ').last}';
+        });
+      }
     }
   }
 }

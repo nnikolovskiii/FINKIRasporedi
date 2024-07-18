@@ -86,19 +86,17 @@ class LectureWidget extends StatelessWidget {
             child: Stack(
               children: [
                 Container(
-                  child: Container(
-                    height: getHeight(height, lectureSlot),
-                    width: itemWidth,
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _buildConditionalWidget(!darkText),
-                      ),
+                  height: getHeight(height, lectureSlot),
+                  width: itemWidth,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _buildConditionalWidget(!darkText),
                     ),
                   ),
                 ),
@@ -248,7 +246,7 @@ class LectureWidget extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -290,21 +288,22 @@ class LectureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
                     await scheduleService.removeLecture(schedule.id ?? 0, lectureSlot.id ?? -1);
+                    if(context.mounted){
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => CalendarScreen(schedule.id ?? 0),
                       ),
                     ); // Close the dialog
-                  },
+                  }},
                   child: const Text(
                     'Избриши',
                     style: TextStyle(color: Colors.white),
@@ -313,11 +312,11 @@ class LectureWidget extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -335,21 +334,22 @@ class LectureWidget extends StatelessWidget {
               ),
               if (lectureSlot.lecture != null)
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     ),
                     onPressed: () async {
                       await lectureSlotService.resetLectureSlot(lectureSlot.id ?? -1);
+                      if(context.mounted){
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => CalendarScreen(schedule.id ?? 0),
                         ),
                       ); // Close the dialog
-                    },
+                    }},
                     child: const Text(
                       'Ресетирај',
                       style: TextStyle(color: Colors.white),
@@ -379,7 +379,7 @@ class LectureWidget extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },

@@ -247,12 +247,14 @@ class ScheduleItem extends StatelessWidget {
                               if (confirmDelete == true) {
                                 await scheduleService
                                     .deleteSchedule(schedule.id ?? 0);
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const MainScreen(initialIndex: 1)),
-                                );
+                                if (context.mounted) {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const MainScreen(initialIndex: 1)),
+                                  );
+                                }
                               }
                             },
                           ),
