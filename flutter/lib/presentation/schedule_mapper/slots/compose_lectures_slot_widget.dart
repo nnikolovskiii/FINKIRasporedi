@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_slot_widget_min.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/service/lecture_slot_service.dart';
 
 import '../../../domain/configs/calendar_config.dart';
 import '../../../domain/models/lecture_slots.dart';
+import '../../../domain/models/schedule.dart';
 import '../../../domain/providers/schedule_provider.dart';
 import '../../../service/schedule_service.dart';
 import 'horizontal_divider_widget.dart';
@@ -12,11 +14,12 @@ import 'lecture_slot_widget_min.dart';
 class ComposeLecturesSlotWidget extends StatefulWidget {
   final bool allDays;
   final List<LectureSlot> lectureSlots;
+  final Schedule schedule;
 
   ComposeLecturesSlotWidget({
     Key? key,
     required this.lectureSlots,
-    required this.allDays,
+    required this.allDays, required this.schedule,
   }) : super(key: key);
 
   @override
@@ -64,7 +67,7 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
     int intervalFrom = lectureSlot.timeFrom - firstTimeFrom;
     int intervalTo = lastTimeTo - lectureSlot.timeTo;
     for(int i=0; i<intervalFrom; i++){
-      widgets.add(LectureSlotWidgetMin(height: getHeight(height, 1), width: width, color: Colors.transparent));
+      widgets.add(TransparentSlotWidgetMin(height: getHeight(height, 1), width: width));
       widgets.add(HorizontalDividerWidget(
         hasColor: true,
         allDays: widget.allDays,
@@ -73,7 +76,7 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
       ));
     }
     // widgets.add(LectureSlotWidgetMin(width: width, height: getHeight(height, intervalFrom), color: Colors.transparent));
-    widgets.add(LectureSlotWidgetMin(height: getHeight(height, lectureSlot.timeTo - lectureSlot.timeFrom), width: width, color: hexToColor(lectureSlot.hexColor!)));
+    widgets.add(LectureSlotWidgetMin(height: getHeight(height, lectureSlot.timeTo - lectureSlot.timeFrom), width: width, color: hexToColor(lectureSlot.hexColor!), lectureSlot: lectureSlot, allDays: widget.allDays, schedule: widget.schedule,));
     // widgets.add(LectureSlotWidgetMin(width: width, height: getHeight(height, intervalTo), color: Colors.transparent));
     if(intervalTo != 0) {
       widgets.add(HorizontalDividerWidget(
@@ -84,7 +87,7 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
       ));
     }
     for(int i=0; i<intervalTo-1; i++){
-      widgets.add(LectureSlotWidgetMin(height: getHeight(height, 1), width: width, color: Colors.transparent));
+      widgets.add(TransparentSlotWidgetMin(height: getHeight(height, 1), width: width));
       widgets.add(HorizontalDividerWidget(
         hasColor: true,
         allDays: widget.allDays,

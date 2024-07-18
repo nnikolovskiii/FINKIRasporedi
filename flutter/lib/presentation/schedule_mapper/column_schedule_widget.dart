@@ -50,7 +50,7 @@ class ColumnScheduleWidget extends StatelessWidget {
 
       if (currentFrom >= to){
         if (overlappingLectureSlots.length > 1){
-          lectureWidgets.add(ComposeLecturesSlotWidget(lectureSlots: overlappingLectureSlots, allDays: allDays));
+          lectureWidgets.add(ComposeLecturesSlotWidget(lectureSlots: overlappingLectureSlots, allDays: allDays, schedule: schedule,));
           lectureWidgets.add(HorizontalDividerWidget(
             hasColor: true,
             allDays: allDays,
@@ -58,7 +58,7 @@ class ColumnScheduleWidget extends StatelessWidget {
           ));
         }else if (overlappingLectureSlots.length != 0){
           lectureWidgets.add(LectureWidget(
-            lecture: overlappingLectureSlots[0],
+            lectureSlot: overlappingLectureSlots[0],
             allDays: allDays,
             schedule: schedule,
           ));
@@ -94,7 +94,7 @@ class ColumnScheduleWidget extends StatelessWidget {
 
     }
     if (overlappingLectureSlots.length > 1){
-      lectureWidgets.add(ComposeLecturesSlotWidget(lectureSlots: overlappingLectureSlots, allDays: allDays));
+      lectureWidgets.add(ComposeLecturesSlotWidget(lectureSlots: overlappingLectureSlots, allDays: allDays, schedule: schedule,));
       lectureWidgets.add(HorizontalDividerWidget(
         hasColor: true,
         allDays: allDays,
@@ -102,7 +102,7 @@ class ColumnScheduleWidget extends StatelessWidget {
       ));
     }else if (overlappingLectureSlots.length != 0){
       lectureWidgets.add(LectureWidget(
-        lecture: overlappingLectureSlots[0],
+        lectureSlot: overlappingLectureSlots[0],
         allDays: allDays,
         schedule: schedule,
       ));

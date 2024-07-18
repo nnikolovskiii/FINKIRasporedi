@@ -16,11 +16,11 @@ class LectureWidget extends StatelessWidget {
   final LectureSlotService lectureSlotService = LectureSlotService();
   final Schedule schedule;
   final bool allDays;
-  final LectureSlot lecture;
+  final LectureSlot lectureSlot;
 
   LectureWidget({
     super.key,
-    required this.lecture,
+    required this.lectureSlot,
     required this.allDays,
     required this.schedule,
   });
@@ -62,7 +62,7 @@ class LectureWidget extends StatelessWidget {
 
     bool isDefault = Provider.of<ScheduleProvider>(context).isDefault;
 
-    Color backgroundColor = hexToColor(lecture.hexColor ?? "#619eff");
+    Color backgroundColor = hexToColor(lectureSlot.hexColor ?? "#619eff");
     bool darkText = isDarkColor(backgroundColor);
 
     double itemWidth = allDays
@@ -87,7 +87,7 @@ class LectureWidget extends StatelessWidget {
               children: [
                 Container(
                   child: Container(
-                    height: getHeight(height, lecture),
+                    height: getHeight(height, lectureSlot),
                     width: itemWidth,
                     decoration: BoxDecoration(
                       color: backgroundColor,
@@ -128,7 +128,7 @@ class LectureWidget extends StatelessWidget {
               );
             },
             child: Container(
-              height: getHeight(height, lecture),
+              height: getHeight(height, lectureSlot),
               width: itemWidth,
               decoration: BoxDecoration(
                 color: backgroundColor,
@@ -136,7 +136,7 @@ class LectureWidget extends StatelessWidget {
               ),
               child: Center(
                 child: Text(
-                  lecture.abbreviation ?? "",
+                  lectureSlot.abbreviation ?? "",
                   style: TextStyle(
                     color: darkText ? Colors.white : Colors.black,
                     fontFamily: 'Lato',
@@ -161,7 +161,7 @@ class LectureWidget extends StatelessWidget {
       fontSize: 14,
     );
 
-    if (lecture.lecture != null) {
+    if (lectureSlot.lecture != null) {
       widgets.add(
         Column(
           children: [
@@ -170,7 +170,7 @@ class LectureWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Text(
-                  lecture.lecture!.room.name,
+                  lectureSlot.lecture!.room.name,
                   style: textStyle,
                 ),
               ),
@@ -180,7 +180,7 @@ class LectureWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
                 child: Text(
-                  lecture.lecture!.course.subject.name,
+                  lectureSlot.lecture!.course.subject.name,
                   style: textStyle.copyWith(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -193,7 +193,7 @@ class LectureWidget extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Text(
-                  lecture.lecture!.professor.name,
+                  lectureSlot.lecture!.professor.name,
                   style: textStyle,
                 ),
               ),
@@ -208,7 +208,7 @@ class LectureWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
             child: Text(
-              lecture.name ?? "",
+              lectureSlot.name ?? "",
               style: textStyle.copyWith(
                 fontSize: 16,
               ),
@@ -239,7 +239,7 @@ class LectureWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              lecture.name ?? lecture.lecture!.course.subject.name,
+              lectureSlot.name ?? lectureSlot.lecture!.course.subject.name,
               style: Theme.of(context).textTheme.headlineMedium,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -259,18 +259,18 @@ class LectureWidget extends StatelessWidget {
       content: SingleChildScrollView(
         child: ListBody(
           children: [
-            if (lecture.lecture != null) ...[
+            if (lectureSlot.lecture != null) ...[
               Text(
-                'Просторија: ${lecture.lecture!.room.name}',
+                'Просторија: ${lectureSlot.lecture!.room.name}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Text(
-                'Професор: ${lecture.lecture!.professor.name}',
+                'Професор: ${lectureSlot.lecture!.professor.name}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             ] else
               Text(
-                'Лекција: ${lecture.name}',
+                'Лекција: ${lectureSlot.name}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             const SizedBox(height: 20),
@@ -297,7 +297,7 @@ class LectureWidget extends StatelessWidget {
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
-                    await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
+                    await scheduleService.removeLecture(schedule.id ?? 0, lectureSlot.id ?? -1);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -323,7 +323,7 @@ class LectureWidget extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                        builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lectureSlot),
                       ),
                     ); // Close the dialog
                   },
@@ -333,7 +333,7 @@ class LectureWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              if (lecture.lecture != null)
+              if (lectureSlot.lecture != null)
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 5),
                   child: TextButton(
@@ -342,7 +342,7 @@ class LectureWidget extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     ),
                     onPressed: () async {
-                      await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
+                      await lectureSlotService.resetLectureSlot(lectureSlot.id ?? -1);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -370,7 +370,7 @@ class LectureWidget extends StatelessWidget {
         children: [
           Expanded(
             child: Text(
-              lecture.name ?? lecture.lecture!.course.subject.name,
+              lectureSlot.name ?? lectureSlot.lecture!.course.subject.name,
               style: Theme.of(context).textTheme.headlineMedium,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
@@ -390,7 +390,7 @@ class LectureWidget extends StatelessWidget {
       content: SingleChildScrollView(
         child: ListBody(
           children: [
-            if (lecture.lecture != null) ...[
+            if (lectureSlot.lecture != null) ...[
               RichText(
                 text: TextSpan(
                   style: Theme.of(context).textTheme.bodyLarge,
@@ -400,7 +400,7 @@ class LectureWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.blue),
                     ),
                     TextSpan(
-                      text: lecture.lecture!.room.name,
+                      text: lectureSlot.lecture!.room.name,
                     ),
                   ],
                 ),
@@ -414,7 +414,7 @@ class LectureWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.blue),
                     ),
                     TextSpan(
-                      text: lecture.lecture!.professor.name,
+                      text: lectureSlot.lecture!.professor.name,
                     ),
                   ],
                 ),
@@ -429,7 +429,7 @@ class LectureWidget extends StatelessWidget {
                       style: TextStyle(color: Colors.blue),
                     ),
                     TextSpan(
-                      text: lecture.name,
+                      text: lectureSlot.name,
                     ),
                   ],
                 ),
