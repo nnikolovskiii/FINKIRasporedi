@@ -7,22 +7,6 @@ import '../../../service/schedule_service.dart';
 import '../../schedule_mapper/slots/day_slot_widget.dart';
 import '../../widgets/color_picker_widget.dart';
 
-bool isOverlapping(Schedule schedule, Lecture lec) {
-  List<LectureSlot> lectures = schedule.lectures ?? [];
-  for (LectureSlot lec1 in lectures) {
-    if (lec1.day == lec.day) {
-      bool overlap =
-          ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
-              (lec1.timeTo > lec.timeFrom && lec1.timeTo <= lec.timeTo) ||
-              (lec1.timeFrom <= lec.timeFrom && lec1.timeTo >= lec.timeTo));
-
-      if (overlap) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
 
 class LectureListScreen extends StatefulWidget {
   final Schedule schedule;
@@ -174,26 +158,6 @@ class _LectureListScreenState extends State<LectureListScreen> {
                       ],
                     ),
                     onTap: () async {
-                      if (isOverlapping(widget.schedule, lecture)) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Overlap Warning'),
-                              content: const Text(
-                                  'The selected lecture overlaps with an existing one.'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Close the dialog
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -210,7 +174,6 @@ class _LectureListScreenState extends State<LectureListScreen> {
                           ),
                         );
                       }
-                    },
                   ),
                 );
               },
