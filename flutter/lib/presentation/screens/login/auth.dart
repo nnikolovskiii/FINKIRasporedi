@@ -5,15 +5,18 @@ import 'forms/login_form.dart';
 import 'forms/register_form.dart';
 
 class AuthScreen extends StatefulWidget {
+  const AuthScreen({super.key});
+
   @override
-  _AuthScreenState createState() => _AuthScreenState();
+  State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateMixin {
+class _AuthScreenState extends State<AuthScreen>
+    with SingleTickerProviderStateMixin {
   bool isLogin = true;
   late Animation<double> containerSize;
   AnimationController? animationController;
-  Duration animationDuration = Duration(milliseconds: 270);
+  Duration animationDuration = const Duration(milliseconds: 270);
 
   @override
   void initState() {
@@ -31,17 +34,18 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    double viewInset = MediaQuery.of(context).viewInsets.bottom; // we are using this to determine Keyboard is opened or not
+    double viewInset = MediaQuery.of(context).viewInsets.bottom;
     double defaultLoginSize = size.height - (size.height * 0.2);
     double defaultRegisterSize = size.height - (size.height * 0.1);
 
-    containerSize = Tween<double>(begin: size.height * 0.1, end: defaultRegisterSize)
-        .animate(CurvedAnimation(parent: animationController!, curve: Curves.linear));
+    containerSize =
+        Tween<double>(begin: size.height * 0.1, end: defaultRegisterSize)
+            .animate(CurvedAnimation(
+                parent: animationController!, curve: Curves.linear));
 
     return Scaffold(
       body: Stack(
         children: [
-          // Let's add some decorations
           Positioned(
             top: 100,
             right: -50,
@@ -71,9 +75,9 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
           Positioned(
             top: 20,
             left: 10,
-
             child: IconButton(
-              icon: Icon(Icons.arrow_circle_left_rounded, color: Colors.white),
+              icon: const Icon(Icons.arrow_circle_left_rounded,
+                  color: Colors.white),
               iconSize: 40,
               onPressed: () {
                 Navigator.of(context).pop();
@@ -89,15 +93,14 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
             animationController: animationController,
             tapEvent: isLogin
                 ? null
-                : () { // returning null to disable the button
-              animationController!.reverse();
-              setState(() {
-                isLogin = !isLogin;
-              });
-            },
+                : () {
+                    animationController!.reverse();
+                    setState(() {
+                      isLogin = !isLogin;
+                    });
+                  },
           ),
 
-          // Login Form
           LoginForm(
             isLogin: isLogin,
             animationDuration: animationDuration,
@@ -105,7 +108,6 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
             defaultLoginSize: defaultLoginSize,
           ),
 
-          // Register Container
           AnimatedBuilder(
             animation: animationController!,
             builder: (context, child) {
@@ -115,12 +117,10 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
                 return buildRegisterContainer();
               }
 
-              // Returning empty container to hide the widget
               return Container();
             },
           ),
 
-          // Register Form
           RegisterForm(
             isLogin: isLogin,
             animationDuration: animationDuration,
@@ -139,7 +139,7 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
         width: double.infinity,
         height: containerSize.value,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(100),
             topRight: Radius.circular(100),
           ),
@@ -147,34 +147,36 @@ class _AuthScreenState extends State<AuthScreen> with SingleTickerProviderStateM
         ),
         alignment: Alignment.center,
         child: GestureDetector(
-          onTap: !isLogin ? null : () {
-            animationController!.forward();
-            setState(() {
-              isLogin = !isLogin;
-            });
-          },
+          onTap: !isLogin
+              ? null
+              : () {
+                  animationController!.forward();
+                  setState(() {
+                    isLogin = !isLogin;
+                  });
+                },
           child: isLogin
               ? const Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: "Нов корисник? ",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
+                  TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Нов корисник? ",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                      ),
+                      TextSpan(
+                        text: "Регистрирај се",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff253338),
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                TextSpan(
-                  text: "Регистрирај се",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff253338), // Change this to your desired color
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-          )
+                )
               : null,
         ),
       ),

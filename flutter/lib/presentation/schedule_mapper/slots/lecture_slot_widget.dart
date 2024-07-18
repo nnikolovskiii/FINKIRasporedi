@@ -38,7 +38,8 @@ class LectureWidget extends StatelessWidget {
 
   double getHeight(double height, LectureSlot lecture) {
     int interval = lecture.timeTo - lecture.timeFrom;
-    return ((height * 1 / 13) - CalendarConfig.heightOffset) * interval + 8 * (interval - 1);
+    return ((height * 1 / 13) - CalendarConfig.heightOffset) * interval +
+        8 * (interval - 1);
   }
 
   Color hexStringToColor(String? hexString) {
@@ -51,7 +52,8 @@ class LectureWidget extends StatelessWidget {
   }
 
   bool isDarkColor(Color color) {
-    double brightness = (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
+    double brightness =
+        (color.red * 299 + color.green * 587 + color.blue * 114) / 1000;
     return brightness < 128;
   }
 
@@ -76,29 +78,27 @@ class LectureWidget extends StatelessWidget {
             onLongPress: isDefault
                 ? null
                 : () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return getAlertDialog(context);
-                },
-              );
-            },
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return getAlertDialog(context);
+                      },
+                    );
+                  },
             child: Stack(
               children: [
                 Container(
-                  child: Container(
-                    height: getHeight(height, lecture),
-                    width: itemWidth,
-                    decoration: BoxDecoration(
-                      color: backgroundColor,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: _buildConditionalWidget(!darkText),
-                      ),
+                  height: getHeight(height, lecture),
+                  width: itemWidth,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: _buildConditionalWidget(!darkText),
                     ),
                   ),
                 ),
@@ -107,26 +107,26 @@ class LectureWidget extends StatelessWidget {
           );
         } else {
           return GestureDetector(
-            onTap: isDefault ?
-                () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return getAlertDialogDetails(context);
-                },
-              );
-            }
+            onTap: isDefault
+                ? () {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return getAlertDialogDetails(context);
+                      },
+                    );
+                  }
                 : null,
             onLongPress: isDefault
                 ? null
                 : () {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return getAlertDialog(context);
-                },
-              );
-            },
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return getAlertDialog(context);
+                      },
+                    );
+                  },
             child: Container(
               height: getHeight(height, lecture),
               width: itemWidth,
@@ -178,7 +178,8 @@ class LectureWidget extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
                 child: Text(
                   lecture.lecture!.course.subject.name,
                   style: textStyle.copyWith(
@@ -222,17 +223,14 @@ class LectureWidget extends StatelessWidget {
   }
 
   Color hexToColor(String hexColor) {
-    // Remove the # character if present
     if (hexColor.startsWith('#')) {
       hexColor = hexColor.substring(1);
     }
-    // Parse the hex color string to an integer
     int hexValue = int.parse(hexColor, radix: 16);
-    // Create a color object from the hex value
     return Color(hexValue).withOpacity(1.0);
   }
 
-  AlertDialog getAlertDialog(BuildContext context){
+  AlertDialog getAlertDialog(BuildContext context) {
     return AlertDialog(
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -248,7 +246,7 @@ class LectureWidget extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -290,42 +288,48 @@ class LectureWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                   ),
                   onPressed: () async {
-                    await scheduleService.removeLecture(schedule.id ?? 0, lecture.id ?? -1);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CalendarScreen(schedule.id ?? 0),
-                      ),
-                    ); // Close the dialog
+                    await scheduleService.removeLecture(
+                        schedule.id ?? 0, lecture.id ?? -1);
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              CalendarScreen(schedule.id ?? 0),
+                        ),
+                      );
+                    }
                   },
                   child: const Text(
                     'Избриши',
                     style: TextStyle(color: Colors.white),
                   ),
-
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 5),
+                margin: const EdgeInsets.symmetric(vertical: 5),
                 child: TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: Theme.of(context).primaryColor,
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 10, horizontal: 20),
                   ),
                   onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FieldScreen(schedule: schedule, lectureSlot: lecture),
+                        builder: (context) => FieldScreen(
+                            schedule: schedule, lectureSlot: lecture),
                       ),
-                    ); // Close the dialog
+                    );
                   },
                   child: const Text(
                     'Ажурирај',
@@ -335,20 +339,25 @@ class LectureWidget extends StatelessWidget {
               ),
               if (lecture.lecture != null)
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
+                  margin: const EdgeInsets.symmetric(vertical: 5),
                   child: TextButton(
                     style: TextButton.styleFrom(
                       backgroundColor: Theme.of(context).primaryColor,
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 20),
                     ),
                     onPressed: () async {
-                      await lectureSlotService.resetLectureSlot(lecture.id ?? -1);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CalendarScreen(schedule.id ?? 0),
-                        ),
-                      ); // Close the dialog
+                      await lectureSlotService
+                          .resetLectureSlot(lecture.id ?? -1);
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                CalendarScreen(schedule.id ?? 0),
+                          ),
+                        );
+                      }
                     },
                     child: const Text(
                       'Ресетирај',
@@ -379,7 +388,7 @@ class LectureWidget extends StatelessWidget {
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              icon: Icon(Icons.close),
+              icon: const Icon(Icons.close),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -440,5 +449,4 @@ class LectureWidget extends StatelessWidget {
       ),
     );
   }
-
 }
