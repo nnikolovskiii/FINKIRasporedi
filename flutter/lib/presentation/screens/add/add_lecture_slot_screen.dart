@@ -3,27 +3,6 @@ import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../widgets/color_picker_widget.dart';
 
-bool isOverlapping(Schedule schedule, LectureSlot lec,
-    {LectureSlot? currentLecture}) {
-  List<LectureSlot> lectures = schedule.lectures ?? [];
-  for (LectureSlot lec1 in lectures) {
-    if (currentLecture != null && lec1 == currentLecture) {
-      continue;
-    }
-    if (lec1.day == lec.day) {
-      bool overlap =
-          ((lec1.timeFrom >= lec.timeFrom && lec1.timeFrom < lec.timeTo) ||
-              (lec1.timeTo > lec.timeFrom && lec1.timeTo <= lec.timeTo) ||
-              (lec1.timeFrom <= lec.timeFrom && lec1.timeTo >= lec.timeTo));
-
-      if (overlap) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
 class FieldScreen extends StatefulWidget {
   final Schedule schedule;
   final LectureSlot? lectureSlot;
@@ -85,10 +64,12 @@ class _FieldScreenState extends State<FieldScreen> {
                       hintText: "Име",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
+                          borderSide: BorderSide.none
+                      ),
                       fillColor: const Color(0xFF123499).withOpacity(0.1),
                       filled: true,
-                      prefixIcon: const Icon(Icons.drive_file_rename_outline)),
+                      prefixIcon: const Icon(Icons.drive_file_rename_outline)
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Името е задолжително';
@@ -103,10 +84,12 @@ class _FieldScreenState extends State<FieldScreen> {
                       hintText: "Кратенка",
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none),
+                          borderSide: BorderSide.none
+                      ),
                       fillColor: const Color(0xFF123499).withOpacity(0.1),
                       filled: true,
-                      prefixIcon: const Icon(Icons.short_text)),
+                      prefixIcon: const Icon(Icons.short_text)
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Кратенката е задолжителна';
@@ -235,104 +218,33 @@ class _FieldScreenState extends State<FieldScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          String? name = nameController.text;
-                          if (name == "") {
-                            name = null;
-                          }
+                          String? name = nameController.text.isEmpty ? null : nameController.text;
                           String abbreviation = abbreviationController.text;
 
-                          if (widget.lectureSlot == null ||
-                              widget.lectureSlot!.lecture == null) {
-                            LectureSlot newLectureSlot = LectureSlot(
-                              name: name,
-                              abbreviation: abbreviation,
-                              day: selectedDayIndex,
-                              timeFrom: selectedTimeFrom,
-                              timeTo: selectedTimeTo,
-                            );
+                          LectureSlot updatedLectureSlot = LectureSlot(
+                            id: widget.lectureSlot?.id,
+                            name: name,
+                            abbreviation: abbreviation,
+                            day: selectedDayIndex,
+                            timeFrom: selectedTimeFrom,
+                            timeTo: selectedTimeTo,
+                          );
 
-                            if (isOverlapping(
-                                widget.schedule, newLectureSlot)) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Overlap Warning'),
-                                    content: const Text(
-                                        'The selected lecture overlaps with an existing one.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ColorPickerScreen(
-                                    schedule: widget.schedule,
-                                    lectureSlot: newLectureSlot,
-                                    update: false,
-                                  ),
-                                ),
-                              ).then((result) {
-                                if (result == true) {
-                                  Navigator.pop(context, true);
-                                }
-                              });
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ColorPickerScreen(
+                                schedule: widget.schedule,
+                                lectureSlot: updatedLectureSlot,
+                                update: widget.lectureSlot != null,
+                                color: widget.lectureSlot?.hexColor,
+                              ),
+                            ),
+                          ).then((result) {
+                            if (result == true) {
+                              Navigator.pop(context, true);
                             }
-                          } else {
-                            widget.lectureSlot!.name = name;
-                            widget.lectureSlot!.abbreviation = abbreviation;
-                            widget.lectureSlot!.day = selectedDayIndex;
-                            widget.lectureSlot!.timeFrom = selectedTimeFrom;
-                            widget.lectureSlot!.timeTo = selectedTimeTo;
-
-                            if (isOverlapping(
-                                widget.schedule, widget.lectureSlot!,
-                                currentLecture: widget.lectureSlot)) {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Overlap Warning'),
-                                    content: const Text(
-                                        'The selected lecture overlaps with an existing one.'),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ColorPickerScreen(
-                                    schedule: widget.schedule,
-                                    lectureSlot: widget.lectureSlot!,
-                                    update: true,
-                                    color: widget.lectureSlot!.hexColor,
-                                  ),
-                                ),
-                              ).then((result) {
-                                if (result == true) {
-                                  Navigator.pop(context, true);
-                                }
-                              });
-                            }
-                          }
+                          });
                         }
                       },
                       child: const Text('Save'),

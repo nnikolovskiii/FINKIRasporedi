@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/presentation/screens/list/schedule_list_screen.dart';
 import 'package:flutter_app/service/auth_service.dart';
 import '../../domain/providers/schedule_provider.dart';
-import '../widgets/custom-app-bar.dart';
+import '../widgets/custom_app_bar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
 
