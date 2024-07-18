@@ -40,6 +40,16 @@ class LectureSlotWidgetMin extends StatelessWidget {
 
           if (screenWidth > 1000 || !allDays) {
             return GestureDetector(
+              onTap: isDefault ?
+                  () {
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return getAlertDialogDetails(context);
+                  },
+                );
+              }
+                  : null,
               onLongPress: isDefault
                   ? null
                   : () {
