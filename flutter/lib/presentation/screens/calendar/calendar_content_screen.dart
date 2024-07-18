@@ -12,18 +12,18 @@ class CalendarContentScreen extends StatefulWidget {
   final Schedule schedule;
 
   const CalendarContentScreen({
-    Key? key,
+    super.key,
     required this.schedule,
-  }) : super(key: key);
+  });
 
   @override
-  _HorizontalSwipeScreenState createState() => _HorizontalSwipeScreenState();
+  State<CalendarContentScreen> createState() => _CalendarContentScreenState();
 }
 
-class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
+class _CalendarContentScreenState extends State<CalendarContentScreen> {
   late final PageController controller;
   double currentPage = 0;
-  int num = 5; // Set default value for num
+  int num = 5;
   bool showAllDays = true;
 
   @override
@@ -66,7 +66,8 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
             );
-          } else if (details.delta.dx < 0 && currentPage < (5 - num).toDouble()) {
+          } else if (details.delta.dx < 0 &&
+              currentPage < (5 - num).toDouble()) {
             controller.nextPage(
               duration: const Duration(milliseconds: 300),
               curve: Curves.ease,
@@ -77,7 +78,7 @@ class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              height: 50, // Set the fixed height here
+              height: 50,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -170,7 +171,8 @@ List<Widget> getColumns(int num, bool showAllDays, Schedule schedule) {
               ),
               VerticalDividerWidget(
                 numCells: 12,
-                color: Colors.grey.shade300, edge: false,
+                color: Colors.grey.shade300,
+                edge: false,
               ),
               ...getDays(i, i + num, list, schedule, showAllDays)
             ],
@@ -183,7 +185,8 @@ List<Widget> getColumns(int num, bool showAllDays, Schedule schedule) {
   return days;
 }
 
-List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list, Schedule schedule, bool showAllDays) {
+List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list,
+    Schedule schedule, bool showAllDays) {
   List<Widget> widgets = [];
   for (int i = fromIndex; i < 5 && i < toIndex; i++) {
     widgets.add(Expanded(
@@ -198,7 +201,8 @@ List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list, S
     if (i < toIndex - 1) {
       widgets.add(VerticalDividerWidget(
         numCells: 12,
-        color: Colors.grey.shade300, edge: false,
+        color: Colors.grey.shade300,
+        edge: false,
       ));
     }
   }
@@ -207,20 +211,19 @@ List<Widget> getDays(int fromIndex, int toIndex, List<List<LectureSlot>> list, S
 
 List<Widget> getDaysLabels(int fromIndex, int toIndex, bool showAllDays) {
   List<Widget> widgets = [];
-  widgets.add(TransparentTimeSlotWidget(allDays: showAllDays,));
-  widgets.add(const VerticalDividerWidget(
-      numCells: 1,
-      color: Colors.transparent,
-      edge: true
+  widgets.add(TransparentTimeSlotWidget(
+    allDays: showAllDays,
   ));
+  widgets.add(const VerticalDividerWidget(
+      numCells: 1, color: Colors.transparent, edge: true));
   for (int i = fromIndex; i < 5 && i < toIndex; i++) {
-    widgets.add(DayWidget(day: i, allDays: showAllDays,));
+    widgets.add(DayWidget(
+      day: i,
+      allDays: showAllDays,
+    ));
     if (i < toIndex - 1) {
       widgets.add(const VerticalDividerWidget(
-          numCells: 1,
-          color: Colors.transparent,
-          edge: true
-      ));
+          numCells: 1, color: Colors.transparent, edge: true));
     }
   }
   return widgets;

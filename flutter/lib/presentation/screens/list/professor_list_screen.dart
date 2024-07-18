@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/models/professor.dart';
 import 'package:flutter_app/domain/models/schedule.dart';
@@ -12,27 +14,23 @@ class ProfessorListScreen extends StatefulWidget {
   final String courseId;
   final String courseName;
 
-  const ProfessorListScreen(
-      {super.key, required this.schedule,
-      required this.courseId,
-      required this.courseName});
+  const ProfessorListScreen({
+    super.key,
+    required this.schedule,
+    required this.courseId,
+    required this.courseName,
+  });
 
   @override
-  _ProfessorListScreenState createState() =>
-      _ProfessorListScreenState(courseId, courseName);
+  State<ProfessorListScreen> createState() => _ProfessorListScreenState();
 }
 
 class _ProfessorListScreenState extends State<ProfessorListScreen> {
-  final String courseId;
-  final String courseName;
   List<Professor> professors = [];
   List<Professor> filteredProfessors = [];
   ProfessorService professorService = ProfessorService();
   CourseService courseService = CourseService();
-  final TextEditingController _searchController =
-      TextEditingController(); // Add this line
-
-  _ProfessorListScreenState(this.courseId, this.courseName);
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -42,15 +40,14 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
 
   Future<void> fetchProfessors() async {
     try {
-      List<Professor> fetchedProfessors =
-          await professorService.getProfessorsByCourseId(courseId: courseId);
+      List<Professor> fetchedProfessors = await professorService
+          .getProfessorsByCourseId(courseId: widget.courseId);
       setState(() {
         professors = fetchedProfessors;
         filteredProfessors = fetchedProfessors;
-        print('Fetched Professors: $professors');
       });
     } catch (e) {
-      print('Error fetching professors: $e');
+      throw HttpStatus.notFound;
     }
   }
 
@@ -71,15 +68,17 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(courseName,
+        title: Text(
+          widget.courseName,
           style: const TextStyle(
             fontSize: 16,
             color: Color(0xFF123499),
-          ),),
+          ),
+        ),
         elevation: 20,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0), // Adjust padding as needed
+        padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             SearchBarWidget(
@@ -88,15 +87,15 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
               hintText: "Пребарај професор..",
             ),
             const SizedBox(height: 8),
-            // Add some space between search bar and list
             Expanded(
               child: ListView.separated(
                 itemCount: filteredProfessors.length,
                 separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(), // Add Divider between items
-                ////////////////////////////
+                    const Divider(),
                 itemBuilder: (context, index) {
-                  Color backgroundColor = index % 2 == 0 ? Colors.transparent : Colors.grey.shade200;
+                  Color backgroundColor = index % 2 == 0
+                      ? Colors.transparent
+                      : Colors.grey.shade200;
                   return GestureDetector(
                     onTap: () {
                       final selectedProfessor = filteredProfessors[index];
@@ -108,17 +107,15 @@ class _ProfessorListScreenState extends State<ProfessorListScreen> {
                             schedule: widget.schedule,
                             professorId: professorId,
                             professorName: selectedProfessor.name,
-                            courseId: courseId,
-                            // Pass any other necessary information to LectureSlotsScreen
+                            courseId: widget.courseId,
                           ),
                         ),
                       );
                     },
                     child: Container(
-                      color: backgroundColor, // Set background color here
+                      color: backgroundColor,
                       child: ListTile(
                         title: Text(filteredProfessors[index].name),
-                        // Add other professor details or actions if needed
                       ),
                     ),
                   );

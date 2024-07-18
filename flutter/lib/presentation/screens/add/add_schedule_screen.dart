@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/domain/models/schedule.dart';
 import 'package:flutter_app/presentation/screens/main_screen.dart';
 
-import '../../../domain/models/lecture_slots.dart';
 import '../../../service/schedule_service.dart';
 
 class AddScheduleScreen extends StatefulWidget {
   final ScheduleService scheduleService = ScheduleService();
-  final Schedule? schedule; // Schedule object for edit mode
+  final Schedule? schedule;
 
-  AddScheduleScreen({super.key, this.schedule}); // Initialize with optional Schedule object
+  AddScheduleScreen({super.key, this.schedule});
 
   @override
-  _AddScheduleScreenState createState() => _AddScheduleScreenState();
+  State<AddScheduleScreen> createState() => _AddScheduleScreenState();
 }
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
@@ -25,9 +24,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
   void initState() {
     super.initState();
     if (widget.schedule != null) {
-      // Populate fields if editing an existing schedule
       _nameEditingController.text = widget.schedule!.name;
-      _notesEditingController.text = widget.schedule!.description ?? '';
+      _notesEditingController.text = widget.schedule!.description;
     }
   }
 
@@ -87,30 +85,33 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   if (_formKey.currentState!.validate()) {
                     String name = _nameEditingController.text;
                     String notes = _notesEditingController.text;
-                    Schedule schedule = Schedule(name: name, description: notes);
+                    Schedule schedule =
+                        Schedule(name: name, description: notes);
 
                     if (widget.schedule == null) {
-                      // Add new schedule
                       await widget.scheduleService.addSchedule(schedule);
                     } else {
-                      // Edit existing schedule
-                      schedule.id = widget.schedule!.id; // Ensure the ID is retained
-                      await widget.scheduleService.updateSchedule(schedule.id!, schedule);
+                      schedule.id = widget.schedule!.id;
+                      await widget.scheduleService
+                          .updateSchedule(schedule.id!, schedule);
                     }
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const MainScreen(initialIndex: 1),
-                      ),
-                    );
+                    if (context.mounted) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              const MainScreen(initialIndex: 1),
+                        ),
+                      );
+                    }
                   }
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                  elevation: MaterialStateProperty.all(0),
-                  shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+                  backgroundColor: WidgetStateProperty.all(Colors.transparent),
+                  elevation: WidgetStateProperty.all(0),
+                  shape: WidgetStateProperty.all(
+                    RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0)),
                   ),
                 ),
                 child: Ink(
@@ -123,7 +124,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     borderRadius: BorderRadius.circular(30.0),
                   ),
                   child: Container(
-                    constraints: const BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                    constraints:
+                        const BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
                     alignment: Alignment.center,
                     child: const Text(
                       'Продолжи',

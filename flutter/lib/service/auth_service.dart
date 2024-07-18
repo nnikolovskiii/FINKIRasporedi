@@ -27,8 +27,7 @@ class AuthService {
     }
   }
 
-  static Future<bool> register(
-      RegisterRequestModel model) async {
+  static Future<bool> register(RegisterRequestModel model) async {
     final response = await http.post(Uri.parse('$baseUrl/auth/register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
@@ -61,8 +60,7 @@ class AuthService {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? loginDetailsString = prefs.getString('login_details');
     if (loginDetailsString != null) {
-      final Map<String, dynamic> loginDetails =
-      jsonDecode(loginDetailsString);
+      final Map<String, dynamic> loginDetails = jsonDecode(loginDetailsString);
       return loginDetails;
     }
     return null;
@@ -74,7 +72,8 @@ class AuthService {
   }
 
   static Future<bool> isUsernameAvailable(String username) async {
-    final response = await http.post(Uri.parse('$baseUrl/CheckUsernameAvailability?username=$username'));
+    final response = await http.post(
+        Uri.parse('$baseUrl/CheckUsernameAvailability?username=$username'));
 
     if (response.statusCode == 200) {
       final data = json.decode(response.body);

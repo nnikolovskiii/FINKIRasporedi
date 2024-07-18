@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 
-
 class CancelButton extends StatelessWidget {
-  const CancelButton({
-    Key? key,
-    required this.isLogin,
-    required this.animationDuration,
-    required this.size,
-    required this.animationController,
-    required this.tapEvent
-  }) : super(key: key);
+  const CancelButton(
+      {super.key,
+      required this.isLogin,
+      required this.animationDuration,
+      required this.size,
+      required this.animationController,
+      required this.tapEvent});
 
   final bool isLogin;
   final Duration animationDuration;
@@ -28,11 +26,10 @@ class CancelButton extends StatelessWidget {
           width: size.width,
           height: size.height * 0.1,
           alignment: Alignment.bottomCenter,
-
           child: IconButton(
-            icon: Icon(Icons.close),
+            icon: const Icon(Icons.close),
             onPressed: tapEvent,
-            color:  const Color(0xFF123499).withOpacity(0.1),
+            color:  const Color(0xFF123499).withOpacity(0.8),
           ),
         ),
       ),

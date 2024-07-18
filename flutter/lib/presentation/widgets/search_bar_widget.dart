@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class SearchBarWidget extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String>? onChanged;
-  final String hintText; // Added hintText parameter
+  final String hintText;
 
   const SearchBarWidget({
-    Key? key,
+    super.key,
     required this.controller,
-    required this.hintText, // Required hintText parameter
+    required this.hintText,
     this.onChanged,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class SearchBarWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(25.0), // Adjust the border radius as needed
+          borderRadius: BorderRadius.circular(25.0),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
@@ -34,9 +34,10 @@ class SearchBarWidget extends StatelessWidget {
           onChanged: onChanged,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.search, color: Colors.grey),
-            hintText: hintText, // Use the provided hintText
+            hintText: hintText,
             border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
           ),
         ),
       ),

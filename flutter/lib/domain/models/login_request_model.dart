@@ -3,6 +3,7 @@ class LoginRequestModel {
     this.username,
     this.password,
   });
+
   late final String? username;
   late final String? password;
 

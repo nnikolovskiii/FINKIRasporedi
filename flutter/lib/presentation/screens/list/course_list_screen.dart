@@ -11,7 +11,7 @@ Color myCustomColor2 = const Color(0xFF42587F);
 class CourseListScreen extends StatefulWidget {
   final Schedule schedule;
 
-  const CourseListScreen({Key? key, required this.schedule}) : super(key: key);
+  const CourseListScreen({super.key, required this.schedule});
 
   @override
   State<CourseListScreen> createState() => _CourseListScreenState();
@@ -19,15 +19,15 @@ class CourseListScreen extends StatefulWidget {
 
 class _CourseListScreenState extends State<CourseListScreen> {
   bool isDark = false;
-  List<Course> courses = []; // List to store courses
-  List<Course> filteredCourses = []; // List to store filtered courses
-  final CourseService _courseService = CourseService(); // Initialize CourseService
+  List<Course> courses = [];
+  List<Course> filteredCourses = [];
+  final CourseService _courseService = CourseService();
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    fetchCourses(); // Fetch courses when the app starts
+    fetchCourses();
   }
 
   void fetchCourses() async {
@@ -39,7 +39,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error fetching courses: $e');
       setState(() {
         isLoading = false;
       });
@@ -63,7 +62,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
-            // Search bar and suggestions
             SearchAnchor(
               builder: (BuildContext context, SearchController controller) {
                 return SearchBarWidget(
@@ -75,8 +73,8 @@ class _CourseListScreenState extends State<CourseListScreen> {
                       } else {
                         filteredCourses = courses
                             .where((course) => course.subject.name
-                            .toLowerCase()
-                            .startsWith(value.toLowerCase()))
+                                .toLowerCase()
+                                .startsWith(value.toLowerCase()))
                             .toList();
                       }
                     });
@@ -85,10 +83,11 @@ class _CourseListScreenState extends State<CourseListScreen> {
                 );
               },
               suggestionsBuilder: (
-                  BuildContext context,
-                  SearchController controller,
-                  ) {
-                return List<Widget>.generate(filteredCourses.length, (int index) {
+                BuildContext context,
+                SearchController controller,
+              ) {
+                return List<Widget>.generate(filteredCourses.length,
+                    (int index) {
                   final String itemName = filteredCourses[index].subject.name;
                   return ListTile(
                     title: Text(itemName),
@@ -97,13 +96,6 @@ class _CourseListScreenState extends State<CourseListScreen> {
               },
             ),
             // Filter icon
-            IconButton(
-              icon: const Icon(Icons.filter_list),
-              onPressed: () {
-                // Implement filter functionality here
-              },
-            ),
-            // Display the filtered list
             if (isLoading)
               Center(
                 child: Padding(
@@ -119,17 +111,19 @@ class _CourseListScreenState extends State<CourseListScreen> {
                 child: ListView.separated(
                   itemCount: filteredCourses.length,
                   separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
+                      const Divider(),
                   itemBuilder: (BuildContext context, int index) {
-                    Color backgroundColor =
-                    index % 2 == 0 ? Colors.grey.shade200 : Colors.transparent;
-                    final String itemName = filteredCourses[index].subject.name ?? '';
+                    Color backgroundColor = index % 2 == 0
+                        ? Colors.grey.shade200
+                        : Colors.transparent;
+                    final String itemName = filteredCourses[index].subject.name;
                     return Container(
                       color: backgroundColor,
                       child: ListTile(
                         title: Text(itemName),
                         onTap: () {
-                          String courseName = filteredCourses[index].subject.name;
+                          String courseName =
+                              filteredCourses[index].subject.name;
                           String courseId = filteredCourses[index].id;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
