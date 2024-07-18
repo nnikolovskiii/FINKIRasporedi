@@ -74,7 +74,7 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
       ));
     }
     // widgets.add(LectureSlotWidgetMin(width: width, height: getHeight(height, intervalFrom), color: Colors.transparent));
-    widgets.add(LectureSlotWidgetMin(height: getHeight(height, lectureSlot.timeTo - lectureSlot.timeFrom), width: width, color: hexToColor(lectureSlot.hexColor!), lectureSlot: lectureSlot, allDays: widget.allDays, schedule: widget.schedule,));
+    widgets.add(LectureSlotWidgetMin(height: getHeight(height, lectureSlot.timeTo - lectureSlot.timeFrom), width: width, color: hexToColor(lectureSlot.hexColor ?? "#648EFF"), lectureSlot: lectureSlot, allDays: widget.allDays, schedule: widget.schedule,));
     // widgets.add(LectureSlotWidgetMin(width: width, height: getHeight(height, intervalTo), color: Colors.transparent));
     if(intervalTo != 0) {
       widgets.add(HorizontalDividerWidget(
@@ -105,7 +105,7 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
         ? (width - CalendarConfig.offsetAllDays) * CalendarConfig.calNumAllDays
         : (width - CalendarConfig.offsetOneDay) * CalendarConfig.calNumOneDay;
 
-    double slotWidth = ((itemWidth-8) / widget.lectureSlots.length);
+    double slotWidth = ((itemWidth) / widget.lectureSlots.length);
 
     return IntrinsicWidth(
       child: IntrinsicHeight(
@@ -113,16 +113,12 @@ class _ComposeLecturesSlotWidgetState extends State<ComposeLecturesSlotWidget> {
           width: itemWidth,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(
-              color: Colors.red, // Replace with your desired border color
-              width: 2.0,        // Replace with your desired border width
-            ),
           ),
 
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Ensures equal spacing between children
             children: widget.lectureSlots.map((slot) {
-              return getColumn(slot, slotWidth, height-4);
+              return getColumn(slot, slotWidth, height);
             }).toList(),
           ),
         ),
