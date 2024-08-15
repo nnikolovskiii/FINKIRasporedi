@@ -46,8 +46,8 @@ class _SchedulesScreenState extends State<MainScreen> {
           child: ClipOval(
             child: Image.asset(
               'resources/images/rasporedi_logo.png',
-              width: 40,
-              height: 40,
+              width: 60,
+              height: 60,
               fit: BoxFit.cover,
             ),
           ),
