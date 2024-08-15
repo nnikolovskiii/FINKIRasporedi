@@ -66,7 +66,7 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
                   isHexValid = true;
                 });
               },
-              showLabel: false,
+              labelTypes: const [],
               enableAlpha: false,
             ),
           ),
@@ -159,12 +159,14 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
           .addLecture(widget.schedule.id ?? 0, widget.lectureSlot);
     }
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CalendarScreen(widget.schedule.id ?? 0),
-      ),
-    );
+    if (mounted) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CalendarScreen(widget.schedule.id ?? 0),
+        ),
+      );
+    }
   }
 }
 

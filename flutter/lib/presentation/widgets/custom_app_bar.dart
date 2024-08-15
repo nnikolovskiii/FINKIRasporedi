@@ -4,7 +4,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Widget title;
   final List<Widget> actions;
 
-  CustomAppBar({required this.title, this.actions = const []});
+  const CustomAppBar({super.key, required this.title, this.actions = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +35,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(120.0); // Adjust the height as needed
+  Size get preferredSize => const Size.fromHeight(120.0);
 }
 
 class CustomShape extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color =   Color(0xFF375f95).withOpacity(1);
+    Paint paint = Paint()..color = const Color(0xFF375f95).withOpacity(1);
     Path path = Path()
       ..lineTo(0, size.height - 40)
       ..quadraticBezierTo(

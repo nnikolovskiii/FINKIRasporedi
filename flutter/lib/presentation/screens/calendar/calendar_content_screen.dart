@@ -17,10 +17,10 @@ class CalendarContentScreen extends StatefulWidget {
   });
 
   @override
-  _HorizontalSwipeScreenState createState() => _HorizontalSwipeScreenState();
+  State<CalendarContentScreen> createState() => _CalendarContentScreenState();
 }
 
-class _HorizontalSwipeScreenState extends State<CalendarContentScreen> {
+class _CalendarContentScreenState extends State<CalendarContentScreen> {
   late final PageController controller;
   double currentPage = 0;
   int num = 5;
