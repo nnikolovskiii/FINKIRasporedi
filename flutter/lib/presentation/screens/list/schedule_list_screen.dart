@@ -8,6 +8,8 @@ import '../add/add_schedule_screen.dart';
 import '../calendar/calendar_screen.dart';
 import '../../../domain/models/schedule.dart';
 import '../main_screen.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+
 
 class ScheduleListScreen extends StatefulWidget {
   const ScheduleListScreen({super.key});
@@ -203,7 +205,11 @@ class ScheduleItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.edit),
+                            icon: Image.asset(
+                              'resources/images/pencil.png',  // Path to your image asset
+                              width: 32,  // Set the desired width
+                              height: 32,  // Set the desired height
+                            ),
                             color: Colors.white,
                             onPressed: () {
                               Navigator.push(
@@ -216,48 +222,90 @@ class ScheduleItem extends StatelessWidget {
                             },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.delete),
-                            color: Colors.red,
+                            icon: Image.asset(
+                              'resources/images/bin.png',  // Path to your image asset
+                              width: 32,  // Set the desired width
+                              height: 32,  // Set the desired height
+                            ),
+                            // color: Colors.red,
                             onPressed: () async {
-                              bool? confirmDelete = await showDialog<bool>(
+                              AwesomeDialog(
                                 context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Потврди бришење:'),
-                                    content: const Text(
-                                        'Дали сте сигурни дека сакате да го избришете распоредот?'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(false);
-                                        },
-                                        child: const Text('Откажи'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(true);
-                                        },
-                                        child: const Text('Избриши'),
-                                      ),
-                                    ],
-                                  );
+                                dialogType: DialogType.warning,
+                                animType: AnimType.rightSlide,
+                                title: 'Дали сте сигурни?',
+                                titleTextStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600,  // Set the font weight to semibold
+                                  fontSize: 20,  // Adjust the font size as needed
+                                  color: Colors.black,  // You can also set the color if needed
+                                ),
+                                desc: 'Дали навистина сакате да го избришете распоредот?',
+                                btnCancelText: 'Откажи',
+                                btnCancelOnPress: () {},
+                                btnCancelColor: Colors.grey,  // Customize the cancel button color
+                                btnOkText: 'Избриши',
+                                btnOkOnPress: () async {
+                                  // Perform the delete operation
+                                  await scheduleService.deleteSchedule(schedule.id ?? 0);
+                                  if (context.mounted) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const MainScreen(initialIndex: 1)),
+                                    );
+                                  }
                                 },
-                              );
-
-                              if (confirmDelete == true) {
-                                await scheduleService
-                                    .deleteSchedule(schedule.id ?? 0);
-                                if (context.mounted) {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MainScreen(initialIndex: 1)),
-                                  );
-                                }
-                              }
+                                btnOkColor: Colors.red,  // Customize the OK button color
+                              ).show();
                             },
                           ),
+
+
+                          // IconButton(
+                          //   icon: const Icon(Icons.delete),
+                          //   color: Colors.red,
+                          //   onPressed: () async {
+                          //     bool? confirmDelete = await showDialog<bool>(
+                          //       context: context,
+                          //       builder: (BuildContext context) {
+                          //         return AlertDialog(
+                          //           title: const Text('Потврди бришење:'),
+                          //           content: const Text(
+                          //               'Дали сте сигурни дека сакате да го избришете распоредот?'),
+                          //           actions: <Widget>[
+                          //             TextButton(
+                          //               onPressed: () {
+                          //                 Navigator.of(context).pop(false);
+                          //               },
+                          //               child: const Text('Откажи'),
+                          //             ),
+                          //             TextButton(
+                          //               onPressed: () {
+                          //                 Navigator.of(context).pop(true);
+                          //               },
+                          //               child: const Text('Избриши'),
+                          //             ),
+                          //           ],
+                          //         );
+                          //       },
+                          //     );
+                          //
+                          //     if (confirmDelete == true) {
+                          //       await scheduleService
+                          //           .deleteSchedule(schedule.id ?? 0);
+                          //       if (context.mounted) {
+                          //         Navigator.push(
+                          //           context,
+                          //           MaterialPageRoute(
+                          //               builder: (context) =>
+                          //                   const MainScreen(initialIndex: 1)),
+                          //         );
+                          //       }
+                          //     }
+                          //   },
+                          // ),
+
+
                         ],
                       ),
                   ],

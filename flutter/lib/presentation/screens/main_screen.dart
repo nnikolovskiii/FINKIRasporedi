@@ -7,6 +7,7 @@ import '../../domain/providers/schedule_provider.dart';
 import '../widgets/custom_app_bar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -75,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF123499).withOpacity(0.1),
+                        color: const Color(0xFFF1F1F3).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Row(
@@ -91,14 +92,44 @@ class _MainScreenState extends State<MainScreen> {
                         ],
                       ),
                     ),
+                    // IconButton(
+                    //   icon: const Icon(Icons.logout, color: Colors.white),
+                    //   onPressed: () {
+                    //     AuthService.logout();
+                    //     Navigator.of(context).pushReplacement(
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const AuthScreen()),
+                    //     );
+                    //   },
+                    // ),
                     IconButton(
                       icon: const Icon(Icons.logout, color: Colors.white),
                       onPressed: () {
-                        AuthService.logout();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const AuthScreen()),
-                        );
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.question,
+                          animType: AnimType.rightSlide,
+                          title: 'Потврда за одјава',
+                          titleTextStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                          desc: 'Дали сте сигурни дека сакате да се одјавите?',
+                          btnCancelText: 'Откажи',
+                          btnCancelOnPress: () {},
+                          btnCancelColor: Colors.grey,
+                          btnOkText: 'Одјави се',
+                          btnOkOnPress: () {
+                            AuthService.logout();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const AuthScreen(),
+                              ),
+                            );
+                          },
+                          btnOkColor: Color(0xFF5E914A),
+                        ).show();
                       },
                     ),
                   ],
@@ -106,12 +137,12 @@ class _MainScreenState extends State<MainScreen> {
               }
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.info_sharp, color: Colors.white),
-            onPressed: () {
-              _showImageDialog(context);
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.info_sharp, color: Colors.white),
+          //   onPressed: () {
+          //     _showImageDialog(context);
+          //   },
+          // ),
         ],
       ),
       body: Column(
