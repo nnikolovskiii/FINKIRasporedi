@@ -181,58 +181,64 @@ class _MainScreenState extends State<MainScreen> {
             return Container(); // Display nothing if error or not logged in
           } else {
             return !isDefault
-                ? FloatingActionButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddScheduleScreen()),
-                );
-              },
-              child: const Icon(Icons.add),
+                ? Padding(
+              padding: const EdgeInsets.only(bottom: 20.0), // Adjust the value as needed
+              child: FloatingActionButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddScheduleScreen()),
+                  );
+                },
+                child: const Icon(Icons.add),
+                backgroundColor: const Color(0xffffc113), // Set the background color of the button
+                foregroundColor: const Color(0xffffffff),
+              ),
             )
                 : Container();
           }
         },
       ),
+
     );
   }
 
-  void _showImageDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.grey,
-              width: 3.0,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded,
-                        color: Color(0xFF123499)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Image.asset('resources/images/info.png'),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showImageDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //           side: const BorderSide(
+  //             color: Colors.grey,
+  //             width: 3.0,
+  //           ),
+  //         ),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.end,
+  //               children: [
+  //                 IconButton(
+  //                   icon: const Icon(Icons.close_rounded,
+  //                       color: Color(0xFF123499)),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ],
+  //             ),
+  //             const SizedBox(height: 10),
+  //             Image.asset('resources/images/info.png'),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _getSelectedWidget(String name) {
     switch (name) {

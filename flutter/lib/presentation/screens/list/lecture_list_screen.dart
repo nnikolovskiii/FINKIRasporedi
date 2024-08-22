@@ -35,12 +35,16 @@ class _LectureListScreenState extends State<LectureListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFF375e94),
         title: Text(
           'Термини кај ${widget.professorName}',
           style: const TextStyle(
             fontSize: 16,
-            color: Color(0xFF123499),
+            color: Color(0xFFFFFFFF),
           ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Color(0xFFBBBABA),
         ),
         elevation: 20,
       ),

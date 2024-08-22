@@ -154,6 +154,8 @@ class _ExpandableFabState extends State<ExpandableFab>
           child: FloatingActionButton(
             onPressed: _toggle,
             child: const Icon(Icons.library_books),
+            backgroundColor: Color(0xFF3464ac), // Set the background color of the button
+            foregroundColor: Colors.white,
           ),
         ),
       ),

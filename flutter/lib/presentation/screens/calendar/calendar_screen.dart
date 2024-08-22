@@ -48,6 +48,10 @@ class _CalendarScreenState extends State<CalendarScreen> {
         appBar: AppBar(
           titleSpacing: 0,
           leadingWidth: 40,
+          // iconTheme: const IconThemeData(
+          //   color: Color(0xFFBBBABA),
+          // ),
+          backgroundColor: Color(0xFF375e94),
           title: GestureDetector(
             onTap: () {
               Provider.of<ScheduleProvider>(context, listen: false)
@@ -63,12 +67,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
               scheduleFuture?.name ?? '',
               style: const TextStyle(
                   fontSize: 16,
-                  color: Color(0xFF123499),
-                  fontWeight: FontWeight.bold),
+                  color: Color(0xFFFFFFFF)),
             ),
           ),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF123499)),
+            icon: const Icon(Icons.arrow_back, color: Color(0xFFBBBABA)),
             onPressed: () {
               bool isDefault =
                   Provider.of<ScheduleProvider>(context, listen: false)

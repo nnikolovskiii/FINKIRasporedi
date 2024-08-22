@@ -202,7 +202,7 @@ class ScheduleItem extends StatelessWidget {
                     ),
                     if (!isDefault)
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           IconButton(
                             icon: Image.asset(
