@@ -176,7 +176,7 @@ namespace FinkiRasporedi.Repository.Impl
             {
                 return student.Schedules;
             }
-
+    
             return [];
         }
         
