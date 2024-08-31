@@ -73,7 +73,7 @@ class LectureWidget extends StatelessWidget {
       builder: (context, constraints) {
         if (width > 1000 || !allDays) {
           return GestureDetector(
-            onLongPress: isDefault
+            onTap: isDefault
                 ? null
                 : () {
               showDialog(
@@ -114,9 +114,6 @@ class LectureWidget extends StatelessWidget {
                 },
               );
             }
-                : null,
-            onLongPress: isDefault
-                ? null
                 : () {
               showDialog(
                 context: context,
@@ -268,7 +265,7 @@ class LectureWidget extends StatelessWidget {
               ),
             ] else
               Text(
-                'Лекција: ${lectureSlot.name}',
+                'Кратенка: ${lectureSlot.abbreviation}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             const SizedBox(height: 20),
@@ -425,11 +422,11 @@ class LectureWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                   children: [
                     const TextSpan(
-                      text: 'Лекција: ',
+                      text: 'Кратенка: ',
                       style: TextStyle(color: Colors.blue),
                     ),
                     TextSpan(
-                      text: lectureSlot.name,
+                      text: lectureSlot.abbreviation,
                     ),
                   ],
                 ),

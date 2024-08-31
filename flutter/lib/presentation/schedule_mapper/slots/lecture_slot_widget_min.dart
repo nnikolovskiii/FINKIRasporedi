@@ -38,7 +38,7 @@ class LectureSlotWidgetMin extends StatelessWidget {
     bool darkText = isDarkColor(color);
 
 
-          if (screenWidth > 1000 || !allDays) {
+          if (screenWidth > 1000  || !allDays) {
             return GestureDetector(
               onTap: isDefault ?
                   () {
@@ -49,9 +49,6 @@ class LectureSlotWidgetMin extends StatelessWidget {
                   },
                 );
               }
-                  : null,
-              onLongPress: isDefault
-                  ? null
                   : () {
                 showDialog(
                   context: context,
@@ -126,14 +123,32 @@ class LectureSlotWidgetMin extends StatelessWidget {
           //   );
           // }
           else{
-            return Container(
+            return GestureDetector(
+                onTap: isDefault ?
+                    () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return getAlertDialogDetails(context);
+                    },
+                  );
+                }
+                    : () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return getAlertDialog(context);
+                    },
+                  );
+                },
+            child: Container(
               height: height,
               width: width,
               decoration: BoxDecoration(
                 color: color,
                 borderRadius: BorderRadius.circular(10.0),
               ),
-            );
+            ));
           }
 
   }
@@ -177,7 +192,7 @@ class LectureSlotWidgetMin extends StatelessWidget {
               ),
             ] else
               Text(
-                'Лекција: ${lectureSlot.name}',
+                'Кратенка: ${lectureSlot.abbreviation}',
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
             const SizedBox(height: 20),
@@ -335,11 +350,11 @@ class LectureSlotWidgetMin extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyLarge,
                   children: [
                     const TextSpan(
-                      text: 'Лекција: ',
+                      text: 'Кратенка: ',
                       style: TextStyle(color: Colors.blue),
                     ),
                     TextSpan(
-                      text: lectureSlot.name,
+                      text: lectureSlot.abbreviation,
                     ),
                   ],
                 ),
