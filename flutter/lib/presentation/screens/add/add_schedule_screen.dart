@@ -34,10 +34,18 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
+        backgroundColor: const Color(0xFF375e94),
         title: const Text(
-          'Креирај распоред',
-          style: TextStyle(fontSize: 16, color: Color(0xFF0A2472)),
+          "Креирај распоред",
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFFFFFFFF),
+          ),
         ),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF8F8F8F),
+        ),
+        elevation: 20,
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
@@ -47,7 +55,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 30.0),
+              // Center the image at the top
+              Center(
+                child: Image.asset(
+                  'resources/images/scheduling.png', // Replace with the correct path to your image
+                  width: 180, // Adjust size as needed
+                  height: 180,
+                ),
+              ),
+              const SizedBox(height: 10.0),
               TextFormField(
                 controller: _nameEditingController,
                 decoration: InputDecoration(
@@ -57,7 +73,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       borderSide: BorderSide.none),
                   fillColor: const Color(0xFF123499).withOpacity(0.1),
                   filled: true,
-                  prefixIcon: const Icon(Icons.drive_file_rename_outline),
+                  prefixIcon: const Icon(Icons.create_rounded),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -66,6 +82,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   return null;
                 },
               ),
+
               const SizedBox(height: 20.0),
               TextFormField(
                 controller: _notesEditingController,
@@ -76,62 +93,41 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       borderSide: BorderSide.none),
                   fillColor: const Color(0xFF123499).withOpacity(0.1),
                   filled: true,
-                  prefixIcon: const Icon(Icons.drive_file_rename_outline),
+                  prefixIcon: const Icon(Icons.create_rounded),
                 ),
               ),
               const SizedBox(height: 30.0),
-              ElevatedButton(
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    String name = _nameEditingController.text;
-                    String notes = _notesEditingController.text;
-                    Schedule schedule =
-                        Schedule(name: name, description: notes);
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      String name = _nameEditingController.text;
+                      String notes = _notesEditingController.text;
+                      Schedule schedule = Schedule(name: name, description: notes);
 
-                    if (widget.schedule == null) {
-                      await widget.scheduleService.addSchedule(schedule);
-                    } else {
-                      schedule.id = widget.schedule!.id;
-                      await widget.scheduleService
-                          .updateSchedule(schedule.id!, schedule);
+                      if (widget.schedule == null) {
+                        await widget.scheduleService.addSchedule(schedule);
+                      } else {
+                        schedule.id = widget.schedule!.id;
+                        await widget.scheduleService.updateSchedule(schedule.id!, schedule);
+                      }
+                      if (context.mounted) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const MainScreen(initialIndex: 1),
+                          ),
+                        );
+                      }
                     }
-                    if (context.mounted) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MainScreen(initialIndex: 1),
-                        ),
-                      );
-                    }
-                  }
-                },
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.transparent),
-                  elevation: WidgetStateProperty.all(0),
-                  shape: WidgetStateProperty.all(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
+                  },
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color(0xFF375e94)),
                   ),
-                ),
-                child: Ink(
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      colors: [Color(0xff1E2F97), Color(0xff1E2F97)],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                    borderRadius: BorderRadius.circular(30.0),
-                  ),
-                  child: Container(
-                    constraints:
-                        const BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'Продолжи',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.white, fontSize: 15),
-                    ),
+                  child: const Text(
+                    'Продолжи',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 15),
                   ),
                 ),
               ),
@@ -141,4 +137,5 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ),
     );
   }
+
 }

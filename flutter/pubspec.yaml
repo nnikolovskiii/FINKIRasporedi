@@ -104,6 +104,7 @@ flutter:
     - resources/images/edits.png
     - resources/images/pencil.png
     - resources/images/bin.png
+    - resources/images/scheduling.png
     - resources/images/rasporedi_logo.png
     - resources/images/rasporedi_logo_4.png
     - resources/images/welcome.jpg
