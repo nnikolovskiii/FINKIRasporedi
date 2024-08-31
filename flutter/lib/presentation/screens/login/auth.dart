@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'components/cancel_button.dart';
 import 'forms/login_form.dart';
 import 'forms/register_form.dart';
-
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
 
@@ -41,11 +40,12 @@ class _AuthScreenState extends State<AuthScreen>
     containerSize =
         Tween<double>(begin: size.height * 0.1, end: defaultRegisterSize)
             .animate(CurvedAnimation(
-                parent: animationController!, curve: Curves.linear));
+            parent: animationController!, curve: Curves.linear));
 
     return Scaffold(
       body: Stack(
         children: [
+          // Circle Elements
           Positioned(
             top: 100,
             right: -50,
@@ -71,20 +71,6 @@ class _AuthScreenState extends State<AuthScreen>
             ),
           ),
 
-          // Back Button
-          Positioned(
-            top: 20,
-            left: 10,
-            child: IconButton(
-              icon: const Icon(Icons.arrow_circle_left_rounded,
-                  color: Colors.white),
-              iconSize: 40,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ),
-
           // Cancel Button
           CancelButton(
             isLogin: isLogin,
@@ -94,13 +80,14 @@ class _AuthScreenState extends State<AuthScreen>
             tapEvent: isLogin
                 ? null
                 : () {
-                    animationController!.reverse();
-                    setState(() {
-                      isLogin = !isLogin;
-                    });
-                  },
+              animationController!.reverse();
+              setState(() {
+                isLogin = !isLogin;
+              });
+            },
           ),
 
+          // Login and Register Forms
           LoginForm(
             isLogin: isLogin,
             animationDuration: animationDuration,
@@ -127,6 +114,22 @@ class _AuthScreenState extends State<AuthScreen>
             size: size,
             defaultLoginSize: defaultRegisterSize,
           ),
+
+          // Back Button (placed last to be on top)
+          Positioned(
+            top: 20,
+            left: 10,
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: Icon(
+                Icons.arrow_circle_left_rounded,
+                color: Colors.white,
+                size: 40,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -150,33 +153,33 @@ class _AuthScreenState extends State<AuthScreen>
           onTap: !isLogin
               ? null
               : () {
-                  animationController!.forward();
-                  setState(() {
-                    isLogin = !isLogin;
-                  });
-                },
+            animationController!.forward();
+            setState(() {
+              isLogin = !isLogin;
+            });
+          },
           child: isLogin
               ? const Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: "Нов корисник? ",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                        ),
-                      ),
-                      TextSpan(
-                        text: "Регистрирај се",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xff253338),
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: "Нов корисник? ",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
                   ),
-                )
+                ),
+                TextSpan(
+                  text: "Регистрирај се",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xff253338),
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+          )
               : null,
         ),
       ),

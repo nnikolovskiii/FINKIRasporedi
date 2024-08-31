@@ -2,6 +2,7 @@ import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/day_slot_widget.dart';
 import 'package:flutter_app/presentation/schedule_mapper/slots/transparent_time_slot_widget.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import '../../../domain/models/lecture_slots.dart';
 import '../../../domain/models/schedule.dart';
 import '../../schedule_mapper/column_schedule_widget.dart';
@@ -54,82 +55,94 @@ class _CalendarContentScreenState extends State<CalendarContentScreen> {
       curve: Curves.ease,
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onHorizontalDragUpdate: (details) {
-          if (details.delta.dx > 0 && currentPage > 0) {
-            controller.previousPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          } else if (details.delta.dx < 0 &&
-              currentPage < (5 - num).toDouble()) {
-            controller.nextPage(
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.ease,
-            );
-          }
-        },
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 50,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!showAllDays)
-                    DotsIndicator(
-                      dotsCount: 5 - num + 1,
-                      position: currentPage,
-                      decorator: const DotsDecorator(
-                        color: Colors.grey,
-                        activeColor: Colors.blueAccent,
-                      ),
-                      onTap: _onDotTapped,
-                    ),
-                  const SizedBox(width: 20),
-                  TextButton(
-                    onPressed: () {
-                      setState(() {
-                        showAllDays = !showAllDays;
-                        num = showAllDays ? 5 : 1;
-                        if (showAllDays) {
-                          controller.jumpToPage(0);
-                          currentPage = 0;
-                        }
-                      });
-                    },
-                    child: Text(
-                      showAllDays ? 'Еден ден' : 'Сите денови',
-                      style: const TextStyle(color: Colors.black),
-                    ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 12.0), // Adjust as needed
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // if (!showAllDays)
+                        Align(
+                          alignment: Alignment.centerRight, // Align dots to the center right
+                          child: DotsIndicator(
+                            dotsCount: showAllDays ? 1 : 5 - num + 1,
+                            position: currentPage,
+                            decorator: const DotsDecorator(
+                              color: Colors.grey,
+                              activeColor: Color(0xFF4464a4),
+                            ),
+                            onTap: _onDotTapped,
+                          ),
+                        ),
+
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft, //
+                        child: FlutterSwitch(
+                          width: 135.0,
+                          height: 40.0,
+                          valueFontSize: 15.0,
+                          toggleSize: 20.0,
+                          value: showAllDays,
+                          borderRadius: 30.0,
+                         // padding: 8.0,
+                          activeText: 'Сите денови',
+                          inactiveText: 'Еден ден',
+                          activeColor: Color(0xFFf09359),
+                          inactiveColor: Color(0xFFe26682),
+                          activeTextColor: Colors.white,
+                          inactiveTextColor: Colors.white,
+                          showOnOff: true,
+                          onToggle: (val) {
+                            setState(() {
+                              showAllDays = val;
+                              num = showAllDays ? 5 : 1;
+                              if (showAllDays) {
+                                controller.jumpToPage(0);
+                                currentPage = 0;
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: PageView(
-                controller: controller,
-                children: getColumns(num, showAllDays, widget.schedule),
-                onPageChanged: (index) {
-                  setState(() {
-                    currentPage = index.toDouble();
-                  });
-                },
-              ),
+          ),
+          Expanded(
+            child: PageView(
+              controller: controller,
+              children: getColumns(num, showAllDays, widget.schedule),
+              onPageChanged: (index) {
+                setState(() {
+                  currentPage = index.toDouble();
+                });
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
-}
 
+}
 List<List<LectureSlot>> getListLectureSlots(Schedule schedule) {
   List<List<LectureSlot>> list = [];
 
