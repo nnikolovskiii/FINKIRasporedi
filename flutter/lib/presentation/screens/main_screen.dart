@@ -7,6 +7,7 @@ import '../../domain/providers/schedule_provider.dart';
 import '../widgets/custom_app_bar.dart';
 import 'add/add_schedule_screen.dart';
 import 'list/action_list_screen.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   final int initialIndex;
@@ -46,8 +47,8 @@ class _MainScreenState extends State<MainScreen> {
           child: ClipOval(
             child: Image.asset(
               'resources/images/rasporedi_logo.png',
-              width: 40,
-              height: 40,
+              width: 60,
+              height: 60,
               fit: BoxFit.cover,
             ),
           ),
@@ -75,7 +76,7 @@ class _MainScreenState extends State<MainScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF123499).withOpacity(0.1),
+                        color: const Color(0xFFF1F1F3).withOpacity(0.1),
                         borderRadius: BorderRadius.circular(20.0),
                       ),
                       child: Row(
@@ -91,14 +92,44 @@ class _MainScreenState extends State<MainScreen> {
                         ],
                       ),
                     ),
+                    // IconButton(
+                    //   icon: const Icon(Icons.logout, color: Colors.white),
+                    //   onPressed: () {
+                    //     AuthService.logout();
+                    //     Navigator.of(context).pushReplacement(
+                    //       MaterialPageRoute(
+                    //           builder: (context) => const AuthScreen()),
+                    //     );
+                    //   },
+                    // ),
                     IconButton(
                       icon: const Icon(Icons.logout, color: Colors.white),
                       onPressed: () {
-                        AuthService.logout();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                              builder: (context) => const AuthScreen()),
-                        );
+                        AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.question,
+                          animType: AnimType.rightSlide,
+                          title: 'Потврда за одјава',
+                          titleTextStyle: const TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 20,
+                            color: Colors.black,
+                          ),
+                          desc: 'Дали сте сигурни дека сакате да се одјавите?',
+                          btnCancelText: 'Откажи',
+                          btnCancelOnPress: () {},
+                          btnCancelColor: Colors.grey,
+                          btnOkText: 'Одјави се',
+                          btnOkOnPress: () {
+                            AuthService.logout();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const AuthScreen(),
+                              ),
+                            );
+                          },
+                          btnOkColor: Color(0xFF5E914A),
+                        ).show();
                       },
                     ),
                   ],
@@ -106,12 +137,12 @@ class _MainScreenState extends State<MainScreen> {
               }
             },
           ),
-          IconButton(
-            icon: const Icon(Icons.info_sharp, color: Colors.white),
-            onPressed: () {
-              _showImageDialog(context);
-            },
-          ),
+          // IconButton(
+          //   icon: const Icon(Icons.info_sharp, color: Colors.white),
+          //   onPressed: () {
+          //     _showImageDialog(context);
+          //   },
+          // ),
         ],
       ),
       body: Column(
@@ -150,58 +181,64 @@ class _MainScreenState extends State<MainScreen> {
             return Container(); // Display nothing if error or not logged in
           } else {
             return !isDefault
-                ? FloatingActionButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddScheduleScreen()),
-                );
-              },
-              child: const Icon(Icons.add),
+                ? Padding(
+              padding: const EdgeInsets.only(bottom: 20.0), // Adjust the value as needed
+              child: FloatingActionButton(
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AddScheduleScreen()),
+                  );
+                },
+                child: const Icon(Icons.add),
+                backgroundColor: const Color(0xffffc113), // Set the background color of the button
+                foregroundColor: const Color(0xffffffff),
+              ),
             )
                 : Container();
           }
         },
       ),
+
     );
   }
 
-  void _showImageDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20.0),
-            side: const BorderSide(
-              color: Colors.grey,
-              width: 3.0,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded,
-                        color: Color(0xFF123499)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Image.asset('resources/images/info.png'),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showImageDialog(BuildContext context) {
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(20.0),
+  //           side: const BorderSide(
+  //             color: Colors.grey,
+  //             width: 3.0,
+  //           ),
+  //         ),
+  //         content: Column(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Row(
+  //               mainAxisAlignment: MainAxisAlignment.end,
+  //               children: [
+  //                 IconButton(
+  //                   icon: const Icon(Icons.close_rounded,
+  //                       color: Color(0xFF123499)),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //                   },
+  //                 ),
+  //               ],
+  //             ),
+  //             const SizedBox(height: 10),
+  //             Image.asset('resources/images/info.png'),
+  //           ],
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   Widget _getSelectedWidget(String name) {
     switch (name) {

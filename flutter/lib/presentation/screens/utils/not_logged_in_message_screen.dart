@@ -12,11 +12,13 @@ class NotLoggedInMessageScreen extends StatelessWidget {
         children: [
           const Center(
             child: Text(
-              'Мора да сте најавени за да ги видите вашите распореди!',
+              'Најавете се за да ги видите вашите распореди!',
               textAlign: TextAlign.center,
+              style: TextStyle(color: Color(0xFF375e94),
+                              fontWeight: FontWeight.w600),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 5),
           ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -24,8 +26,13 @@ class NotLoggedInMessageScreen extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => const AuthScreen()),
               );
             },
-            child: const Text('Најава'),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Color(0xFF375e94)),
+            ),
+            child: const Text('Најава',
+            style: TextStyle(color: Colors.white),),
           ),
+
         ],
       ),
     );
