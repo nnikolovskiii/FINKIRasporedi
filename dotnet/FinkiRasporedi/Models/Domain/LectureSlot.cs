@@ -1,5 +1,4 @@
-﻿using FinkiRasporedi.Models.Domain;
-using FinkiRasporedi.Models.Enums;
+﻿using FinkiRasporedi.Models.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace FinkiRasporedi.Models.Domain
