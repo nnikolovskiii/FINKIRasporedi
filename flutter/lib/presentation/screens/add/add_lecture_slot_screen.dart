@@ -43,6 +43,18 @@ class _FieldScreenState extends State<FieldScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF375e94),
+        title: const Text(
+          "Креирај custom термин",
+          style: TextStyle(
+            fontSize: 16,
+            color: Color(0xFFFFFFFF),
+          ),
+        ),
+        iconTheme: const IconThemeData(
+          color: Color(0xFF8F8F8F),
+        ),
+        elevation: 20,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -247,7 +259,14 @@ class _FieldScreenState extends State<FieldScreen> {
                           });
                         }
                       },
-                      child: const Text('Save'),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Color(0xFF375e94)),
+                      ),
+                      child: const Text(
+                        'Зачувај',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(color: Colors.white, fontSize: 15),
+                      ),
                     ),
                   ),
                 ],
