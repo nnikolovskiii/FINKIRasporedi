@@ -43,9 +43,17 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Color Picker'),
+        backgroundColor: Color(0xFF375e94),
+        iconTheme: const IconThemeData(
+          color: Color(0xFFBBBABA)),
+        title: const Text(
+          'Избери боја',
+           style:  TextStyle(
+          fontSize: 16,
+          color: Color(0xFFFFFFFF),
+        )),
         centerTitle: true,
-        elevation: 0,
+        elevation: 20,
         actions: [
           IconButton(
             icon: const Icon(Icons.check),
@@ -76,14 +84,14 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
             child: TextFormField(
               controller: hexController,
               decoration: InputDecoration(
-                labelText: 'Enter Hex Color',
+                labelText: 'Венси Hex боја',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10.0),
                   borderSide: BorderSide(
                     color: isHexValid ? Colors.black : Colors.red,
                   ),
                 ),
-                errorText: isHexValid ? null : 'Invalid hex color',
+                errorText: isHexValid ? null : 'Невалидна боја',
               ),
               onFieldSubmitted: (value) {
                 _updateColorFromHex();
@@ -104,7 +112,7 @@ class _ColorPickerScreenState extends State<ColorPickerScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const Text(
-                  'Selected Color',
+                  'Твојата боја',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
