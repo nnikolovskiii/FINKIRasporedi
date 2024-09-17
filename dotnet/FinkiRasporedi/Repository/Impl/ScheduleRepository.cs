@@ -199,6 +199,7 @@ namespace FinkiRasporedi.Repository.Impl
                 lectureSlot.Name = lecture.Name;
                 lectureSlot.Day = lecture.Day;
                 lectureSlot.Abbreviation = lecture.Course.Subject.Abbreviation;
+                lectureSlot.HexColor = lecture.Course.Subject.HexColor;
             }
             LectureSlot tmp = await lectureSlotRepository.AddAsync(lectureSlot);
             

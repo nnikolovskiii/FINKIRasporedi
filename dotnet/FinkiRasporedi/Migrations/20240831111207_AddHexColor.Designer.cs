@@ -4,6 +4,7 @@ using FinkiRasporedi.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinkiRasporedi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240831111207_AddHexColor")]
+    partial class AddHexColor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -75,6 +78,9 @@ namespace FinkiRasporedi.Migrations
 
                     b.Property<int>("Day")
                         .HasColumnType("int");
+
+                    b.Property<string>("HexColor")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
                         .HasColumnType("longtext");
@@ -233,9 +239,6 @@ namespace FinkiRasporedi.Migrations
                         .HasColumnType("varchar(255)");
 
                     b.Property<string>("Abbreviation")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("HexColor")
                         .HasColumnType("longtext");
 
                     b.Property<int>("Level")

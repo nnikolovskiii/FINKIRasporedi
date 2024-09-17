@@ -21,6 +21,5 @@ namespace FinkiRasporedi.Models.Domain
 
 
         public String? HexColor { get; set; }
-
     }
 }

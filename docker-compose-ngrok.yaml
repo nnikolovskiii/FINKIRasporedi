@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  backend:
+    image: nnikolovskii/dotnet_finki_rasporedi:latest
+    build:
+      context: ./dotnet
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=finki_rasporedi
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=ogan123
+    depends_on:
+      - mysql
+    ports:
+      - "7069:80"
+
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: finki_rasporedi
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: ogan123
+      MYSQL_ROOT_PASSWORD: ogan123
+    ports:
+      - "3308:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+      - mysql_data:/var/lib/mysql
+
+  ngrok:
+    image: ngrok/ngrok:latest
+    command:
+      - "ngrok"
+      - "http"
+      - "80"  # Specify the port directly
+    environment:
+      NGROK_AUTHTOKEN: 2lX1J9yxEED6FptEASyJPJG24Qk_38PctUWExPSsV8ifYvzW2
+    ports:
+      - 4040:4040  # Exposes ngrok's web interface for inspecting traffic
+
+
+
+volumes:
+  mysql_data:
+
