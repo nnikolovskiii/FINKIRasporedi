@@ -10,7 +10,6 @@ namespace FinkiRasporedi.Models.Domain
         public int Level { get; set; }
         public string? Abbreviation { get; set; }
 
-
-
+        public string? HexColor { get; set; }
     }
 }

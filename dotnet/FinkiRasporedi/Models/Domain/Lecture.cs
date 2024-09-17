@@ -11,7 +11,7 @@ namespace FinkiRasporedi.Models.Domain
         public Day Day { get; set; }
         public int TimeFrom { get; set; }
         public int TimeTo { get; set; }
-
+        
         public virtual Professor Professor { get; set; }
         public virtual Course Course { get; set; }
         public virtual Room Room { get; set; }
