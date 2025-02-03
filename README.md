@@ -2,7 +2,7 @@
 - [Kuberentes Repo](https://github.com/nnikolovskiii/kubernetes)
 
 # Link to demo
-[![Demo Video](https://img.youtube.com/vi/piJBrjdLod8/0.jpg)](https://youtu.be/piJBrjdLod8)
+[![Demo Video](https://img.youtube.com/vi/piJBrjdLod8/1.jpg)](https://youtu.be/piJBrjdLod8)
 
 
 
